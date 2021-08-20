@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans:beans xmlns="http://www.springframework.org/schema/mvc"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:beans="http://www.springframework.org/schema/beans"
-	xmlns:context="http://www.springframework.org/schema/context"
-	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
-		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
-
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:beans="http://www.springframework.org/schema/beans"
+   xmlns:context="http://www.springframework.org/schema/context"
+   xmlns:aop="http://www.springframework.org/schema/aop"
+   xmlns:tx="http://www.springframework.org/schema/tx"
+   xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+      http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+      http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
+      http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+      http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+ 
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	
 	<beans:bean id="dataSource" 
@@ -19,18 +23,21 @@
       class="org.mybatis.spring.SqlSessionFactoryBean">
       <beans:property name="dataSource" ref="dataSource"/>
       <beans:property name="configLocation"
-   value="classpath:com/minton/spring05/mybatis/Configuration.xml"/>
+   value="classpath:com/minton/minton05/myBatis/Configuration.xml"/>
    </beans:bean>
  
    <beans:bean class="org.mybatis.spring.SqlSessionTemplate">
       <beans:constructor-arg name="sqlSessionFactory" 
          ref="sessionFactory"/>
    </beans:bean>
-	
-	<beans:bean id="multipartResolver"
-		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
- 		<beans:property name="maxUploadSize" value="102400000"/>
+   
+	<!-- Spring Transaction Manager 설정 -->
+	<beans:bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<beans:property name="dataSource" ref="dataSource"/>
 	</beans:bean>
+   
+	<!-- @Transactional 어노테이션으로  트렌젝션을 관리 할수 있도록 설정-->
+	<tx:annotation-driven transaction-manager="txManager"/>
 	
 	<!-- Enables the Spring MVC @Controller programming model -->
 	<annotation-driven />
@@ -46,6 +53,22 @@
 	
 	<context:component-scan base-package="com.minton.minton05" />
 	
+		<!-- Multipart 폼 전송 처리를 위한 bean 설정 -->
+	<beans:bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+ 		<beans:property name="maxUploadSize" value="102400000"/>
+	</beans:bean>	
 	
+	<!-- 
+      bean 의 이름을 이용해서 view 로 이동할수 있도록 설정 
+      setOrder(0) 는 0 순위로 찾아 가겠다는 의미 
+      0 순위로 찾아서 없으면 
+      views 폴더 안에서 jsp 페이지를 찾게 된다.    
+   -->
+   <beans:bean class="org.springframework.web.servlet.view.BeanNameViewResolver">
+      <beans:property name="order" value="0"/>
+   </beans:bean>
+	
+	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
 	
 </beans:beans>
