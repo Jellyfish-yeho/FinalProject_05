@@ -5,11 +5,11 @@
 <configuration>
 	<!-- 자주 사용하는 type의 별칭을 등록해 놓고 Mapper.xml에서 사용할 수 있다. -->
 	<typeAliases>
-		
+		<typeAlias type="com.minton.minton05.notice.dto.NoticeDto" alias="noticeDto"/>
 	</typeAliases>
 	
 	<!-- 필요한 mapper xml 등록하기 -->
 	<mappers>
-		
+		 <mapper resource="com/minton/minton05/myBatis/NoticeMapper.xml"/>
 	</mappers>
 </configuration>
