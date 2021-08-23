@@ -81,6 +81,8 @@
 	<div>
 		<img src="${pageContext.request.contextPath}/resources/images/baaaaadminton.jpg" class="d-block w-100" alt=mainImage">
 	</div>
+	<%--임시 공지사항 링크 --%>
+	<a href="${pageContext.request.contextPath}/notice/list.do">공지사항</a>
 	<div class="container-fluid mt-5" style="margin:0 auto; padding:5px;">
 	<div class="row">
 		<div class="col">

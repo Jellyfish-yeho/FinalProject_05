@@ -1,5 +1,8 @@
 package com.minton.minton05.notice.service;
 
-public interface NoticeService {
+import javax.servlet.http.HttpServletRequest;
 
+public interface NoticeService {
+	//공지사항 목록을 가져오는 메소드 - request 영역에 저장 
+	public void getList(HttpServletRequest request);
 }
