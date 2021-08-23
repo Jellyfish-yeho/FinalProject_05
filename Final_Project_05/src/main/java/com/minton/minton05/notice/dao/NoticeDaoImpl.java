@@ -72,4 +72,15 @@ public class NoticeDaoImpl implements NoticeDao{
 		return session.selectOne("notice.getData2", dto);
 	}
 
+	//공지사항 글 추가하는 메소드 : dto를 이용
+	@Override
+	public void insert(NoticeDto dto) {
+		/*
+		 * Mapper's namespace : notice
+		 * sql's id : insert
+		 * parameterType : noticeDto
+		 */
+		session.insert("notice.insert", dto);
+	}
+
 }

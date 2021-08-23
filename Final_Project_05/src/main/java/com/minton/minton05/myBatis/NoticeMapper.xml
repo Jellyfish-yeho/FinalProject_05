@@ -62,4 +62,11 @@
 		WHERE num=#{num}
 	</update>
 	
+	<insert id="insert" parameterType="noticeDto">
+		INSERT INTO board_notice
+		(num, writer, title, content, viewCount, regdate)
+		VALUES (board_notice_seq.NEXTVAL), #{writer}, #{title},
+		#{content}, #{viewCount}, SYSDATE)
+	</insert>
+	
 </mapper>

@@ -21,4 +21,7 @@ public interface NoticeDao {
 	
 	//글 자세히보기용 - 게시글에 들어가면 조회수 1을 증가시킬 메소드 : 글번호 int 를 이용
 	public void addViewCount(int num);
+	
+	//공지사항 글 추가하는 메소드 : dto를 이용
+	public void insert(NoticeDto dto);
 }

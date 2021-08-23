@@ -158,6 +158,12 @@ public class NoticeServiceImpl implements NoticeService{
 		request.setAttribute("encodedK", encodedK);
 	}
 
+	//공지사항 글 1개 추가하는 메소드 
+	@Override
+	public void saveContent(NoticeDto dto) {
+		noticeDao.insert(dto);		
+	}
+
 }
 
 
