@@ -24,4 +24,10 @@ public interface NoticeDao {
 	
 	//공지사항 글 추가하는 메소드 : dto를 이용
 	public void insert(NoticeDto dto);
+	
+	//공지사항 글 수정하는 메소드 : dto
+	public void update(NoticeDto dto);
+	
+	//공지사항 글 삭제하는 메소드 : int num 글번호
+	public void delete(int num);
 }

@@ -42,7 +42,19 @@ public class NoticeController {
 		return "notice/insert";
 	}
 	
+	//공지사항 글 수정을 위한 글정보 요청  - auth 작업 필요
+	@RequestMapping("/notice/updateform")
+	public String updateForm(HttpServletRequest request, int num) {
+		service.getUpdateData(request, num);
+		return "notice/updateform";
+	}
 	
+	//공지사항 글 수정 요청 - auth 작업 필요
+	@RequestMapping("/notice/update")
+	public String update(HttpServletRequest request, NoticeDto dto) {
+		service.updateContent(request, dto);
+		return "notice/update";
+	}
 }
 
 

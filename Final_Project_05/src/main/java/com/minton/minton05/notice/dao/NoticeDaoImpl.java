@@ -83,4 +83,26 @@ public class NoticeDaoImpl implements NoticeDao{
 		session.insert("notice.insert", dto);
 	}
 
+	//공지사항 글 수정하는 메소드 : dto
+	@Override
+	public void update(NoticeDto dto) {
+		/*
+		 * Mapper's namespace : notice
+		 * sql's id : update
+		 * parameterType : noticeDto
+		 */
+		session.update("notice.update", dto);
+	}
+
+	//공지사항 글 삭제하는 메소드 : int num 글번호
+	@Override
+	public void delete(int num) {
+		/*
+		 * Mapper's namespace : notice
+		 * sql's id : delete
+		 * parameterType : int
+		 */	
+		session.delete("notice.delete", num);
+	}
+
 }

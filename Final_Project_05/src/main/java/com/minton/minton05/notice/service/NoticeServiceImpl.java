@@ -163,7 +163,28 @@ public class NoticeServiceImpl implements NoticeService{
 	public void saveContent(NoticeDto dto) {
 		noticeDao.insert(dto);		
 	}
+	
+	//공지사항 글 수정을 위해 글정보 불러오는 메소드 - 글 번호로 글정보 가져와서 request에 저장
+		@Override
+		public void getUpdateData(HttpServletRequest request, int num) {
+			NoticeDto dto = noticeDao.getData(num);
+			request.setAttribute("dto", dto);
+		}
 
+	//공지사항 글 수정하는 메소드
+	@Override
+	public void updateContent(HttpServletRequest request, NoticeDto dto) {
+		noticeDao.update(dto);
+		request.setAttribute("dto", dto);
+	}
+
+	//공지사항 글 삭제하는 메소드
+	@Override
+	public void deleteContent(int num) {
+		//exception 작업 예정
+		noticeDao.delete(num);	
+	}
+	
 }
 
 
