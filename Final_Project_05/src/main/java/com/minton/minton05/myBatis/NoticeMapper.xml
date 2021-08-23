@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="notice">
-<sql id="dto">
-num,writer,title,viewCount,to_char(regdate,'yyyy-mm-dd HH24:MI') as regdate
-</sql>
-<sql id="searchCondition">
-	<choose>
-		<when test="title != null and content != null">
-			WHERE title LIKE '%'||#{title}||'%' 
-			OR content LIKE '%'||#{content}||'%'
-		</when>
-		<when test="title != null">
-			WHERE title LIKE '%'||#{title}||'%'
-		</when>
-		<when test="writer != null">
-			WHERE writer LIKE '%'||#{writer}||'%'
-		</when>
-	</choose>
-</sql>
+	<sql id="dto">
+	num,writer,title,content,viewCount,to_char(regdate,'yyyy-mm-dd HH24:MI') as regdate
+	</sql>
+	<sql id="searchCondition">
+		<choose>
+			<when test="title != null and content != null">
+				WHERE title LIKE '%'||#{title}||'%' 
+				OR content LIKE '%'||#{content}||'%'
+			</when>
+			<when test="title != null">
+				WHERE title LIKE '%'||#{title}||'%'
+			</when>
+			<when test="writer != null">
+				WHERE writer LIKE '%'||#{writer}||'%'
+			</when>
+		</choose>
+	</sql>
 	<select id="selectList" parameterType="noticeDto" resultType="noticeDto">
 		SELECT *
 		FROM
@@ -34,4 +34,32 @@ num,writer,title,viewCount,to_char(regdate,'yyyy-mm-dd HH24:MI') as regdate
 		SELECT NVL(MAX(ROWNUM),0) AS num
 		FROM board_notice
 	</select>
+	
+	<select id="getData" parameterType="int" resultType="noticeDto">
+		SELECT result1.*
+		FROM
+			(SELECT <include refid="dto"/>,
+				LAG(num,1,0) OVER (ORDER BY num DESC) AS prevNum,
+				LEAD(num,1,0) OVER (ORDER BY num DESC) AS nextNum
+			FROM board_notice
+		WHERE num=#{num}
+	</select>
+	
+	<select id="getData2" parameterType="noticeDto" resultType="noticeDto">
+		SELECT result1.*
+		FROM
+			(SELECT <include refid="dto"/>,
+				LAG(num,1,0) OVER (ORDER BY num DESC) AS prevNum,
+				LEAD(num,1,0) OVER (ORDER BY num DESC) AS nextNum
+			FROM board_notice
+		<include refid="searchCondition"/>)result1
+		WHERE num=#{num}
+	</select>
+	
+	<update id="addViewCount" parameterType="int">
+		UPDATE board_notice
+		SET viewCount = viewCount + 1
+		WHERE num=#{num}
+	</update>
+	
 </mapper>

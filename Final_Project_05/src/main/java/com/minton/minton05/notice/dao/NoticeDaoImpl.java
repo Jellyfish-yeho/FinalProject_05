@@ -37,4 +37,39 @@ public class NoticeDaoImpl implements NoticeDao{
 		return session.selectOne("notice.getCount", dto);
 	}
 
+	//글 수정용 - 공지사항 글 하나에 대한 정보를 리턴하는 메소드 : 글번호 int를 이용하여 dto 리턴
+	@Override
+	public NoticeDto getData(int num) {
+		/*
+		 * Mapper's namespace : notice
+		 * sql's id : getData
+		 * parameterType : int
+		 * resultType : NoticeDto
+		 */
+		return session.selectOne("notice.getData", num);
+	}
+
+	//글 자세히보기용 - 게시글에 들어가면 조회수 1을 증가시킬 메소드 : 글번호 int 를 이용
+	@Override
+	public void addViewCount(int num) {
+		/*
+		 * Mapper's namespace : notice
+		 * sql's id : addViewCount
+		 * parameterType : int
+		 */
+		session.update("notice.addViewCount", num);
+	}
+
+	//글 자세히보기용 - 공지사항 글 하나에 대한 정보를 리턴하는 메소드 : 글번호 int를 이용하여 dto 리턴
+	@Override
+	public NoticeDto getData(NoticeDto dto) {
+		/*
+		 * Mapper's namespace : notice
+		 * sql's id : getData2
+		 * parameterType : NoticeDto
+		 * resultType : NoticeDto
+		 */
+		return session.selectOne("notice.getData2", dto);
+	}
+
 }

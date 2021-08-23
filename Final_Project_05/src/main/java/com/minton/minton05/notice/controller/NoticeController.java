@@ -20,4 +20,11 @@ public class NoticeController {
 		service.getList(request);
 		return "notice/list"; //같은 위치로 리턴
 	}
+	
+	//공지사항 글 자세히보기
+	@RequestMapping("/notice/detail")
+	public String detail(HttpServletRequest request) {
+		service.getData(request);
+		return "notice/detail";
+	}
 }

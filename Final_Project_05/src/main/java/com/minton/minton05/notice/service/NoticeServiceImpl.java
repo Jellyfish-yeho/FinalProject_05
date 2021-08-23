@@ -107,4 +107,58 @@ public class NoticeServiceImpl implements NoticeService{
 	      request.setAttribute("id", id);
 	}
 
+	//공지사항 글 1개에 대한 정보를 가져오는 메소드 - request 영역에 저장
+	@Override
+	public void getData(HttpServletRequest request) {
+		//로그인한 사람이 admin인지 확인할 id 값 넘겨주기
+		String id = (String) request.getSession().getAttribute("id");
+		request.setAttribute("id", id);
+		
+		//자세히 보여줄 글번호를 읽어온다. 
+		int num=Integer.parseInt(request.getParameter("num"));
+		//조회수 올리기
+		noticeDao.addViewCount(num);
+		//키워드 처리
+		String keyword=request.getParameter("keyword");
+	    String condition=request.getParameter("condition");
+	    //만일 키워드가 넘어오지 않는다면 
+	    if(keyword==null){
+	       //키워드와 검색 조건에 빈 문자열을 넣어준다. 
+	       //클라이언트 웹브라우저에 출력할때 "null" 을 출력되지 않게 하기 위해서  
+	       keyword="";
+	       condition=""; 
+	    }
+	    //특수기호를 인코딩한 키워드를 미리 준비한다. 
+	    String encodedK=URLEncoder.encode(keyword);
+	        
+	    //Dto 객체에 자세히 보여줄 글번호를 넣는다
+	    NoticeDto dto=new NoticeDto();
+	    dto.setNum(num);
+	    
+	    //만일 검색 키워드가 넘어온다면 
+	    if(!keyword.equals("")){
+	    	//검색 조건이 무엇이냐에 따라 분기 하기
+	    	if(condition.equals("title_content")){//제목 + 내용 검색인 경우
+	    		//검색 키워드를 NoticeDto 에 담아서 전달한다.
+	    		dto.setTitle(keyword);
+	    		dto.setContent(keyword);
+	    	}else if(condition.equals("title")){ //제목 검색인 경우
+	    		dto.setTitle(keyword);
+	    	}else if(condition.equals("writer")){ //작성자 검색인 경우
+	    		dto.setWriter(keyword);
+	    	} // 다른 검색 조건을 추가 하고 싶다면 아래에 else if() 를 계속 추가 하면 된다.
+	    }
+	    //dto에 키워드를 설정한 dto를 새로 넣어준다.
+	    dto=noticeDao.getData(dto);
+	    
+		//view page에 필요한 값을 request 에 담아주기
+		request.setAttribute("dto", dto);
+		request.setAttribute("condition", condition);
+		request.setAttribute("keyword", keyword);
+		request.setAttribute("encodedK", encodedK);
+	}
+
 }
+
+
+

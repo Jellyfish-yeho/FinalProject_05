@@ -12,4 +12,13 @@ public interface NoticeDao {
 	
 	//공지사항 글 개수를 리턴하는 메소드 : dto를 이용하여 int 리턴
 	public int getCount(NoticeDto dto);
+	
+	//글 수정용 - 공지사항 글 하나에 대한 정보를 리턴하는 메소드 : 글번호 int를 이용하여 dto 리턴
+	public NoticeDto getData(int num);
+	
+	//글 자세히보기용 - 공지사항 글 하나에 대한 정보를 리턴하는 메소드 : 글번호 int를 이용하여 dto 리턴
+	public NoticeDto getData(NoticeDto dto);
+	
+	//글 자세히보기용 - 게시글에 들어가면 조회수 1을 증가시킬 메소드 : 글번호 int 를 이용
+	public void addViewCount(int num);
 }
