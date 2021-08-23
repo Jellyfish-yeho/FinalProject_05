@@ -76,6 +76,9 @@
 
 
 <!-- 메인 carousel -->
+	<%--임시 자유게시판 링크 --%>
+	<a href="${pageContext.request.contextPath}/cafe/list.do">자유게시판</a>
+	
 	<div>
 		<img src="${pageContext.request.contextPath}/resources/images/baaaaadminton.jpg" class="d-block w-100" alt=mainImage">
 	</div>
