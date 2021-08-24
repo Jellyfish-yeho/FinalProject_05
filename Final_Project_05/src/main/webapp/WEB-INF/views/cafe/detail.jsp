@@ -125,7 +125,7 @@
 					${dto.writer }
 				</p>				
 				<p class="date text-muted mb-0">
-					${dto.regdate) }
+					${dto.regdate }
 				</p>
 			</div>
 		</div>
@@ -325,20 +325,7 @@
 		alert("URL이 클립보드에 복사되었습니다."); 
 	}
 	
-	//popover 작동시키기
-	<%--
-	$(function(){
-		$('[data-toggle="popover"]').popover({
-			container:'body',
-			html:true,
-			placement:'bottom',
-			sanitize:false,
-			content:function(){
-				return $("#popoverContent").html();
-			}
-		});
-	});
-	--%>
+	
 	
 
 	//클라이언트가 로그인 했는지 여부
