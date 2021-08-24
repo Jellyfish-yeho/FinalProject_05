@@ -311,6 +311,7 @@
 				<circle cx="8" cy="8" r="8"/>
 			</svg>
 		</div>
+	</div>
 </div>
 <script src="${pageContext.request.contextPath}/resources/js/gura_util.js"></script>
 <script>
@@ -325,7 +326,7 @@
 	}
 	
 	//popover 작동시키기
-	/*
+	<%--
 	$(function(){
 		$('[data-toggle="popover"]').popover({
 			container:'body',
@@ -337,7 +338,8 @@
 			}
 		});
 	});
-	*/
+	--%>
+	
 
 	//클라이언트가 로그인 했는지 여부
 	let isLogin=${isLogin};	
