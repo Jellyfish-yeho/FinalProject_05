@@ -7,6 +7,8 @@
 <meta charset="UTF-8">
 <title>High-clear</title>
 <%-- resource include --%>
+<jsp:include page="../include/resource.jsp"></jsp:include>
+
 <link rel="icon" href="${pageContext.request.contextPath}/resources/images/shuttlecock_main.png" type="image/x-icon" />
 <style>
    .modal {
@@ -26,6 +28,7 @@
      	height: 300px !important;
     	width: 240px !important;
     	}
+
 	/*글자 css*/
 	.page-ui a{
       text-decoration: none;
@@ -56,6 +59,7 @@
 		color:rgb(2,38,94);
 		text-decoration: none;
 	}
+
 	/* 갤러리 carousel css*/
 	.col-md-3{
 	  display: inline-block;
@@ -68,17 +72,18 @@
 </style>
 </head>
 <body>
-<%-- navbar include --%>
 
+<%-- navbar include --%> 
+<jsp:include page="../include/navbar.jsp"></jsp:include>
+	
 <%-- 쿠키 읽어오기 --%>
 
 <%-- 팝업 띄우기 --%>
 
-
 <!-- 메인 carousel -->
 	<%--임시 자유게시판 링크 --%>
 	<a href="${pageContext.request.contextPath}/cafe/list.do">자유게시판</a>
-	
+  
 	<div>
 		<img src="${pageContext.request.contextPath}/resources/images/baaaaadminton.jpg" class="d-block w-100" alt=mainImage">
 	</div>
@@ -127,6 +132,7 @@
 		      </thead>
 		      <tbody>
 <%-- cafeDao 반복문 --%>
+
 		      </tbody>
 		   </table>
 		</div>
@@ -188,6 +194,7 @@
 	</div>
 </div>
 <%--footer include --%>
+<jsp:include page="../include/footer.jsp"></jsp:include>
 <script src="https://code.jquery.com/jquery-latest.js"></script> 
 <!-- The Modal -->
 <div id="myModal" class="modal"> 

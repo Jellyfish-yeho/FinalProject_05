@@ -1,7 +1,6 @@
 package com.minton.minton05.aspect;
 
 import java.net.URLEncoder;
-
 import javax.management.RuntimeErrorException;
 import javax.servlet.http.HttpServletRequest;
 
@@ -25,8 +24,7 @@ public class AuthAspect {
             HttpServletRequest request=(HttpServletRequest)tmp;
             //HttpSession 객체의 참조값 얻어와서 로그인 여부를 알아낸다.
             String id=(String)request.getSession().getAttribute("id");
-            if(id == null) {//만일 로그인을 하지 않았으면
-               
+            if(id == null) {//만일 로그인을 하지 않았으면             
                //원래 가려던 url 정보 읽어오기
                String url=request.getRequestURI();
                //GET 방식 전송 파라미터를 query 문자열로 읽어오기 ( a=xxx&b=xxx&c=xxx )
@@ -39,8 +37,7 @@ public class AuthAspect {
                   // 원래 목적지가 /test/xxx.jsp 라고 가정하면 아래와 같은 형식의 문자열을 만든다.
                   // "/test/xxx.jsp?a=xxx&b=xxx ..."
                   encodedUrl=URLEncoder.encode(url+"?"+query);
-               }
-                  
+               }                  
                //로그인 페이지로 리다일렉트 할수 있는 ModelAndView 객체를 생성해서 
                ModelAndView mView=new ModelAndView();
                mView.setViewName("redirect:/users/loginform.do?url="+encodedUrl);
@@ -69,6 +66,7 @@ public class AuthAspect {
             if(id == null) {//만일 로그인을 하지 않았으면
                //예외를 발생 시켜서 정상적인 응답을 받을수 없도록 한다.
                throw new RuntimeException("로그인이 필요 합니다.");
+
             }
          }
       }
@@ -78,4 +76,8 @@ public class AuthAspect {
       
       return obj;
    }
+
+   
 }
+
+
