@@ -9,6 +9,8 @@
 <link rel="icon" href="${pageContext.request.contextPath}/resources/images/shuttlecock_main.png" type="image/x-icon" />
 
 <%-- icon, resource include --%>
+<jsp:include page="../../include/resource.jsp"></jsp:include>
+<jsp:include page="../../include/icon.jsp"></jsp:include>
 <style>
    .profile-image{
       width: 50px;
@@ -21,6 +23,9 @@
 </head>
 <body>
 <%-- navbar include : notice - thisPage --%>
+<jsp:include page="../../include/navbar.jsp">
+	<jsp:param value="notice" name="thisPage"/>
+</jsp:include>
 <div class="container my-4 py-4">
 	<c:if test="${not empty keyword}">
 		<p>   
@@ -76,12 +81,12 @@
 	<ul class="d-flex flex-row ps-0 justify-content-end" style="list-style:none;">
 		<c:if test="${dto.writer eq id}">
 			<li>
-				<a class="link-dark text-decoration-none mx-1" href="private/updateform.do?num=${dto.num}">
+				<a class="link-dark text-decoration-none mx-1" href="updateform.do?num=${dto.num}">
 	        		 수정
 				</a>
 	         </li>
 			<li>
-				<a class="link-dark text-decoration-none mx-1" href="private/delete.do?num=${dto.num}">
+				<a class="link-dark text-decoration-none mx-1" href="delete.do?num=${dto.num}">
 					삭제
 				</a>
 			</li>

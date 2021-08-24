@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.minton.minton05.notice.dto.NoticeDto;
 import com.minton.minton05.notice.service.NoticeService;
@@ -44,7 +45,7 @@ public class NoticeController {
 	
 	//공지사항 글 수정을 위한 글정보 요청  - auth 작업 필요
 	@RequestMapping("/notice/updateform")
-	public String updateForm(HttpServletRequest request, int num) {
+	public String updateForm(HttpServletRequest request, @RequestParam int num) {
 		service.getUpdateData(request, num);
 		return "notice/updateform";
 	}
@@ -54,6 +55,13 @@ public class NoticeController {
 	public String update(HttpServletRequest request, NoticeDto dto) {
 		service.updateContent(request, dto);
 		return "notice/update";
+	}
+	
+	//공지사항 글 삭제 요청 - auth 작업 필요
+	@RequestMapping("/notice/delete")
+	public String delete(HttpServletRequest request, @RequestParam int num) {
+		service.deleteContent(num);
+		return "notice/delete";
 	}
 }
 

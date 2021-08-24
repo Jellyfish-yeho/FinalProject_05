@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>High-clear</title>
-<%-- resource include --%>
+<jsp:include page="../include/resource.jsp"></jsp:include>
 <link rel="icon" href="${pageContext.request.contextPath}/resources/images/shuttlecock_main.png" type="image/x-icon" />
 <style>
    .modal {
@@ -71,7 +71,8 @@
 </style>
 </head>
 <body>
-<%-- navbar include --%>
+<%-- navbar include --%> 
+<jsp:include page="../include/navbar.jsp"></jsp:include>
 	
 <%-- 쿠키 읽어오기 --%>
 
@@ -81,8 +82,6 @@
 	<div>
 		<img src="${pageContext.request.contextPath}/resources/images/baaaaadminton.jpg" class="d-block w-100" alt=mainImage">
 	</div>
-	<%--임시 공지사항 링크 --%>
-	<a href="${pageContext.request.contextPath}/notice/list.do">공지사항</a>
 	<div class="container-fluid mt-5" style="margin:0 auto; padding:5px;">
 	<div class="row">
 		<div class="col">
@@ -189,7 +188,8 @@
 		</div>
 	</div>
 </div>
-<%--footer include --%>
+<%--footer--%>
+<jsp:include page="../include/footer.jsp"></jsp:include>
 <script src="https://code.jquery.com/jquery-latest.js"></script> 
 <!-- The Modal -->
 <div id="myModal" class="modal"> 

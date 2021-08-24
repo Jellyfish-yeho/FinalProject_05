@@ -8,6 +8,8 @@
 <title>공지사항</title>
 <link rel="icon" href="${pageContext.request.contextPath}/resources/images/shuttlecock_main.png" type="image/x-icon" />
 <%-- icon, resource include --%>
+<jsp:include page="../../include/icon.jsp"></jsp:include>
+<jsp:include page="../../include/resource.jsp"></jsp:include>
 <style>
    .page-ui a{
       text-decoration: none;
@@ -56,7 +58,9 @@
 </head>
 <body>
 <%-- navbar include : notice - thisPage --%>
-
+<jsp:include page="../../include/navbar.jsp">
+	<jsp:param value="notice" name="thisPage"/>
+</jsp:include>
 <div class="container my-4" id="ccontainer">
 	<h1 class="fw-bold text-center my-4 ">공지사항</h1>
 	<div class="mb-2" style="float:right;">
@@ -168,7 +172,7 @@
    </c:if>
 </div>
 
-<%-- footer include --%>
-
+<%-- footer --%>
+<jsp:include page="../../include/footer.jsp"></jsp:include>
 </body>
 </html>
