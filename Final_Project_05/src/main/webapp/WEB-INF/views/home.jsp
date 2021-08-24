@@ -6,7 +6,9 @@
 <head>
 <meta charset="UTF-8">
 <title>High-clear</title>
+<%-- resource include --%>
 <jsp:include page="../include/resource.jsp"></jsp:include>
+
 <link rel="icon" href="${pageContext.request.contextPath}/resources/images/shuttlecock_main.png" type="image/x-icon" />
 <style>
    .modal {
@@ -66,11 +68,11 @@
 	  width:100%;
 	  height:auto;
 	}
-
 	
 </style>
 </head>
 <body>
+
 <%-- navbar include --%> 
 <jsp:include page="../include/navbar.jsp"></jsp:include>
 	
@@ -79,6 +81,9 @@
 <%-- 팝업 띄우기 --%>
 
 <!-- 메인 carousel -->
+	<%--임시 자유게시판 링크 --%>
+	<a href="${pageContext.request.contextPath}/cafe/list.do">자유게시판</a>
+  
 	<div>
 		<img src="${pageContext.request.contextPath}/resources/images/baaaaadminton.jpg" class="d-block w-100" alt=mainImage">
 	</div>
@@ -181,14 +186,14 @@
 				<img class="p-2" src="<%=request.getContextPath()%>/images/shuttlecock_main.png" width="50" height="50"/>
 	        </span>
           <%-- Gallery 반복문 --%>  
-           
+
             <span class="col-lg-1">
            		<img class="p-2" src="${pageContext.request.contextPath}/resources/images/shuttlecock_main.png" width="50" height="50"/>
            	</span>		             
 		</div>
 	</div>
 </div>
-<%--footer--%>
+<%--footer include --%>
 <jsp:include page="../include/footer.jsp"></jsp:include>
 <script src="https://code.jquery.com/jquery-latest.js"></script> 
 <!-- The Modal -->
