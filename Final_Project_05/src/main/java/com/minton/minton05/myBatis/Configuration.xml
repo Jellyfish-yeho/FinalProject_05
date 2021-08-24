@@ -10,6 +10,6 @@
 	
 	<!-- 필요한 mapper xml 등록하기 -->
 	<mappers>
-		<mapper resource="com/gura/spring05/mybatis/UsersMapper.xml"/>
+		<mapper resource="com/minton/minton05/myBatis/UsersMapper.xml"/>
 	</mappers>
 </configuration>
