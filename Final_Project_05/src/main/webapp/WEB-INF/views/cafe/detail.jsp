@@ -327,7 +327,6 @@
 	
 	
 	
-
 	//클라이언트가 로그인 했는지 여부
 	let isLogin=${isLogin};	
 	
@@ -351,6 +350,7 @@
 			alert("로그인 후 좋아요를 누를 수 있습니다.");
 		};	
 	})
+	
 
 
 	   
@@ -364,6 +364,7 @@
             location.href="${pageContext.request.contextPath}/users/loginform.jsp?url=${pageContext.request.contextPath}/cafe/detail.jsp?num=${num}";
          }
       });
+    
    
    /*
       detail.jsp 페이지 로딩 시점에 만들어진 1 페이지에 해당하는 
