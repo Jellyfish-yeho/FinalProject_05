@@ -59,14 +59,6 @@ public class GalleryController {
 		return map;
 	}
 	
-	//ajax 요청에 대해 Gallery 목록을 출력할 컨트롤러 메소드 
-	@RequestMapping("/api/gallery/list")
-	@ResponseBody 
-	public List<GalleryDto> getList2(HttpServletRequest request){
-		
-		return service.getList2(request);
-	}
-	
 	//gallery list 페이지로 이동
 	@RequestMapping(value = "/gallery/list")
 	public String getList(HttpServletRequest request) {
@@ -106,18 +98,6 @@ public class GalleryController {
 	@RequestMapping(value = "/gallery/ajax_upload")
 	@ResponseBody
 	public Map<String, Object> authAjaxUpload(GalleryDto dto, HttpServletRequest request){		
-		//form 에서 dto 로 데이터 받아옴
-		//dto : MultipartFile image 를 가지고 있다.
-		//request : imagePath 만드는데 사용, session 영역의 id 가져오는데 사용
-		//return : { "imagePath" : "/upload/123456img_name.png" } 형식의 JSON 응답
-		return service.uploadAjaxImage(dto, request);
-	}
-	
-	//gallery 사진 업로드 - ajax
-	//json 으로 return 할 것
-	@RequestMapping(value = "/gallery/ajax_upload2")
-	@ResponseBody
-	public Map<String, Object> testAjaxUpload2(GalleryDto dto, HttpServletRequest request){		
 		//form 에서 dto 로 데이터 받아옴
 		//dto : MultipartFile image 를 가지고 있다.
 		//request : imagePath 만드는데 사용, session 영역의 id 가져오는데 사용

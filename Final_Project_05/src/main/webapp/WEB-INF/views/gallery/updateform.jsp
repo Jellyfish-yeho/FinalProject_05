@@ -18,10 +18,11 @@
 		resize: none;
 	}
 </style>
+<%--주소확인/인클루드
 <link rel="icon" href="${pageContext.request.contextPath}/images/shuttlecock_main.png" type="image/x-icon" />
 <jsp:include page="../../include/resource.jsp"></jsp:include>
 <jsp:include page="../../include/font.jsp"></jsp:include>
-<link href="${pageContext.request.contextPath}/users/form.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/users/form.css" rel="stylesheet"> --%>
 </head>
 <body>
 	<div class="container">

@@ -12,8 +12,6 @@ import com.minton.minton05.gallery.dto.GalleryDto;
 public interface GalleryService {
 	//갤러리의 list 가져오기
 	public void getList(HttpServletRequest request);
-	//갤러리 목록을 리턴하는 메소드 
-	public List<GalleryDto> getList2(HttpServletRequest request);
 	//갤러리에 사진 upload & DB 저장하기
 	public void saveImage(GalleryDto dto, HttpServletRequest request);
 	//갤러리에 사진 저장하기 - ajax

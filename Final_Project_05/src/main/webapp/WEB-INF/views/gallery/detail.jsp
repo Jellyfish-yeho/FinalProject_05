@@ -6,8 +6,8 @@
 <meta charset="UTF-8">
 <title>gallery detail</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<link rel="icon" href="${pageContext.request.contextPath}/images/shuttlecock_main.png" type="image/x-icon" />
-<jsp:include page="../include/resource.jsp"></jsp:include>
+<%--주소확인해서 바꾸기/인클루드 <link rel="icon" href="${pageContext.request.contextPath}/images/shuttlecock_main.png" type="image/x-icon" />
+<jsp:include page="../include/resource.jsp"></jsp:include>--%>
 <style>
 	.card{
 		width:80%;
@@ -29,9 +29,9 @@
 </style>
 </head>
 <body>
-<jsp:include page="../include/navbar.jsp">
+<%--인클루드 <jsp:include page="../include/navbar.jsp">
    <jsp:param value="gallery" name="thisPage"/>
-</jsp:include>
+</jsp:include>--%>
 <div class="container">
 	<div class="d-flex justify-content-center align-items-center flex-column my-4">
 	   <div class="card text-center mb-3">
@@ -86,10 +86,10 @@
 		<ul class="d-flex flex-row ps-0 mt-3 justify-content-end" style="list-style:none;">	
 			<c:if test=${id eq dto.writer }>
 				<li>
-					<a class="link-dark text-decoration-none mx-1" href="private/updateform.jsp?num=${dto.getNum() }">수정</a>
+					<a class="link-dark text-decoration-none mx-1" href="private/updateform.do?num=${dto.getNum() }">수정</a>
 				</li>
 				<li>
-					<a class="link-dark text-decoration-none mx-1" href="private/delete.jsp?num=${dto.getNum() }">삭제</a>
+					<a class="link-dark text-decoration-none mx-1" href="private/delete.do?num=${dto.getNum() }">삭제</a>
 				</li>
 			</c:if>
 		</ul>		         
@@ -102,21 +102,21 @@
 		<c:choose>
          	<c:when test="${dto.prevNum ne 0 }">
 	         	<li>
-					<a class="link-success text-decoration-none" href="detail.jsp?num=${dto.prevNum }">
+					<a class="link-success text-decoration-none" href="detail.do?num=${dto.prevNum }">
 					&lt이전글
 					</a>
 				</li>
          	</c:when>
          	<c:otherwise>
 	         	<li class="mx-3">
-					<a class="fw-bold link-success text-decoration-none" href="list.jsp">목록보기</a>
+					<a class="fw-bold link-success text-decoration-none" href="list.do">목록보기</a>
 				</li>
          	</c:otherwise>
        	</c:choose>
        	<c:choose>
        		<c:when test="${dto.nextNum ne 0 }">
 	       		<li>			   
-					<a class="link-success text-decoration-none" href="detail.jsp?num=${dto.nextNum } %>">
+					<a class="link-success text-decoration-none" href="detail.do?num=${dto.nextNum } %>">
 					다음글&gt	     	
 			      </a>
 				</li>
@@ -152,7 +152,7 @@
 			$("#likeCounter").text(likeCounter+1);
 			//좋아요 개수를 서버로 전송한다
 			$.ajax({	
-				url:"${pageContext.request.contextPath}/gallery/private/like_insert.jsp",
+				url:"${pageContext.request.contextPath}/gallery/private/like_insert.do",
 				type:"get",
 				data: "likeCounter="+likeCounter+"&num=${num }",
 				success:function(data){
@@ -169,8 +169,6 @@
 </script>  
   
 </div>
-<jsp:include page="../include/footer.jsp"></jsp:include>
-
-
+<%--인클루드 <jsp:include page="../include/footer.jsp"></jsp:include>--%>
 </body>
 </html>

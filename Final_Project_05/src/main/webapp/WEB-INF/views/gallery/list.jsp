@@ -5,7 +5,8 @@
 <head>
 <meta charset="UTF-8">
 <title>gallery</title>
-<link rel="icon" href="${pageContext.request.contextPath}/images/shuttlecock_main.png" type="image/x-icon" />
+<%--이미지 주소 어딘지 확인하기<link rel="icon" href="${pageContext.request.contextPath}/images/shuttlecock_main.png" type="image/x-icon" />
+--%>
 <style>
    .page-ui a{
       text-decoration: none;
@@ -65,15 +66,15 @@
 </style>
 </head>
 <body>
-<jsp:include page="../include/navbar.jsp">
+<%--인클루드 <jsp:include page="../include/navbar.jsp">
 	<jsp:param value="gallery" name="thisPage"/>
-</jsp:include>
+</jsp:include> --%>
 <div class="container my-4" id="ccontainer">
 	<h1 class="fw-bold my-4 text-center">갤러리</h1>
 
    	<%-- 새 글 작성 링크 --%>
 	<div class="mb-2 d-flex justify-content-end">
-		<a class="link-success text-decoration-none" href="private/ajax_form.jsp">
+		<a class="link-success text-decoration-none" href="${pageContext.request.contextPath}/gallery/ajax_form.do">
 			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
 				<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
 				<path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
@@ -136,18 +137,18 @@
       	<c:choose>
       		<c:when test="${endPageNum lt totalPageCount }">
 	      		<li class="page-item">
-	               <a class="page-link" href="${pageContext.request.contextPath}/gallery/list.jsp?pageNum=${endPageNum+1 }">&gt;</a>
+	               <a class="page-link" href="${pageContext.request.contextPath}/gallery/list.do?pageNum=${endPageNum+1 }">&gt;</a>
 	            </li>
       		</c:when>
       		<c:otherwise>
 	      		<li class="page-item disabled">
-	               <a class="page-link" href="${pageContext.request.contextPath}/gallery/list.jsp?pageNum=${endPageNum+1 }">&gt;</a>
+	               <a class="page-link" href="${pageContext.request.contextPath}/gallery/list.do?pageNum=${endPageNum+1 }">&gt;</a>
 	            </li>
       		</c:otherwise>      	
       	</c:choose>
       </ul>
    </div>
 </div>
-<jsp:include page="../include/footer.jsp"></jsp:include>
+<%-- 인클루드 <jsp:include page="../include/footer.jsp"></jsp:include> --%>
 </body>
 </html>

@@ -18,15 +18,16 @@
 		resize: none;
 	}
 </style>
+<%--확인하기
 <link rel="icon" href="${pageContext.request.contextPath}/images/shuttlecock_main.png" type="image/x-icon" />
 <jsp:include page="../../include/resource.jsp"></jsp:include>
 <jsp:include page="../../include/font.jsp"></jsp:include>
-<link href="<%=request.getContextPath() %>/users/form.css" rel="stylesheet">
+<link href="<%=request.getContextPath() %>/users/form.css" rel="stylesheet"> --%>
 </head>
 <body>	
 	<div class="container">
 		<h1 class="fw-bold my-4">새 사진 올리기</h1>
-		<form action="insert.jsp" method="post" id="insertForm">
+		<form action="${pageContext.request.contextPath}/gallery/insert.do" method="post" id="insertForm">
 			<input type="hidden" name="imagePath" id="imagePath"/>
 			<div class="d-flex d-inline-flex flex-column mb-3">
 				<div>
@@ -41,7 +42,7 @@
 				</div>
 			
 		</form>
-		<form action="ajax_upload.jsp" method="post" id="ajaxForm" enctype="multipart/form-data">
+		<form action="${pageContext.request.contextPath}/gallery/ajax_upload.do" method="post" id="ajaxForm" enctype="multipart/form-data">
 			<div class="d-flex d-inline-flex flex-column mb-3">
 				<div>
 					<div>
