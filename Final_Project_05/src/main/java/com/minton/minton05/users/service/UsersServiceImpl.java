@@ -57,10 +57,10 @@ public class UsersServiceImpl implements UsersService {
       UsersDto result=dao.getData(dto.getId());
       if(result != null) {//만일 존재하는 아이디 라면
          //비밀번호가 일치하는지 확인한다.
-         String inputPwd=dto.getPwd(); //DB 에 저장된 암호화된 비밀번호 
-         //String inputPwd=dto.getPwd(); //로그인폼에 입력한 비밀번호
+         String inputPwd=result.getPwd(); //DB 에 저장된 암호화된 비밀번호 
+         String inputPwd2=dto.getPwd(); //로그인폼에 입력한 비밀번호
          //Bcrypt 클래스의 static 메소드를 이용해서 일치 여부를 얻어낸다.
-         //isValid=BCrypt.checkpw(inputPwd, encodedPwd);
+         isValid=BCrypt.checkpw(inputPwd, inputPwd2);
       }
       
       if(isValid) {//만일 유효한 정보이면 
