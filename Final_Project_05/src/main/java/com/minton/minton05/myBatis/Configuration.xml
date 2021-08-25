@@ -6,6 +6,7 @@
 	<!-- 자주 사용하는 type의 별칭을 등록해 놓고 Mapper.xml에서 사용할 수 있다. -->
 	<typeAliases>
 
+		<typeAlias type="com.minton.minton05.gallery.dto.GalleryDto" alias="galleryDto"/>
 		<typeAlias type="com.minton.minton05.cafe.dto.CafeDto" alias="cafeDto"/>
 		<typeAlias type="com.minton.minton05.cafe.dto.CafeCommentDto" alias="cafeCommentDto"/>
 		<typeAlias type="com.minton.minton05.notice.dto.NoticeDto" alias="noticeDto"/>
@@ -15,6 +16,7 @@
 	<!-- 필요한 mapper xml 등록하기 -->
 	<mappers>
 
+		<mapper resource="com/minton/minton05/mybatis/GalleryMapper.xml"/>
 		<mapper resource="com/minton/minton05/myBatis/CafeMapper.xml"/>
 		<mapper resource="com/minton/minton05/myBatis/CafeCommentMapper.xml"/>
 		<mapper resource="com/minton/minton05/myBatis/NoticeMapper.xml"/>
