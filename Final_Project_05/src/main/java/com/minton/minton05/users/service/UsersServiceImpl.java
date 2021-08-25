@@ -39,10 +39,10 @@ public class UsersServiceImpl implements UsersService {
      //사용자가 입력한 비밀 번호를 읽어와서 
      String pwd=dto.getPwd();
       //암호화 한 후에 
-     //BCryptPasswordEncoder encoder=new BCryptPasswordEncoder();
-     //String encodedPwd=encoder.encode(pwd);
+     BCryptPasswordEncoder encoder=new BCryptPasswordEncoder();
+     String encodedPwd=encoder.encode(pwd);
      //dto 에 다시 넣어준다.
-     //dto.setPwd(encodedPwd);
+     dto.setPwd(encodedPwd);
       
      dao.insert(dto);
     }
@@ -50,15 +50,15 @@ public class UsersServiceImpl implements UsersService {
  
    @Override
    public void loginProcess(UsersDto dto, HttpSession session) {
-      //입력한 정보가 맞는여부
+	   //입력한 정보가 맞는여부
       boolean isValid=false;
       
       //1. 로그인 폼에 입력한 아이디를 이용해서 해당 정보를 select 해 본다. 
       UsersDto result=dao.getData(dto.getId());
       if(result != null) {//만일 존재하는 아이디 라면
          //비밀번호가 일치하는지 확인한다.
-         String inputPwd=result.getPwd(); //DB 에 저장된 암호화된 비밀번호 
-         String inputPwd2=dto.getPwd(); //로그인폼에 입력한 비밀번호
+         String inputPwd2=result.getPwd(); //DB 에 저장된 비밀번호 
+         String inputPwd=dto.getPwd(); //로그인폼에 입력한 비밀번호
          //Bcrypt 클래스의 static 메소드를 이용해서 일치 여부를 얻어낸다.
          isValid=BCrypt.checkpw(inputPwd, inputPwd2);
       }
