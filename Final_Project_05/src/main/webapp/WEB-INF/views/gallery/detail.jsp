@@ -1,13 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>gallery detail</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<%--주소확인해서 바꾸기/인클루드 <link rel="icon" href="${pageContext.request.contextPath}/images/shuttlecock_main.png" type="image/x-icon" />
-<jsp:include page="../include/resource.jsp"></jsp:include>--%>
+<link rel="icon" href="${pageContext.request.contextPath}/images/shuttlecock_main.png" type="image/x-icon" />
+<jsp:include page="../../include/resource.jsp"></jsp:include>
 <style>
 	.card{
 		width:80%;
@@ -37,7 +38,7 @@
 	   <div class="card text-center mb-3">
 		   <div class="img-wrapper d-flex justify-content-center align-items-center">
 		      <img class="card-img-top" src="${pageContext.request.contextPath}${dto.imagePath}"
-		      onerror="this.src='${pageContext.request.contextPath}/images/frown-face.png'"/>	      
+		      onerror="this.src='${pageContext.request.contextPath}/resources/images/frown-face.png'"/>	      
 		    </div>
 			<div class="card-body">
 				<p class="card-text fs-3 fw-bold">${dto.title }</p>
@@ -45,17 +46,17 @@
 				<div class="my-2 align-items-center">
 					<span>
 						by
-						<c:choose>
-         					<c:when test="${dto.writer not empty }">
-         						<img class="listProfile" width="16" height="16" src="${pageContext.request.contextPath}${dto.profile}"/>
+						<%--<c:choose>
+         					<c:when test="${dto.getProfile() not empty">
+         						<img class="listProfile" width="16" height="16" src="${pageContext.request.contextPath}/${dto.profile}"/>
          					</c:when>
-         					<c:otherwise>
+         					<c:otherwise> --%>
          						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="listProfile bi bi-person-circle" viewBox="0 0 16 16">
 									<path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
 									<path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
 								</svg>
-         					</c:otherwise>
-         				</c:choose>
+         					<%--</c:otherwise>
+         				</c:choose> --%>
 					</span>
 					<span class="card-text"><strong>${dto.writer }</strong></span>
 				</div>
@@ -72,7 +73,7 @@
 						</svg>
 					</a>	
 										
-					<%-- 좋아요 : 클릭 시 숫자 증가 --%>
+					<%-- 좋아요 : 클릭 시 숫자 증가 
 						<a id="like" class="text-decoration-none link-danger">
 							<svg style="color:#dc3545;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
 								<path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
@@ -80,11 +81,11 @@
 						</a>
 						<span id="likeCounter" class="text-muted mx-1">
 							${dto.likeCount() }
-						</span>
+						</span>--%>
 		         </div>
 		         
 		<ul class="d-flex flex-row ps-0 mt-3 justify-content-end" style="list-style:none;">	
-			<c:if test=${id eq dto.writer }>
+			<c:if test="${id eq dto.writer }">
 				<li>
 					<a class="link-dark text-decoration-none mx-1" href="private/updateform.do?num=${dto.getNum() }">수정</a>
 				</li>
@@ -116,7 +117,7 @@
        	<c:choose>
        		<c:when test="${dto.nextNum ne 0 }">
 	       		<li>			   
-					<a class="link-success text-decoration-none" href="detail.do?num=${dto.nextNum } %>">
+					<a class="link-success text-decoration-none" href="detail.do?num=${dto.nextNum }">
 					다음글&gt	     	
 			      </a>
 				</li>
