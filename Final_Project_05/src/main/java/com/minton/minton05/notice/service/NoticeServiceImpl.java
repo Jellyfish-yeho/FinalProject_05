@@ -184,7 +184,7 @@ public class NoticeServiceImpl implements NoticeService{
 		//exception 작업 예정
 		noticeDao.delete(num);	
 	}
-
+	
 	@Override
 	public List<NoticeDto> getList2(HttpServletRequest request) {
 		//한 페이지에 몇개씩 표시할 것인지
