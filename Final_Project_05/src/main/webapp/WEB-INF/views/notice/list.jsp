@@ -82,8 +82,8 @@
 			<tr>
 				<th>번호</th>
 				<th>제목</th>
-	            <th>조회수</th>
-	            <th>날짜</th>     
+				<th>날짜</th>
+	            <th>조회수</th>           
 			</tr>
 		</thead>
 		<tbody>
@@ -94,8 +94,8 @@
 		               <a class="link-dark text-decoration-none fw-bold" 
 		               href="detail.do?num=${tmp.num}&keyword=${encodedK}&condition=${condition}">${tmp.title}</a>
 		            </td>
-		            <td>${tmp.viewCount}</td>
 		            <td>${tmp.regdate}</td>
+		            <td>${tmp.viewCount}</td>
 		         </tr>		
 			</c:forEach>
 		</tbody>
