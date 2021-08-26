@@ -30,9 +30,9 @@
 </style>
 </head>
 <body>
-<%--인클루드 <jsp:include page="../include/navbar.jsp">
-   <jsp:param value="gallery" name="thisPage"/>
-</jsp:include>--%>
+<jsp:include page="../../include/navbar.jsp">
+	<jsp:param value="gallery" name="thisPage"/>
+</jsp:include>
 <div class="container">
 	<div class="d-flex justify-content-center align-items-center flex-column my-4">
 	   <div class="card text-center mb-3">
@@ -46,9 +46,9 @@
 				<div class="my-2 align-items-center">
 					<span>
 						by
-						<%--<c:choose>
+						<%-- <c:choose>
          					<c:when test="${dto.getProfile() not empty">
-         						<img class="listProfile" width="16" height="16" src="${pageContext.request.contextPath}/${dto.profile}"/>
+         						<img class="listProfile" width="16" height="16" src="${pageContext.request.contextPath}${dto.profile}"/>
          					</c:when>
          					<c:otherwise> --%>
          						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="listProfile bi bi-person-circle" viewBox="0 0 16 16">
@@ -85,12 +85,12 @@
 		         </div>
 		         
 		<ul class="d-flex flex-row ps-0 mt-3 justify-content-end" style="list-style:none;">	
-			<c:if test="${id eq dto.writer }">
+			<c:if test="${dto.writer eq id }">
 				<li>
-					<a class="link-dark text-decoration-none mx-1" href="private/updateform.do?num=${dto.getNum() }">수정</a>
+					<a class="link-dark text-decoration-none mx-1" href="private/updateform.do?num=${dto.num }">수정</a>
 				</li>
 				<li>
-					<a class="link-dark text-decoration-none mx-1" href="private/delete.do?num=${dto.getNum() }">삭제</a>
+					<a class="link-dark text-decoration-none mx-1" href="private/delete.do?num=${dto.num }">삭제</a>
 				</li>
 			</c:if>
 		</ul>		         
@@ -100,20 +100,16 @@
 	<nav>	   
 	
 		<ul class="mb-5 d-flex flex-row ps-0 justify-content-center" style="list-style:none;">
-		<c:choose>
-         	<c:when test="${dto.prevNum ne 0 }">
-	         	<li>
-					<a class="link-success text-decoration-none" href="detail.do?num=${dto.prevNum }">
-					&lt이전글
-					</a>
-				</li>
-         	</c:when>
-         	<c:otherwise>
-	         	<li class="mx-3">
-					<a class="fw-bold link-success text-decoration-none" href="list.do">목록보기</a>
-				</li>
-         	</c:otherwise>
-       	</c:choose>
+         <c:if test="${dto.prevNum ne 0 }">
+	         <li>
+				<a class="link-success text-decoration-none" href="detail.do?num=${dto.prevNum }">
+				&lt이전글
+				</a>
+			</li>
+         </c:if>
+       	<li class="mx-3">
+			<a class="fw-bold link-success text-decoration-none" href="list.do">목록보기</a>
+		</li>
        	<c:choose>
        		<c:when test="${dto.nextNum ne 0 }">
 	       		<li>			   
@@ -166,10 +162,9 @@
 			alert("로그인 후 좋아요를 누를 수 있습니다.");
 		};	
 	})
-
 </script>  
   
 </div>
-<%--인클루드 <jsp:include page="../include/footer.jsp"></jsp:include>--%>
+<jsp:include page="../../include/footer.jsp"></jsp:include>
 </body>
 </html>

@@ -59,7 +59,6 @@ public class GalleryDaoImpl implements GalleryDao{
 	 * parameterType : int
 	 * resultType : GalleryDto
 	 */
-	//pk num 에 해당하는 DB 에서 gallery 게시글 하나의 data 가져오기
 	@Override
 	public GalleryDto getData(int num) {
 		return session.selectOne("gallery.getData", num);
@@ -67,7 +66,7 @@ public class GalleryDaoImpl implements GalleryDao{
 	//gallery 사진게시글삭제
 	@Override
 	public void delete(int num) {
-		session.update("gallery.delete", num);
+		session.delete("gallery.delete", num);
 	}
 	//좋아요 수 증가시키기
 	@Override
