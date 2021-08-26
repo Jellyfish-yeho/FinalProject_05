@@ -26,7 +26,7 @@ import com.minton.minton05.users.dao.UsersDao;
 public class CafeController {
 	@Autowired
 	private CafeService service;
-
+	
 	
 	@RequestMapping("/cafe/list")
 	public String getList(HttpServletRequest request) {

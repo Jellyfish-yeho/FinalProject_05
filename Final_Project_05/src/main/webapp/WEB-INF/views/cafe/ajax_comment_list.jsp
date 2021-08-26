@@ -47,7 +47,7 @@
 	         	<dd>
 	         		<%--대댓글 폼 --%>
 	         		<form id="reForm${tmp.num }" class="animate__animated comment-form re-insert-form" 
-					action="private/comment_insert.jsp" method="post">
+					action="comment_insert.do" method="post">
 						<input type="hidden" name="ref_group"
 						value="${num }"/>
 						<input type="hidden" name="target_id"

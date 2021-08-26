@@ -202,6 +202,15 @@ public class CafeServiceImpl implements CafeService{
 		request.setAttribute("totalRow", totalRow);
 		request.setAttribute("totalPageCount", totalPageCount);
 		
+		//로그인한 사람을 확인할 id 값 넘겨주기
+		String id = (String) request.getSession().getAttribute("id");
+		request.setAttribute("id", id);
+		if(id!=null) {
+			request.setAttribute("isLogin", true);
+		}else {
+			request.setAttribute("isLogin", false);
+		}
+		
 	}
 	@Override
 	public void saveContent(CafeDto dto) {
@@ -284,6 +293,12 @@ public class CafeServiceImpl implements CafeService{
 	}
 	@Override
 	public void moreCommentList(HttpServletRequest request) {
+		//응답을 3초 지연시키기
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		//로그인된 아이디
 		String id=(String)request.getSession().getAttribute("id");
 		//ajax 요청 파라미터로 넘어오는 댓글의 페이지 번호를 읽어낸다
@@ -337,6 +352,7 @@ public class CafeServiceImpl implements CafeService{
 		cafeDao.updateReplyCount(num);		
 	}
 	
+
 	
 
 }

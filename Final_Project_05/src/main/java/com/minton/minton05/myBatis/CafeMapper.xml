@@ -49,11 +49,15 @@
    <select id="getData" parameterType="int" resultType="cafeDto">
       SELECT result1.*
       FROM
-         (SELECT num,writer,title,category,content,reply_count,viewCount,likeCount,
-            TO_CHAR(regdate,'YY.MM.DD HH24:MI') AS regdate,
+         (SELECT num,writer,title,category,content,
+         	reply_count,viewCount,likeCount,
+            TO_CHAR(board_cafe.regdate,'YY.MM.DD HH24:MI') AS regdate,profile,
             LAG(num,1,0) OVER (ORDER BY num DESC) AS prevNum,
             LEAD(num,1,0) OVER (ORDER BY num DESC) AS nextNum
-         FROM board_cafe) result1
+         FROM board_cafe
+         INNER JOIN users
+         ON board_cafe.writer=users.id
+         ) result1
       WHERE num=#{num}
          
    </select>
@@ -61,11 +65,14 @@
    <select id="getData2" parameterType="cafeDto" resultType="cafeDto">
       SELECT result1.*
       FROM
-         (SELECT num,writer,title,category,content,reply_count,viewCount,likeCount,
-            TO_CHAR(regdate,'YY.MM.DD HH24:MI') AS regdate,
+         (SELECT num,writer,title,category,
+         	content,reply_count,viewCount,likeCount,
+            TO_CHAR(board_cafe.regdate,'YY.MM.DD HH24:MI') AS regdate,profile,
             LAG(num,1,0) OVER (ORDER BY num DESC) AS prevNum,
             LEAD(num,1,0) OVER (ORDER BY num DESC) AS nextNum
          FROM board_cafe
+         INNER JOIN users
+         ON board_cafe.writer=users.id
          <include refid="searchCondition"/>
          ) result1
       WHERE num=#{num}   
@@ -88,11 +95,6 @@
       WHERE num=#{num}
    </update>
    
-   <update id="addLikeCount" parameterType="int">
-      UPDATE board_cafe
-      SET likeCount=#{likeCount}+1
-      WHERE num=#{num}
-   </update>
 
 	<update id="updateReplyCount" parameterType="int">
 		UPDATE board_cafe b
@@ -103,7 +105,7 @@
 		WHERE b.num=#{num}
 	</update>
 
-	
+
 </mapper>
 
 

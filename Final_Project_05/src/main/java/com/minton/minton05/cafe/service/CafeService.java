@@ -2,6 +2,8 @@ package com.minton.minton05.cafe.service;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.web.bind.annotation.RequestParam;
+
 import com.minton.minton05.cafe.dto.CafeCommentDto;
 import com.minton.minton05.cafe.dto.CafeDto;
 

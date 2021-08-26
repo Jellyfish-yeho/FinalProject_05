@@ -62,16 +62,12 @@ public class CafeDaoImpl implements CafeDao{
 		session.update("cafe.update", dto);
 	}
 	
-	@Override
-	public void addLikeCount(int num) {
-		
-		session.update("cafe.addLikeCount", num);
-	}
+
 	
 	//게시글의 댓글개수 업데이트하기
 	@Override
 	public void updateReplyCount(int num) {
-		session.update("notice.updateReplyCount", num);		
+		session.update("cafe.updateReplyCount", num);		
 	}
 
 
