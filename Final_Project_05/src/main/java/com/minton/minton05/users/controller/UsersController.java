@@ -44,6 +44,7 @@ public class UsersController {
       mView.setViewName("redirect:/users/info.do");
       return mView;
    }
+   
    //ajax 프로필 사진 업로드 요청처리
    @RequestMapping(value = "/users/ajax_profile_upload",
          method=RequestMethod.POST)
@@ -129,6 +130,7 @@ public class UsersController {
       
       return "users/loginform";
    }
+   
    //로그인 요청 처리
    @RequestMapping("/users/login")
    public ModelAndView login(ModelAndView mView, UsersDto dto,

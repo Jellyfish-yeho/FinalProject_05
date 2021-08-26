@@ -18,6 +18,7 @@
 				<input type="hidden" name="url" value="${param.url }"/>
 			</c:otherwise>
 		</c:choose>
+		
 		<div>
 			<label for="id">ID</label>
 			<input type="text" name="id" id="id"/>
