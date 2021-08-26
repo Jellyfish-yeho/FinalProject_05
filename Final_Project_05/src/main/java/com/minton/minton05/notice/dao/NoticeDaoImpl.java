@@ -105,4 +105,16 @@ public class NoticeDaoImpl implements NoticeDao{
 		session.delete("notice.delete", num);
 	}
 
+	//공지사항의 가장 최신글만 리턴하는 메소드 - 자유게시판용
+	@Override
+	public NoticeDto getFirstData() {
+		/*
+		 * Mapper's namespace : notice
+		 * sql's id : getFirstData
+		 * parameterType : NoticeDto
+		 * resultType : NoticeDto
+		 */	
+		return session.selectOne("notice.getFirstData");
+	}
+
 }

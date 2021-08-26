@@ -17,4 +17,8 @@ public interface CafeService {
 	   public void updateComment(CafeCommentDto dto);//댓글 수정
 	   public void moreCommentList(HttpServletRequest request);//댓글 추가 응답
 	   public void getData(HttpServletRequest request); //글 수정하기 위해 정보 불러오는 기능
+	   //게시글의 댓글 개수 업데이트하기
+	   public void updateReplyCount(int num);
+
+
 }

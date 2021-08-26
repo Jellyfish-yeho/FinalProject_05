@@ -13,6 +13,8 @@ import com.minton.minton05.cafe.dao.CafeDao;
 import com.minton.minton05.cafe.dto.CafeCommentDto;
 import com.minton.minton05.cafe.dto.CafeDto;
 import com.minton.minton05.exception.NotDeleteException;
+import com.minton.minton05.notice.dao.NoticeDao;
+import com.minton.minton05.users.dao.UsersDao;
 
 @Service
 public class CafeServiceImpl implements CafeService{
@@ -21,10 +23,14 @@ public class CafeServiceImpl implements CafeService{
 	private CafeDao cafeDao;
 	@Autowired 
 	private CafeCommentDao cafeCommentDao;
+	
+	@Autowired private NoticeDao noticeDao;
+	@Autowired private UsersDao usersDao;
+	
 	@Override
 	public void getList(HttpServletRequest request) {
 		//한 페이지에 몇개씩 표시할 것인지
-		final int PAGE_ROW_COUNT=5;
+		final int PAGE_ROW_COUNT=10;
 		//하단 페이지를 몇개씩 표시할 것인지
 		final int PAGE_DISPLAY_COUNT=5;
 		
@@ -105,6 +111,14 @@ public class CafeServiceImpl implements CafeService{
 		request.setAttribute("totalPageCount", totalPageCount);
 		request.setAttribute("list", list);
 		request.setAttribute("totalRow", totalRow);
+		
+		//로그인한 사람이 admin인지 확인할 id 값 넘겨주기
+		String id = (String) request.getSession().getAttribute("id");
+		request.setAttribute("id", id);
+      
+		//공지사항 1번째 글 가져와서 request에 넣기
+		request.setAttribute("firstNotice", noticeDao.getFirstData());
+
 		
 	}
 	@Override
@@ -316,6 +330,11 @@ public class CafeServiceImpl implements CafeService{
 		//request에 담아준다.
 		request.setAttribute("dto", dto);
 		
+	}
+	//게시글의 댓글 개수 업데이트하기
+	@Override
+	public void updateReplyCount(int num) {
+		cafeDao.updateReplyCount(num);		
 	}
 	
 	

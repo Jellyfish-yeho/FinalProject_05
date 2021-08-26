@@ -13,21 +13,24 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.minton.minton05.cafe.dao.CafeCommentDao;
+import com.minton.minton05.cafe.dao.CafeDao;
 import com.minton.minton05.cafe.dto.CafeCommentDto;
 import com.minton.minton05.cafe.dto.CafeDto;
 import com.minton.minton05.cafe.service.CafeService;
+import com.minton.minton05.notice.dao.NoticeDao;
+import com.minton.minton05.users.dao.UsersDao;
 
 
 @Controller
 public class CafeController {
 	@Autowired
 	private CafeService service;
+
 	
 	@RequestMapping("/cafe/list")
 	public String getList(HttpServletRequest request) {
-		
-		service.getList(request);
-		
+		service.getList(request);		
 		return "cafe/list";
 	}
 	
@@ -36,8 +39,8 @@ public class CafeController {
 		
 		return "cafe/insertform";
 	}
-	//새글 저장 요청 처리 
-	@RequestMapping("/cafe/private/insert")
+	//새글 저장 요청 처리 - auth 처리
+	@RequestMapping("/cafe/insert")
 	public String insert(CafeDto dto, HttpSession session) {
 		//글 작성자는 세션에서 얻어낸다. 
 		String id=(String)session.getAttribute("id");
@@ -49,15 +52,16 @@ public class CafeController {
 	}
 	//글 자세히 보기 요청 처리
 	@RequestMapping("/cafe/detail")
-	public String detail(HttpServletRequest request) {
+	public String detail(HttpServletRequest request, 
+			@RequestParam int num) {
+		service.updateReplyCount(num);
 		service.getDetail(request);
 		return "cafe/detail";
 	}
-	//새로운 댓글 저장 요청 처리
-	@RequestMapping("/cafe/private/comment_insert")
+	//새로운 댓글 저장 요청 처리 - auth 처리
+	@RequestMapping("/cafe/comment_insert")
 	public String commentInsert(HttpServletRequest request, 
 			@RequestParam int ref_group) {
-		
 		service.saveComment(request);
 		
 		return "redirect:/cafe/detail.do?num="+ref_group;
@@ -70,8 +74,8 @@ public class CafeController {
 		
 		return "cafe/ajax_comment_list";
 	}
-    //댓글 삭제 요청 처리
-    @RequestMapping("/cafe/private/comment_delete")
+    //댓글 삭제 요청 처리 - auth 처리
+    @RequestMapping("/cafe/comment_delete")
     @ResponseBody
     public Map<String, Object> commentDelete(HttpServletRequest request) {
 	      service.deleteComment(request);
@@ -80,8 +84,8 @@ public class CafeController {
 	      // {"isSuccess":true} 형식의 JSON 문자열이 응답되도록 한다. 
 	      return map;
     }
-	//댓글 수정 요청처리 (JSON 을 응답하도록 한다)
-	@RequestMapping("/cafe/private/comment_update")
+	//댓글 수정 요청처리 (JSON 을 응답하도록 한다) - auth 처리
+	@RequestMapping("/cafe/comment_update")
 	@ResponseBody
 	public Map<String, Object> commentUpdate(CafeCommentDto dto){
 	      service.updateComment(dto);
@@ -90,8 +94,8 @@ public class CafeController {
 	      // {"isSuccess":true} 형식의 JSON 문자열이 응답되도록 한다. 
 	      return map;
 	}
-	//카페글 삭제 요청 처리
-	@RequestMapping("/cafe/private/delete")
+	//카페글 삭제 요청 처리- auth 처리
+	@RequestMapping("/cafe/delete")
 	public String delete(@RequestParam int num, HttpServletRequest request) {
 		
 		service.deleteContent(num, request);
@@ -99,15 +103,16 @@ public class CafeController {
 		return "redirect:/cafe/list.do";
 	}
 	
-	@RequestMapping("/cafe/private/updateform")
+	//카페글 수정 처리 - auth 처리
+	@RequestMapping("/cafe/updateform")
 	public String updateForm(HttpServletRequest request) {
 		
 		service.getData(request);
 		
 		return "cafe/updateform";
 	}
-	//카페글 수정 요청 처리
-	@RequestMapping(value= "/cafe/private/update", method = RequestMethod.POST)
+	//카페글 수정 요청 처리 - auth 처리
+	@RequestMapping(value= "/cafe/update", method = RequestMethod.POST)
 	public String update(CafeDto dto) {
 		service.updateContent(dto);
 		return "cafe/update";
