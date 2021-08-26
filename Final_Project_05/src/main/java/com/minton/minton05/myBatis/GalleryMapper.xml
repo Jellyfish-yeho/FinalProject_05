@@ -7,7 +7,7 @@
 		FROM	
 			(SELECT result1.*, ROWNUM as rnum
 			FROM
-				(SELECT num, writer, caption, imagePath, regdate
+				(SELECT num, writer, imagePath, regdate
 				FROM board_gallery
 				ORDER BY num DESC) result1)
 		WHERE rnum BETWEEN #{startRowNum} AND #{endRowNum}
@@ -20,8 +20,8 @@
 	
 	<insert id="insert" parameterType="galleryDto">
 		INSERT INTO board_gallery
-		(num, writer, caption, imagePath, regdate)
-		VALUES(board_gallery_seq.NEXTVAL, #{writer}, #{caption}, #{imagePath}, SYSDATE)
+		(num, writer, imagePath, regdate)
+		VALUES(board_gallery_seq.NEXTVAL, #{writer}, #{imagePath}, SYSDATE)
 	</insert>
 	
 	<update id="update" parameterType="galleryDto">
@@ -33,7 +33,7 @@
 	<select id="getData" parameterType="int" resultType="galleryDto">
 		SELECT *
 		FROM
-			(SELECT num, writer, caption, imagePath, regdate, 
+			(SELECT num, writer, imagePath, regdate, 
 				LAG(num, 1, 0) OVER (ORDER BY num DESC) AS prevNum,
 				LEAD(num, 1, 0) OVER (ORDER BY num DESC) AS nextNum
 			FROM board_gallery
