@@ -1,11 +1,14 @@
 package com.minton.minton05.notice.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.minton.minton05.notice.dto.NoticeDto;
 import com.minton.minton05.notice.service.NoticeService;
@@ -14,6 +17,14 @@ import com.minton.minton05.notice.service.NoticeService;
 public class NoticeController {
 
 	@Autowired private NoticeService service; //service 주입
+	
+	//공지사항 목록을 가져오는 메소드
+	@RequestMapping("/notice/list")
+	@ResponseBody 
+	List<NoticeDto> getList2(HttpServletRequest request) {
+		
+		return null; //같은 위치로 리턴
+	}
 	
 	//공지사항 목록을 가져오는 메소드
 	@RequestMapping("/notice/list")
