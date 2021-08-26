@@ -21,7 +21,7 @@ public class NoticeController {
 	//공지사항 목록을 가져오는 메소드
 	@RequestMapping("/notice/list")
 	@ResponseBody 
-	List<NoticeDto> getList2(HttpServletRequest request) {
+	public List<NoticeDto> getList2(HttpServletRequest request) {
 		
 		return null; //같은 위치로 리턴
 	}
