@@ -185,8 +185,8 @@
 			<path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/>
 		</svg>
 	</a>
-	<%-- 좋아요  --%>
-		<a data-num="${dto.num}" @click="liked" id="like" class="text-decoration-none link-danger">
+	<%-- 좋아요 / 임시 --%>
+		<a data-num="${dto.num}" id="like" class="text-decoration-none link-danger">
 			<c:choose>
 				<c:when test="${isLogin eq true}">
 					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
@@ -317,7 +317,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script>
-	const base_url="http://localhost8888/minton05";
+	const base_url="http://localhost8888/minton05";	
 	
 	//Vue 객체
 	let app = new Vue({
@@ -336,6 +336,28 @@
 			this.likeCounter = ${dto.likeCount}
 		}
 	});
+	
+	
+	//하트를 누르면 좋아요 1씩 증가
+	$("#like").on("click",function(){
+		if(${isLogin}){
+			let likeCounter = Number($("#likeCounter").text());
+			$("#likeCounter").text(likeCounter+1);
+			//좋아요 개수를 서버로 전송한다
+			$.ajax({	
+				url:"${pageContext.request.contextPath}/cafe/like_insert.do",
+				type:"get",
+				data: "likeCounter="+likeCounter+"&num=${dto.num}>",
+				success:function(data){
+					if(data.isSuccess){
+						$("#likeCounter1").text(${dto.likeCount});
+					}
+				}
+			});
+		}else{
+			alert("로그인 후 좋아요를 누를 수 있습니다.");
+		};	
+	})
 
 	//url 클립보드에 복사하기
 	var currentUrl = document.getElementById("urlInput");

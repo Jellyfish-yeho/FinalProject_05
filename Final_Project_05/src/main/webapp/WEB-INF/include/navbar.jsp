@@ -63,7 +63,7 @@
 	<nav class="navbar navbar-light navbar-expand-sm " style="background-color: #ffffff;">
 		<div class="container">
 			<a class="navbar-brand me-5 " href="${pageContext.request.contextPath}/">
-				<img src="${pageContext.request.contextPath}/images/shuttlecock_main.png" width="30" height="30"/>
+				<img src="${pageContext.request.contextPath}/resources/images/shuttlecock_main.png" width="30" height="30"/>
 				High-clear!
 			</a>
 			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
