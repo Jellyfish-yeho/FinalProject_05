@@ -5,12 +5,26 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>/views/users/logout.jsp</title>
+<title>회원정보</title>
 </head>
 <body>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-	alert("로그 아웃 되었습니다.");
-	location.href="${pageContext.request.contextPath}/";
+function swalSuccess(seq){
+	Swal.fire({
+		title: '로그아웃 성공',
+		icon: 'warning',
+		confirmButtonColor: '#198754',
+		confirmButtonText: '확인'
+	}).then((result) => {
+		if (result.value) {
+			location.href="${pageContext.request.contextPath}/";
+	  }
+	})
+}
 </script>
+	<script>
+		swalSuccess();
+	</script>
 </body>
 </html>

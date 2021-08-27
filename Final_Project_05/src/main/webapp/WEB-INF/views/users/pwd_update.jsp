@@ -5,25 +5,54 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>/views/users/pwd_update.jsp</title>
+<title>회원정보</title>
+<link href="${pageContext.request.contextPath}/resources/formCss/form.css" rel="stylesheet">
+<jsp:include page="../../include/resource.jsp"></jsp:include>
+<jsp:include page="../../include/icon.jsp"></jsp:include>
+<jsp:include page="../../include/font.jsp"></jsp:include>
 </head>
 <body>
-<div class="container">
-	<c:choose>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+function swalSuccess(seq){
+	Swal.fire({
+		title:'수정 성공',
+		text: '${id }님, 비밀번호를 변경하였습니다. 다시 로그인해 주세요.',
+		icon: 'success',
+		confirmButtonColor: '#198754',
+		confirmButtonText: '확인'
+	}).then((result) => {
+		if (result.value) {
+			location.href="${pageContext.request.contextPath}/users/loginform.do";
+	  }
+	})
+}
+function swalFail(seq){
+	Swal.fire({
+		title: '수정 실패',
+		text: '기존 비밀번호가 맞지 않습니다.',
+		icon: 'error',
+		confirmButtonColor: '#198754',
+		confirmButtonText: '재시도'
+	}).then((result) => {
+		if (result.value) {
+			location.href="${pageContext.request.contextPath}/users/pwd_updateform.do";
+	  }
+	})
+}
+</script>
+<c:choose>
 		<c:when test="${isSuccess }">
-			<p>
-				<strong>${id }</strong> 님, 비밀번호가 수정되었습니다. 다시 로그인 해 주십시오. 
-				<a href="${pageContext.request.contextPath}/users/loginform.do">로그인</a>
-			</p>
+		<script>
+		swalSuccess();
+		</script>
 		</c:when>
 		<c:otherwise>
-			<p>
-				기존 비밀번호가 맞지 않습니다. 
-				<a href="${pageContext.request.contextPath}/users/pwd_updateform.do">다시 시도</a>
-			</p>
+		<script>
+		swalFail();
+		</script>	
 		</c:otherwise>
 	</c:choose>
-</div>
 </body>
 </html>
 
