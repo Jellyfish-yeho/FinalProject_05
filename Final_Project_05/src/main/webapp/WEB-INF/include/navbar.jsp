@@ -18,7 +18,7 @@
 		<c:choose>
 			<c:when test="${empty id}">
 				<a class="btn btn-outline-light btn-sm m-1" 
-				href="${pageContext.request.contextPath}/users/signupform.do">
+				href="${pageContext.request.contextPath}/users/signup_form.do">
 					회원가입
 				</a>
 				<a class="btn btn-outline-warning btn-sm m-1" 
@@ -49,7 +49,7 @@
 					</svg>
 				</div>
 				<span class="navbar-text me-2" style="color:#ffffff;">
-					<a class="text-decoration-none" href="${pageContext.request.contextPath}/users/private/info.do" >
+					<a class="text-decoration-none" href="${pageContext.request.contextPath}/users/info.do" >
 						${id}
 					</a>님 로그인 중 
 				</span>
