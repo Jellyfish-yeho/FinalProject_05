@@ -67,9 +67,9 @@
 </style>
 </head>
 <body>
-<%--<jsp:include page="../include/navbar.jsp">
+<jsp:include page="../../include/navbar.jsp">
 	<jsp:param value="gallery" name="thisPage"/>
-</jsp:include>--%>
+</jsp:include>
 <div class="container my-4" id="ccontainer">
 	<h1 class="fw-bold my-4 text-center">갤러리</h1>
 
@@ -149,6 +149,6 @@
       </ul>
    </div>
 </div>
-<%-- 인클루드 <jsp:include page="../include/footer.jsp"></jsp:include> --%>
+<jsp:include page="../../include/footer.jsp"></jsp:include>
 </body>
 </html>

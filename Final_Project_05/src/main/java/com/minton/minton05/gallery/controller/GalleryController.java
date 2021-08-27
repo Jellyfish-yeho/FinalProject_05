@@ -137,4 +137,11 @@ public class GalleryController {
 		
 		return mView;
 	}
+	
+	//gallery 글 삭제 
+	@RequestMapping("/gallery/delete")
+	public String delete(@RequestParam int num) {
+		service.deleteContent(num);
+		return "redirect:/gallery/list.do";
+	}
 }

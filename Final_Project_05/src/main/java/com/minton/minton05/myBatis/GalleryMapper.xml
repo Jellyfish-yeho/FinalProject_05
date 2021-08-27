@@ -33,7 +33,7 @@
 	<select id="getData" parameterType="int" resultType="galleryDto">
 		SELECT *
 		FROM
-			(SELECT num, writer, imagePath, regdate, 
+			(SELECT num, writer, title, content, imagePath, regdate, 
 				LAG(num, 1, 0) OVER (ORDER BY num DESC) AS prevNum,
 				LEAD(num, 1, 0) OVER (ORDER BY num DESC) AS nextNum
 			FROM board_gallery
