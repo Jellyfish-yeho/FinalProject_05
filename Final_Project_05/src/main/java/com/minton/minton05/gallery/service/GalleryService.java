@@ -18,6 +18,8 @@ public interface GalleryService {
 	public Map<String, Object> uploadAjaxImage(GalleryDto dto, HttpServletRequest request);
 	//갤러리에 사진 저장하기 - db에만 저장(upload 작업은 이미 완료)
 	public void insert(GalleryDto dto, HttpServletRequest request);
-	//갤러리 detail 페이지에 필요한 data를 ModelAndView 에 저장
+	//갤러리 detail 페이지 가져오기
 	public void getDetail(ModelAndView mView, int num);
+	//갤러리 글 삭제하기
+	public void deleteContent(int num);
 }

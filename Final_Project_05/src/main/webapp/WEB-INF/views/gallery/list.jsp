@@ -1,12 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>gallery</title>
-<%--이미지 주소 어딘지 확인하기<link rel="icon" href="${pageContext.request.contextPath}/images/shuttlecock_main.png" type="image/x-icon" />
---%>
+<link rel="icon" href="${pageContext.request.contextPath}/images/shuttlecock_main.png" type="image/x-icon" />
+<jsp:include page="../../include/resource.jsp"></jsp:include>
 <style>
    .page-ui a{
       text-decoration: none;
@@ -66,9 +67,9 @@
 </style>
 </head>
 <body>
-<%--인클루드 <jsp:include page="../include/navbar.jsp">
+<jsp:include page="../../include/navbar.jsp">
 	<jsp:param value="gallery" name="thisPage"/>
-</jsp:include> --%>
+</jsp:include>
 <div class="container my-4" id="ccontainer">
 	<h1 class="fw-bold my-4 text-center">갤러리</h1>
 
@@ -83,25 +84,24 @@
 		</a>
 	</div>
 	<div class="row row-cols-1 row-cols-md-3 g-4">
-	
-		<c:forEach var="tmp" items="{list}">
+		<c:forEach var="tmp" items="${list}">
 		<div class="col align-middle">
 			<div class="card text-center mb-3 h-100">
 				<a href="${pageContext.request.contextPath}/gallery/detail.do?num=${tmp.num}">
 					<div class="img-wrapper d-flex justify-content-center align-items-center">
-						<img class="card-img-top" src="${pageContext.request.contextPath }${tmp.imagePath}" 
-						onerror="this.src='${pageContext.request.contextPath}/images/frown-face.png'"/>
+						<img class="card-img-top" src="${pageContext.request.contextPath }${tmp.imagePath}"
+						onerror="this.src='${pageContext.request.contextPath}/resources/images/frown-face.png'"/>
 	               </div>
 				</a>
 				<div class="card-body">
-					<p class="card-text fs-3 fw-bold">${tmp.getTitle() }</p>
-					<p class="card-text">by <strong>${tmp.getWriter() }</strong></p>
-					<p><small class="text-muted" style="font-size:0.875rem;">${tmp.getRegdate() }</small></p>
+					<p class="card-text fs-3 fw-bold">${tmp.title }</p>
+					<p class="card-text">by <strong>${tmp.writer }</strong></p>
+					<p><small class="text-muted" style="font-size:0.875rem;">${tmp.regdate }</small></p>
 					<p>
 						<svg style="color:#dc3545;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="me-2 bi bi-heart-fill" viewBox="0 0 16 16">
 							<path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
 						</svg>
-						<span class="text-muted">${tmp.getLikeCount()}</span>
+						<span class="text-muted">${tmp.likeCount}</span>
 					</p>
 				</div>
 			</div>
@@ -111,7 +111,7 @@
    <div class="page-ui my-4">
       <ul class="pagination justify-content-center">
       	<c:choose>
-      		<c:when test=${startPageNum ne 1 }>
+      		<c:when test="${startPageNum ne 1 }">
 	      		<li class="page-item">
 	               <a class="page-link" href="${pageContext.request.contextPath}/gallery/list.do?pageNum=${startPageNum - 1}">&lt;</a>
 	            </li>   
@@ -125,7 +125,7 @@
       	<c:forEach var="i" begin="${startPageNum }" end="${endPageNum }">
       		<li class="page-item">
 	      		<c:choose>
-	      			<c:when test=${i eq pageNum }>
+	      			<c:when test="${i eq pageNum }">
 	      				<a class="page-link active" href="${pageContext.request.contextPath}/gallery/list.do?pageNum=${i}">${i }</a>
 	      			</c:when>
 	      			<c:otherwise>
@@ -149,6 +149,6 @@
       </ul>
    </div>
 </div>
-<%-- 인클루드 <jsp:include page="../include/footer.jsp"></jsp:include> --%>
+<jsp:include page="../../include/footer.jsp"></jsp:include>
 </body>
 </html>
