@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>회원정보</title>
-<link href="${pageContext.request.contextPath}/resources/formCss/form.css" rel="stylesheet">
+<link href="${request.getContextPath()}../../resources/formCss/form.css" rel="stylesheet">
 <jsp:include page="../../include/resource.jsp"></jsp:include>
 <jsp:include page="../../include/icon.jsp"></jsp:include>
 <jsp:include page="../../include/font.jsp"></jsp:include>
@@ -29,25 +29,25 @@
 </head>
 <body class="text-center">
 <div class="container form-signin my-4">
-	<h1>비밀 번호 수정 폼</h1>
 	<form action="${pageContext.request.contextPath}/users/pwd_update.do" method="post" id="myForm">
 	<img class="mb-4" src="${pageContext.request.contextPath}/resources/images/shuttlecock_main.png" width="100" height="100"/>
 		<h1 class="fw-bold my-4">비밀번호 수정</h1>		
-		<div class="form-floating">
-			<label class="control-label" for="pwd">기존 비밀번호</label>
+		<div class="form-floating" style="padding: 5px 1px 2px 3px;">
 			<input class="form-control" type="password" name="pwd" id="pwd"/>
+			<label class="control-label" for="pwd">기존 비밀번호</label>	
 		</div>
-		<div class="form-floating">			
+		<div class="form-floating" style="padding: 5px 1px 2px 3px;">	
+			<input class="form-control" type="password" name="newPwd" id="newPwd"/>		
 			<label class="control-label" for="newPwd">새 비밀번호</label>
-			<input class="form-control" name="newPwd" id="newPwd"/>
-			<small>비밀번호는 5~10자 이내여야 합니다. </small>	
+			<small>비밀번호는 5~10자 이내여야 합니다.</small>	
 			<div class="invalid-feedback">이 비밀번호는 사용할 수 없습니다.</div>
 		</div>
-		<div class="form-floating">			
+		<div class="form-floating" style="padding: 5px 1px 2px 3px;">	
+			<input class="form-control" type="password" id="newPwd2"/>		
 			<label class="control-label" for="newPwd2">새 비밀번호 확인</label>
-			<input class="form-control" type="password" id="newPwd2"/>
+			
 		</div>
-		<div class="mt-4">
+		<div class="mt-4" style="padding: 5px 1px 2px 3px;">
 		<button class="me-2 btn btn-outline-success btn-sm" type="submit">수정</button>
 		<button class="btn btn-outline-danger btn-sm" type="reset">내용 지우기</button>
 		</div>
