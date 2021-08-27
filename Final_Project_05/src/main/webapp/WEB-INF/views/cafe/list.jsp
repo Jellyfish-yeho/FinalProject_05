@@ -1,12 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>/views/cafe/list.jsp</title>
-<link rel="icon" href="${pageContext.request.contextPath}/images/shuttlecock_main.png" type="image/x-icon" />
+<title>자유게시판</title>
+<link rel="icon" href="${pageContext.request.contextPath}/resources/images/shuttlecock_main.png" type="image/x-icon" />
+<%-- icon, resource include --%>
+<jsp:include page="../../include/icon.jsp"></jsp:include>
+<jsp:include page="../../include/resource.jsp"></jsp:include>
 <style>
    .page-ui a{
       text-decoration: none;
@@ -60,8 +64,10 @@
 </style>
 </head>
 <body>
-<%--navbar --%>
-
+<%-- navbar include : cafe - thisPage --%>
+<jsp:include page="../../include/navbar.jsp">
+	<jsp:param value="cafe" name="thisPage"/>
+</jsp:include>
 <div class="container my-4" id="ccontainer">
    <h1 class="fw-bold text-center my-4">자유게시판</h1> 
 	<%-- 새 글 작성 링크 --%>
@@ -83,7 +89,7 @@
             <th>제목</th>
             <th>작성자</th>
             <th>날짜</th>
-            <th>조회수</th>   
+            <th>조회수</th>
             <th>
 				<svg style="color:#dc3545;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
 					<path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
@@ -91,55 +97,63 @@
             </th>  
          </tr>
       </thead>
-      <tbody>
-      	<!-- 공지 글 출력 -->
-      	
+		<tbody>
+	      	<!-- 공지 글 출력 -->
+			<tr class="table-success">
+				<th></th>
+				<th>공지</th>
+				<th>
+					<a class="link-dark text-decoration-none fw-bold" 
+      				href="${pageContext.request.contextPath}/notice/detail.do?num=${firstNotice.num}&keyword=${encodedK}&condition=${condition}">${firstNotice.title}</a>
+      			</th>
+				<th>${firstNotice.writer}</th>
+				<th>${firstNotice.regdate}</th>
+				<th>${firstNotice.viewCount}</th>
+				<th></th>  
+			</tr>
       </tbody>
       <tbody>
-      <c:forEach var="tmp" items="${list}">
-			<tr>
-	            <td>${tmp.num}</td>
-	            <td>
-	               <a class="link-dark text-decoration-none fw-bold" 
-	               href="detail.do?num=${tmp.num}&keyword=${encodedK}&condition=${condition}">${tmp.title}</a>
-	               <%-- 댓글 개수 출력 --%>
-					<span class="mx-2" style="color:#198754;"><%--CafeCommentDao.getInstance().getCount(tmp.getNum())--%></span>
-	            	<%-- 이미지가 첨부되어 있을 시 아이콘 출력 --%>
-	            	<%--CafeDto dto2=CafeDao.getInstance().getData(tmp.getNum());
-	            	if(dto2.getContent().contains("img")){			
-					<c:if test="${dto.content == img }">
-							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-image" viewBox="0 0 16 16">
+	      <c:forEach var="tmp" items="${list}">
+				<tr>
+		            <td>${tmp.num}</td>
+		            <td>${tmp.category}</td>
+					<td>
+						<a class="link-dark text-decoration-none fw-bold" 
+							href="detail.do?num=${tmp.num}&keyword=${encodedK}&condition=${condition}">${tmp.title}</a>
+						<%-- 댓글 개수 출력  --%>
+						<c:if test="${tmp.reply_count ne 0}">
+							<span class="mx-2" style="color:#198754;">${tmp.reply_count}</span>
+						</c:if>			              	               
+		            	<%-- 이미지가 첨부되어 있을 시 아이콘 출력 --%>
+		            	<c:set var="content" value="${tmp.content }"/>
+		            	<c:if test="${fn:contains(content, 'img')}">
+			            	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-image" viewBox="0 0 16 16">
 								<path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
 								<path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z"/>
 							</svg>
-					</c:if>	
-					--%>
-	            </td>
-	         </tr>		
-	  </c:forEach>
-      
-            <%-- 작성자 왼쪽에 프로필 사진 출력 
-            <td>
-            <%
-            UsersDto usersDto = UsersDao.getInstance().getData(tmp.getWriter());
-            if(usersDto.getProfile()!=null){
-            %>
-            
-            <img class="listProfile" src="<%=request.getContextPath()%><%=usersDto.getProfile()%>"/>
-            <%}else{%>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="listProfile bi bi-person-circle" viewBox="0 0 16 16">
-				<path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-				<path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
-			</svg>
-            <%} %>
-            <%=tmp.getWriter() %>
-            </td>
-            <td><%=tmp.getRegdate() %></td>
-            <td><%=tmp.getViewCount() %></td>
-            <td><%=tmp.getLikeCount()%></td>
-         </tr>
-      <%} %> --%>
-      
+		            	</c:if>
+		            </td>
+		            <td>
+		            <c:choose>
+			            <c:when test="${not empty tmp.profile}">
+							<img class="listProfile" src="${pageContext.request.contextPath}${tmp.profile}"/>
+			            </c:when>
+			            <c:otherwise>		            
+				            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="listProfile bi bi-person-circle" viewBox="0 0 16 16">
+								<path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+								<path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+							</svg>
+			            </c:otherwise>
+		            </c:choose>
+		            <c:if test="">
+		            </c:if>
+		            ${tmp.writer}
+		            </td>
+		            <td>${tmp.regdate}</td>
+		            <td>${tmp.viewCount}</td>
+		            <td>${tmp.likeCount}</td>
+		         </tr>		
+	 	 </c:forEach> 
       </tbody>
    </table>
    <div class="page-ui">
@@ -213,8 +227,29 @@
 		</p>
    </c:if>
 </div>
+<%-- footer --%>
+<jsp:include page="../../include/footer.jsp"></jsp:include>
 
-<%-- footer  --%>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+	
 
+
+
+
+</script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+

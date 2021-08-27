@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.minton.minton05.cafe.dto.CafeDto;
+import com.minton.minton05.users.dto.UsersDto;
 
 @Repository
 public class CafeDaoImpl implements CafeDao{
@@ -61,10 +62,13 @@ public class CafeDaoImpl implements CafeDao{
 		session.update("cafe.update", dto);
 	}
 	
+
+	
+	//게시글의 댓글개수 업데이트하기
 	@Override
-	public void addLikeCount(int num) {
-		
-		session.update("cafe.addLikeCount", num);
+	public void updateReplyCount(int num) {
+		session.update("cafe.updateReplyCount", num);		
 	}
-   
+
+
 }
