@@ -20,8 +20,8 @@
 	
 	<insert id="insert" parameterType="galleryDto">
 		INSERT INTO board_gallery
-		(num, writer, imagePath, regdate)
-		VALUES(board_gallery_seq.NEXTVAL, #{writer}, #{imagePath}, SYSDATE)
+		(num, writer, imagePath, regdate, title, content)
+		VALUES(board_gallery_seq.NEXTVAL, #{writer}, #{imagePath}, SYSDATE, #{title}, #{content})
 	</insert>
 	
 	<update id="update" parameterType="galleryDto">

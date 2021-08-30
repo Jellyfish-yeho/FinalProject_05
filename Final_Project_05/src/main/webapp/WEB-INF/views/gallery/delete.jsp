@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>gallery</title>
 </head>
 <body>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -18,7 +18,7 @@ function swalSuccess(seq){
 		confirmButtonText: '확인'
 	}).then((result) => {
 		if (result.value) {
-			location.href="${pageContext.request.contextPath}/gallery/list.jsp";
+			location.href="${pageContext.request.contextPath}/gallery/list.do";
 	  }
 	})
 }

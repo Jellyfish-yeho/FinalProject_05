@@ -87,10 +87,10 @@
 		<ul class="d-flex flex-row ps-0 mt-3 justify-content-end" style="list-style:none;">	
 			<c:if test="${dto.writer eq id }">
 				<li>
-					<a class="link-dark text-decoration-none mx-1" href="private/updateform.do?num=${dto.num }">수정</a>
+					<a class="link-dark text-decoration-none mx-1" href="updateform.do?num=${dto.num }">수정</a>
 				</li>
 				<li>
-					<a class="link-dark text-decoration-none mx-1" href="private/delete.do?num=${dto.num }">삭제</a>
+					<a class="link-dark text-decoration-none mx-1" href="delete.do?num=${dto.num }">삭제</a>
 				</li>
 			</c:if>
 		</ul>		         

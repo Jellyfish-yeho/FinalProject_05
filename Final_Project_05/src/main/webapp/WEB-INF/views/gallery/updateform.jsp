@@ -18,17 +18,16 @@
 		resize: none;
 	}
 </style>
-<%--주소확인/인클루드
 <link rel="icon" href="${pageContext.request.contextPath}/images/shuttlecock_main.png" type="image/x-icon" />
 <jsp:include page="../../include/resource.jsp"></jsp:include>
 <jsp:include page="../../include/font.jsp"></jsp:include>
-<link href="${pageContext.request.contextPath}/users/form.css" rel="stylesheet"> --%>
+<link href="${pageContext.request.contextPath}/users/form.css" rel="stylesheet">
 </head>
 <body>
 	<div class="container">
 		<h1 class="fw-bold my-4">글 수정</h1>
 		
-		<form action="update.jsp" method="post" id="updateForm">
+		<form action="update.do" method="post" id="updateForm">
 			<input type="hidden" name="num" value="${dto.num }" />
 			<input type="hidden" name="imagePath" id="imagePath" value="${dto.imagePath }"/>
 			<div class="d-flex d-inline-flex flex-column mb-3">
@@ -37,7 +36,6 @@
 					<input class="form-control form-control-sm" type="text" name="title" id="title" value="${dto.title }"/>
 				</div>
 			</div>	
-			
 				<div class="mb-3">
 					<label class="form-label" for="content">내용</label>
 					<textarea class="form-control form-control-sm" name="content" id="content">${dto.content }</textarea>
@@ -45,7 +43,7 @@
 			<button type="reset" id="resetBtn1" style="display:none;"></button>						
 		</form>
 		
-		<form action="ajax_upload.jsp" method="post" id="ajaxForm" enctype="multipart/form-data">
+		<form action="ajax_upload.do" method="post" id="ajaxForm" enctype="multipart/form-data">
 			<div class="d-flex d-inline-flex flex-column mb-3">
 				<div>
 					<div>

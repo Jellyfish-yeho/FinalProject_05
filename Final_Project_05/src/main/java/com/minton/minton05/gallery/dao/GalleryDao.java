@@ -16,12 +16,12 @@ public interface GalleryDao {
 	//gallery 사진게시글 수정
 	public void update(GalleryDto dto);
 	
-	//pk num 에 해당하는 DB 에서 gallery 게시글 하나의 data 가져오기
+	//gallery 게시글 하나의 data 가져오기
 	public GalleryDto getData(int num);
 	
-	//gallery 사진 게시글 삭제
+	//gallery 사진게시글 삭제
 	public void delete(int num);
 	
 	//좋아요 수 증가시키기
-	public void addLikeCount(int num);
+	//public void addLikeCount(int num);
 }

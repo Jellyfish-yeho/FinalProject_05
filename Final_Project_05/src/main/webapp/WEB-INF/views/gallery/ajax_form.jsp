@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>gallery</title>
 <style>
    .drag-area{
       width: 500px;
@@ -45,9 +45,7 @@
 		<form action="${pageContext.request.contextPath}/gallery/ajax_upload.do" method="post" id="ajaxForm" enctype="multipart/form-data">
 			<div class="d-flex d-inline-flex flex-column mb-3">
 				<div>
-					<div>
-						<label class="form-label" for="image">이미지</label>
-					</div>
+					<label class="form-label" for="image">이미지</label>
 					<small class="text-muted">이미지를 선택하거나 폴더에서 끌어다 놓으세요.</small>
 					<div>
 						<input class="my-2 form-control form-control-sm" type="file" name="image" id="image" 
@@ -65,7 +63,7 @@
 		
 	</div>
 
-<script src="${pageContext.request.contextPath}/js/gura_util.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/gura_util.js"></script>
 <script>
 
 
