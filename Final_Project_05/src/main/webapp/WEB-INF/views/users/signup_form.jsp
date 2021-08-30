@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>회원정보</title>
-<link href="${pageContext.request.contextPath}../../resources/formCss/form.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/resources/formCss/form.css" rel="stylesheet">
 <jsp:include page="../../include/resource.jsp"></jsp:include>
 <jsp:include page="../../include/icon.jsp"></jsp:include>
 <jsp:include page="../../include/font.jsp"></jsp:include>
@@ -24,8 +24,9 @@
 	}
 </style>
 </head>
-<body>
+<body class="text-center">
 <div class="container form-signin">
+
 	<form action="${pageContext.request.contextPath}/users/signup.do" method="post" id="myForm">
 		<img class="mb-4" src="${pageContext.request.contextPath}/resources/images/shuttlecock_main.png" width="100" height="100"/>
 		<h1 class="fw-bold my-4">회원가입</h1>	
@@ -46,14 +47,14 @@
 				<label class="control-label" for="pwd2">비밀번호 확인</label>	
 				<small> </small>				
 			</div>
-			<div class="form-floating">
+			<div class="form-floating" style="top:15px;">
 				<input class="form-control" type="email" name="email" id="email" />
 				<label class="control-label" for="email">이메일</label>
 				<small>이메일 형식에 맞게 입력해주세요. </small>
 				<div class="invalid-feedback">이 이메일은 사용 할 수 없습니다.</div>					
 			</div>
 			<button class="mt-4 w-50 btn btn-sm btn-outline-success" type="submit">가입하기</button>	
-			<a class="mt-1 w-50 btn btn-sm btn-outline-success" href="${request.getContextPath()}/">메인으로</a>	
+			<a class="mt-1 w-50 btn btn-sm btn-outline-success" href="${pageContext.request.contextPath}/">메인으로</a>	
 		</form>
 </div>
 <script src="${pageContext.request.contextPath}/resources/js/gura_util.js"></script>

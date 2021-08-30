@@ -27,7 +27,6 @@
 	
 </style>
 </head>
-<body>
 <div class="text-center container form-signin">
 	<form action="${pageContext.request.contextPath}/users/login.do" method="post">
 	<img class="mb-4" src="${pageContext.request.contextPath}/resources/images/shuttlecock_main.png" width="100" height="100"/>
