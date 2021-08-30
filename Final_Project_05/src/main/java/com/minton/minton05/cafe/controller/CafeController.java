@@ -1,6 +1,7 @@
 package com.minton.minton05.cafe.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,20 +14,76 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.minton.minton05.cafe.dao.CafeCommentDao;
 import com.minton.minton05.cafe.dao.CafeDao;
 import com.minton.minton05.cafe.dto.CafeCommentDto;
 import com.minton.minton05.cafe.dto.CafeDto;
 import com.minton.minton05.cafe.service.CafeService;
-import com.minton.minton05.notice.dao.NoticeDao;
-import com.minton.minton05.users.dao.UsersDao;
-
+import com.minton.minton05.like.dto.LikeDto;
+import com.minton.minton05.notice.dto.NoticeDto;
 
 @Controller
 public class CafeController {
-	@Autowired
-	private CafeService service;
 	
+	@Autowired private CafeService service;
+	@Autowired private CafeDao cafeDao;
+	
+	
+	//꽉 찬 하트일 때 
+	@RequestMapping(value="/ajax/cafe/offLike", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> ajaxOffLike(LikeDto likeDto){
+		Map<String, Object>	map=new HashMap<>();
+		cafeDao.like_delete(likeDto);
+		cafeDao.minusViewCount(likeDto.getCafe_num());
+		map.put("isSuccess", true);
+		return map;
+	}
+	
+	//빈 하트일 때 
+	@RequestMapping(value="/ajax/cafe/onLike", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> ajaxOnLike(LikeDto likeDto){
+		Map<String, Object>	map=new HashMap<>();
+		cafeDao.like_insert(likeDto);
+		cafeDao.addViewCount(likeDto.getCafe_num());
+		map.put("isSuccess", true);
+		return map;
+	}
+	
+	//로그인 유저 확인하기
+	@RequestMapping("/ajax/cafe/isLogin")
+	@ResponseBody
+	public Map<String, Object> ajaxIsLogin(HttpServletRequest request){
+		return service.ajaxCheckLogin(request);
+	}
+	
+	//로그인 유저가 특정 게시물을 추천했는지 확인
+	@RequestMapping("/ajax/cafe/isLiked")
+	@ResponseBody
+	public Map<String, Object> ajaxIsLiked(LikeDto likeDto){
+		return service.ajaxCheckLike(likeDto);
+	}	
+	
+	//ajax 요청에 대해 cafe 글 하단 페이징 처리에 필요한 데이터를 리턴
+	@RequestMapping("/ajax/cafe/paging")
+	@ResponseBody
+	public Map<String, Object> ajaxPaging(@RequestParam int pageNum){
+		return service.ajaxPaging(pageNum);
+	}
+	
+	//ajax 요청에 대해 notice 첫번째글 정보 응답
+	@RequestMapping("/ajax/cafe/firstNotice")
+	@ResponseBody
+	public NoticeDto ajaxGetFirstNotice(){
+		return service.ajaxGetFirstNotice();
+	}
+	
+	//ajax 요청에 대해 cafe 글 목록을 출력
+	@RequestMapping("/ajax/cafe/list")
+	@ResponseBody
+	public List<CafeDto> ajaxGetList(HttpServletRequest request){
+		return service.ajaxGetList(request);
+	}
 	
 	@RequestMapping("/cafe/list")
 	public String getList(HttpServletRequest request) {
