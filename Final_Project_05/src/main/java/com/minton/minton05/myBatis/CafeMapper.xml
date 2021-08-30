@@ -15,6 +15,29 @@
          </when>
       </choose>
    </sql>
+   
+	<insert id="likeInsert" parameterType="likeDto">
+		INSERT INTO liketo
+		(cafe_num, liked_user)
+		VALUES(#{cafe_num}, #{liked_user})
+	</insert>
+	
+	<delete id="likeDelete" parameterType="likeDto">
+		DELETE FROM likedto
+		WHERE cafe_num=#{cafe_num}, liked_user=#{liked_user}
+	</delete>
+	
+	<update id="minusViewCount" parameterType="int">
+		UPDATE board_cafe
+		SET viewCount=viewCount-1
+		 WHERE num=#{num}
+	</update>
+   
+	<select id="isLiked" parameterType="likeDto">
+		SELECT cafe_num, liked_user
+		FROM liketo
+		WHERE cafe_num=#{cafe_num}, liked_user=#{liked_user}
+	</select>
 
    <select id="getList" parameterType="cafeDto" resultType="cafeDto">
       SELECT *
@@ -33,7 +56,7 @@
       ]]>
    </select>
    
-   <select id="getCount" parameterType="cafeDto" resultType="int">
+   <select id="getCount" resultType="int">
       SELECT NVL(MAX(ROWNUM), 0)
       FROM board_cafe
       <include refid="searchCondition"/>

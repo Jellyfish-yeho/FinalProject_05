@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.minton.minton05.cafe.dto.CafeDto;
+import com.minton.minton05.like.dto.LikeDto;
 import com.minton.minton05.users.dto.UsersDto;
 
 @Repository
@@ -21,9 +22,9 @@ public class CafeDaoImpl implements CafeDao{
 	}
 	
 	@Override
-	public int getCount(CafeDto dto) {
+	public int getCount() {
 		
-		return session.selectOne("cafe.getCount", dto);
+		return session.selectOne("cafe.getCount");
 	}
 	
 	@Override
@@ -68,6 +69,30 @@ public class CafeDaoImpl implements CafeDao{
 	@Override
 	public void updateReplyCount(int num) {
 		session.update("cafe.updateReplyCount", num);		
+	}
+
+	//로그인한 유저가 게시물을 추천했는지 확인
+	@Override
+	public LikeDto isLiked(LikeDto dto) {
+		return session.selectOne("cafe.isLiked", dto);
+	}
+
+	//추천하기
+	@Override
+	public void like_insert(LikeDto dto) {
+		session.insert("cafe.likeInsert", dto);		
+	}
+
+	//추천 없애기
+	@Override
+	public void like_delete(LikeDto dto) {
+		session.delete("cafe.likeDelete", dto);
+	}
+
+	//조회수 내리기
+	@Override
+	public void minusViewCount(int num) {
+		session.update("cafe.minusViewCount", num);
 	}
 
 

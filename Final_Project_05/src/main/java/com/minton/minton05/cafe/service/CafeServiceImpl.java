@@ -1,7 +1,9 @@
 package com.minton.minton05.cafe.service;
 
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,7 +15,9 @@ import com.minton.minton05.cafe.dao.CafeDao;
 import com.minton.minton05.cafe.dto.CafeCommentDto;
 import com.minton.minton05.cafe.dto.CafeDto;
 import com.minton.minton05.exception.NotDeleteException;
+import com.minton.minton05.like.dto.LikeDto;
 import com.minton.minton05.notice.dao.NoticeDao;
+import com.minton.minton05.notice.dto.NoticeDto;
 import com.minton.minton05.users.dao.UsersDao;
 
 @Service
@@ -87,7 +91,7 @@ public class CafeServiceImpl implements CafeService{
 		//글 목록 얻어오기 
 		List<CafeDto> list=cafeDao.getList(dto);
 		//전체글의 갯수
-		int totalRow=cafeDao.getCount(dto);
+		int totalRow=cafeDao.getCount();
 		
 		//하단 시작 페이지 번호 
 		int startPageNum = 1 + ((pageNum-1)/PAGE_DISPLAY_COUNT)*PAGE_DISPLAY_COUNT;
@@ -350,6 +354,101 @@ public class CafeServiceImpl implements CafeService{
 	@Override
 	public void updateReplyCount(int num) {
 		cafeDao.updateReplyCount(num);		
+	}
+	
+	
+	//ajax 요청용 - cafe 글 목록을 리턴하는 메소드
+	@Override
+	public List<CafeDto> ajaxGetList(HttpServletRequest request) {
+		//한페이지에 표시할 게시글 수
+		final int PAGE_ROW_COUNT=5;
+		//하단에 표시할 페이지 개수
+		final int PAGE_DISPLAY_COUNT=5;
+		//보여줄 페이지 번호 초기값 지정 (1)
+		int pageNum=1;
+		//페이지번호 파라미터로 읽어오기
+		String strPageNum=request.getParameter("pageNum");
+		//페이지번호가 파라미터로 넘어오면 숫자로 바꿔서 페이지번호로 지정
+		if(strPageNum != null) {
+			pageNum=Integer.parseInt(strPageNum);
+		}
+		//보여줄 페이지의 시작 rownum
+		int startRowNum = 1+(pageNum-1)*PAGE_ROW_COUNT;
+		//보여줄 페이지의 끝 rownum
+		int endRowNum = pageNum*PAGE_ROW_COUNT;
+		
+		//startRowNum, endRowNum을 dto에 담아서 회원 목록 얻어오기
+		CafeDto dto=new CafeDto();
+		dto.setStartRowNum(startRowNum);
+		dto.setEndRowNum(endRowNum);
+		List<CafeDto> list=cafeDao.getList(dto);
+		return list;
+	}
+	
+	//ajax 요청용 - cafe 글하단 페이징 처리에 필요한 데이터를 리턴하는 메소드
+	@Override
+	public Map<String, Object> ajaxPaging(int pageNum) {
+		//한페이지에 표시할 게시글 수
+		final int PAGE_ROW_COUNT=5;
+		//하단에 표시할 페이지 개수
+		final int PAGE_DISPLAY_COUNT=5;		
+		//하단 시작 페이지 번호 
+		int startPageNum = 1 + ((pageNum-1)/PAGE_DISPLAY_COUNT)*PAGE_DISPLAY_COUNT;
+		//하단 끝 페이지 번호
+		int endPageNum=startPageNum+PAGE_DISPLAY_COUNT-1;
+		
+		//전체 row 개수
+		int totalRow=cafeDao.getCount();
+		int totalPageCount=(int)Math.ceil(totalRow/(double)PAGE_ROW_COUNT);
+		//끝 페이지 번호가 이미 전체 페이지 갯수보다 크게 계산되었다면 잘못된 값이다.
+		if(endPageNum > totalPageCount){
+			endPageNum=totalPageCount; //보정해 준다. 
+		}
+		//json 문자열로 응답할 데이터를 Map에 담는다.
+		Map<String, Object>	map=new HashMap<>();
+		map.put("startPageNum", startPageNum);
+		map.put("endPageNum", endPageNum);
+		map.put("totalPageCount", totalPageCount);
+		//Map을 리턴해주면, Map에 담긴 데이터가
+		//{"startPageNum": x, "endPageNum":x, "totalPageCount":x}
+		//의 json 문자열로 변환되어서 응답된다. 
+		return map;
+	}
+	
+	//ajax 요청용 - 공지사항 첫번째 글을 리턴하는 메소드
+	@Override
+	public NoticeDto ajaxGetFirstNotice() {
+		//공지사항 1번째 글 정보를 리턴해주기
+		NoticeDto firstNotice = noticeDao.getFirstData();		
+		return firstNotice;
+	}
+	
+	//로그인한 유저가 게시물을 추천했는지 확인
+	@Override
+	public Map<String, Object> ajaxCheckLike(LikeDto dto) {
+		LikeDto likeDto = cafeDao.isLiked(dto);
+		Map<String, Object>	map=new HashMap<>();
+		if(likeDto != null) {			
+			map.put("isLiked", true);
+			return map;
+		}else {
+			map.put("isLiked", false);
+			return map;
+		}
+	}
+	
+	//로그인 확인하기
+	@Override
+	public Map<String, Object> ajaxCheckLogin(HttpServletRequest request) {
+		String id=(String)request.getSession().getAttribute("id");
+		Map<String, Object>	map=new HashMap<>();
+		if(id!=null) {
+			map.put("id", id); 
+			return map;
+		}else {
+			map.put("id", "");
+			return map;
+		}
 	}
 	
 

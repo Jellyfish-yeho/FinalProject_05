@@ -97,12 +97,15 @@
 	<jsp:param value="cafe" name="thisPage"/>
 </jsp:include>
 <div class="container my-4 py-4" id="ccontainer">
+<!-- 
 	<c:if test="${ not empty keyword }">
-		<p>	
-			<strong>${condition }</strong> 조건, 
-			<strong>${keyword }</strong> 검색어로 검색된 내용 자세히 보기 
-		</p>
-	</c:if>
+			<p>	
+				<strong>${condition }</strong> 조건, 
+				<strong>${keyword }</strong> 검색어로 검색된 내용 자세히 보기 
+			</p>
+		</c:if>
+ -->
+	
 	<div class="article-head mt-4">
 		<div class="d-flex flex-column mb-4">
 			<div class="profile d-inline-flex me-2">
@@ -186,7 +189,23 @@
 		</svg>
 	</a>
 	<%-- 좋아요 / 임시 --%>
-		<a data-num="${dto.num}" id="like" class="text-decoration-none link-danger">
+	
+	<a v-if="isLiked" @click.prevent="offLike" id="like" class="text-decoration-none link-danger">
+		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
+			<path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+		</svg>
+	</a>
+	<a v-else @click.prevent="onLike" id="like" class="text-decoration-none link-danger">
+		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+			<path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+		</svg>
+	</a>
+	<span id="likeCounter" class="text-muted mx-1">
+		{{likeCounter}}
+	</span>
+	<!-- 
+	
+	<a data-num="${dto.num}" id="like" class="text-decoration-none link-danger">
 			<c:choose>
 				<c:when test="${isLogin eq true}">
 					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
@@ -203,6 +222,8 @@
 		<span id="likeCounter" class="text-muted mx-1">
 			{{likeCounter}}
 		</span>
+	 -->
+		
 	
    <%-- 댓글 목록 --%>
 	<hr class="mb-3" style="border: solid 1px gray;">
@@ -318,28 +339,92 @@
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script>
 	const base_url="http://localhost8888/minton05";	
-	
+
 	//Vue 객체
 	let app = new Vue({
 		el:'#ccontainer',
 		data:{
+			detail:{},
+			id:"",
+			isLiked:false,
 			likeCounter:0,
 			base_url,
 		},
 		computed:{
+			//likeCounter의 값이 바뀌면 자동으로 반영
 			
 		},
 		methods:{
-
+			//전제조건 : 글정보 불러올 때 좋아요 정보도 같이 불러와야 함
+			offLike(){
+				//likeCount -1, liketo table에서 좋아요 정보 삭제하는 요청
+				ajaxPromise(base_url+"/ajax/cafe/offLike", "POST", 
+						"liked_user="+self.id+"&cafe_num="+self.detail.num)
+				.then(function(response){
+					return response.json();
+				})
+				.then(function(data){
+					//data는 {isSuccess:true}
+					console.log(data);
+				})
+				//결과를 모델에 반영하기 - 빈하트 표시, counter-1
+				this.isLiked=false;
+				this.likeCounter = this.likeCounter -1;
+			},
+			onLike(){
+				//likeCount +1, liketo table에서 좋아요 정보 추가하는 요청
+				ajaxPromise(base_url+"/ajax/cafe/onLike", "POST", 
+						"liked_user="+self.id+"&cafe_num="+self.detail.num)
+				.then(function(response){
+					return response.json();
+				})
+				.then(function(data){
+					//data는 {isSuccess:true}
+					console.log(data);
+				})
+				//결과를 모델에 반영하기 - 찬하트 표시, counter+1
+				this.isLiked=true;
+				this.likeCounter = this.likeCounter +1;
+			},
 		},
 		created(){
-			this.likeCounter = ${dto.likeCount}
+			const self=this;
+			//this.likeCounter = ${dto.likeCount}
+			//로그인 정보를 얻어와서
+			ajaxPromise(base_url+"/ajax/cafe/isLogin")
+			.then(function(response){
+				return response.json();
+			})
+			.then(function(data){
+				//data는 {id:xxx 또는 빈문자열}
+				console.log(data);
+			})
+			//얻어온 정보를 model에 넣기
+			self.id=data.id;
+			
+			//id와 글 번호를 전달해서 select된 결과가 있으면 true를 리턴하는 메소드 요청
+			ajaxPromise(base_url+"/ajax/cafe/isLiked",
+					"get","liked_user="+self.id+"&cafe_num="+self.detail.num)
+			.then(function(response){
+				return response.json();
+			})
+			.then(function(data){
+				//data는 {isLiked:true/false}
+				console.log(data);
+			});
+			//data가 true이면 꽉찬하트 표시
+			self.isLiked=true;
+			//data가 false이면 빈하트 표시
+			self.isLiked=false;
+			
+			
 		}
 	});
 	
 	
-	//하트를 누르면 좋아요 1씩 증가
-	$("#like").on("click",function(){
+	
+	/*
+		$("#like").on("click",function(){
 		if(${isLogin}){
 			let likeCounter = Number($("#likeCounter").text());
 			$("#likeCounter").text(likeCounter+1);
@@ -358,6 +443,8 @@
 			alert("로그인 후 좋아요를 누를 수 있습니다.");
 		};	
 	})
+	*/
+
 
 	//url 클립보드에 복사하기
 	var currentUrl = document.getElementById("urlInput");
