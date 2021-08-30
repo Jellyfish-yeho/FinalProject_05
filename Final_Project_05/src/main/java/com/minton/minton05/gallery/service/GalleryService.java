@@ -20,6 +20,11 @@ public interface GalleryService {
 	public void insert(GalleryDto dto, HttpServletRequest request);
 	//갤러리 detail 페이지 가져오기
 	public void getDetail(ModelAndView mView, int num);
+	//갤러리 글 수정하기 위해 데이터 불러오기
+	public void getData(HttpServletRequest request);
+	//갤러리 글 수정하기
+	public void updateContent(GalleryDto dto);
 	//갤러리 글 삭제하기
 	public void deleteContent(int num);
+	
 }
