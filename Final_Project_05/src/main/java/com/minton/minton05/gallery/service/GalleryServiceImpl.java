@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.minton.minton05.gallery.dao.GalleryDao;
 import com.minton.minton05.gallery.dto.GalleryDto;
+import com.minton.minton05.notice.dto.NoticeDto;
 
 @Service
 public class GalleryServiceImpl implements GalleryService {
@@ -23,7 +24,7 @@ public class GalleryServiceImpl implements GalleryService {
 	//갤러리 이미지 list
 	public void getList(HttpServletRequest request) {
 		//한 페이지에 몇개씩 표시할 것인지
-		final int PAGE_ROW_COUNT=8;
+		final int PAGE_ROW_COUNT=9;
 		//하단 페이지를 몇개씩 표시할 것인지
 		final int PAGE_DISPLAY_COUNT=5;
 	   
@@ -174,5 +175,12 @@ public class GalleryServiceImpl implements GalleryService {
 		GalleryDto dto = dao.getData(num);
 		//ModelAndView 에 가져온 GalleryDto 를 담는다.
 		mView.addObject("dto", dto);
+	}
+	
+	//갤러리 글 삭제하는 메소드
+	@Override
+	public void deleteContent(int num) {
+		//DB 에서 파일 정보 삭제
+		dao.delete(num);
 	}
 }

@@ -6,11 +6,8 @@
 <head>
 <meta charset="UTF-8">
 <title>자유게시판</title>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<link rel="icon" href="${pageContext.request.contextPath}/images/shuttlecock_main.png" type="image/x-icon" />
+<link rel="icon" href="${pageContext.request.contextPath}/resources/images/shuttlecock_main.png" type="image/x-icon" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
-
 <style>
    .content{
       border: 1px dotted gray;
@@ -96,6 +93,9 @@
 </head>
 <body>
 <!-- navbar -->
+<jsp:include page="../../include/navbar.jsp">
+	<jsp:param value="cafe" name="thisPage"/>
+</jsp:include>
 <div class="container my-4 py-4" id="ccontainer">
 	<c:if test="${ not empty keyword }">
 		<p>	
@@ -104,22 +104,20 @@
 		</p>
 	</c:if>
 	<div class="article-head mt-4">
-		<div class="writerInfo1 d-flex mb-4">
+		<div class="d-flex flex-column mb-4">
 			<div class="profile d-inline-flex me-2">
-			<%--   
-			<%
-				UsersDto usersDto = UsersDao.getInstance().getData(dto.getWriter());
-				if(usersDto.getProfile()==null){
-			%>	
-				<svg class="profile-image" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
-					<path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-					<path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
-				</svg>			
-			<%}else{ %>
-				<img class="profile-image" src="<%=request.getContextPath() %><%=usersDto.getProfile()%>"/>
-			<%} %>
-			</div>
-			--%>
+			<c:choose>
+				<c:when test="${not empty dto.profile}">
+					<img class="profile-image" src="${pageContext.request.contextPath}${dto.profile}"/>
+				</c:when>
+				<c:otherwise>
+					<svg class="profile-image" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+						<path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+						<path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+					</svg>	
+				</c:otherwise>
+			</c:choose>
+
 			<div class="writerInfo2 d-flex flex-column">
 				<p class="writer fw-bold mb-0"> 
 					${dto.writer }
@@ -149,10 +147,10 @@
 	<ul class="d-flex flex-row ps-0 justify-content-end" style="list-style:none;">	
 		<c:if test="${dto.writer eq id }">
 			<li>
-				<a class="link-dark text-decoration-none mx-1" href="private/updateform.jsp?num=${dto.num }">수정</a>
+				<a class="link-dark text-decoration-none mx-1" href="updateform.do?num=${dto.num }">수정</a>
 			</li>
 			<li>
-				<a class="link-dark text-decoration-none mx-1" href="private/delete.jsp?num=${dto.num }">삭제</a>
+				<a class="link-dark text-decoration-none mx-1" href="delete.do?num=${dto.num }">삭제</a>
 			</li>
 		</c:if> 
 	</ul>
@@ -161,17 +159,17 @@
 	   
 	    <c:if test="${dto.prevNum ne 0 }">
 	   	<li>
-			<a class="link-success text-decoration-none" href="detail.jsp?num=${dto.prevNum }&keyword=${encodedK }&condition=${condition }">
+			<a class="link-success text-decoration-none" href="detail.do?num=${dto.prevNum }&keyword=${encodedK }&condition=${condition }">
 			&lt이전글
 			</a>
 		</li>
 		</c:if>
 		<li class="mx-3">
-			<a class="fw-bold link-success text-decoration-none" href="list.jsp">목록보기</a>
+			<a class="fw-bold link-success text-decoration-none" href="list.do">목록보기</a>
 		</li>
 		<c:if test="${dto.nextNum ne 0 }">
 		<li>			   
-			<a class="link-success text-decoration-none" href="detail.jsp?num=${dto.nextNum }&keyword=${encodedK }&condition=${condition }">
+			<a class="link-success text-decoration-none" href="detail.do?num=${dto.nextNum }&keyword=${encodedK }&condition=${condition }">
 			다음글&gt	     	
 	      </a>
 		</li>
@@ -180,29 +178,30 @@
 	<%-- 북마크 --%>	
 	<input type="text" id="urlInput" class="form-control form-control-sm"
 	style="display:block; position:absolute; left:-100000px"/>
-	
-	<%-- popover hidden content --%>	
-	<%-- 
-	<div id="popoverContent" style="display:none">
-		<p>URL이 클립보드에 복사되었습니다.</p>		
-	</div>
-	--%>
-	
+		
 	<a id="bookmark" class="text-decoration-none link-dark mx-2"
 	onclick="javascript:urlClipCopy();">
 		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-fill" viewBox="0 0 16 16">
 			<path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/>
 		</svg>
-	</a>	
-	
-	<%-- 좋아요 : 클릭 시 숫자 증가 --%>
-		<a id="like" class="text-decoration-none link-danger">
-			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
-				<path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
-			</svg>
+	</a>
+	<%-- 좋아요 / 임시 --%>
+		<a data-num="${dto.num}" id="like" class="text-decoration-none link-danger">
+			<c:choose>
+				<c:when test="${isLogin eq true}">
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
+						<path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+					</svg>
+				</c:when>
+				<c:otherwise>
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+						<path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+					</svg>
+				</c:otherwise>
+			</c:choose>			
 		</a>
 		<span id="likeCounter" class="text-muted mx-1">
-			${dto.likeCount }
+			{{likeCounter}}
 		</span>
 	
    <%-- 댓글 목록 --%>
@@ -218,7 +217,7 @@
 	      
 	      <textarea name="content" placeholder="새 댓글 작성하기">
 	      <c:if test="${id ==null }">
-	      		<p>댓글 작성을 위해 로그인이 필요합니다.</p>
+				댓글 작성을 위해 로그인이 필요합니다.
 	      </c:if>
 	      </textarea>
 	      <div align="right">
@@ -227,82 +226,83 @@
 	   </form>
 	
    <div class="comments">
-      <ul>
-      	 <c:forEach var="tmp" items="${commentList }">
+		<ul>
+			<c:forEach var="tmp" items="${commentList }">
 				<c:choose>
 					<c:when test="${tmp.deleted eq 'yes' }">
-						<li>삭제된 댓글 입니다.</li>
+						<li>삭제된 댓글입니다.</li>
 					</c:when>
-				</c:choose>
-				<c:otherwise>
+					<c:otherwise>
 					<c:if test="${tmp.num eq tmp.comment_group }">
-							<li id="reli${tmp.num }">
+						<li id="reli${tmp.num }">
 					</c:if>
 					<c:if test="${tmp.num ne tmp.comment_group }">
-							<li id="reli${tmp.num }" style="padding-left:50px;">
-								<svg class="reply-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-return-right" viewBox="0 0 16 16">
-				                    <path fill-rule="evenodd" d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5z"/>
-				               </svg>
+						<li id="reli${tmp.num }" style="padding-left:50px;">
+							<svg class="reply-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-return-right" viewBox="0 0 16 16">
+								<path fill-rule="evenodd" d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5z"/>
+							</svg>
 					</c:if>
-						<dl>
-							<dt>
-								<c:if test="${ empty tmp.profile }">
-									<svg class="profile-image me-2" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
-				                          <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-				                          <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
-				                     </svg>
-								</c:if>
-								<c:if test="${not empty tmp.profile }">
-									<img class="profile-image me-2" src="${pageContext.request.contextPath}${tmp.profile }"/>
-								</c:if>
-								<span class="fw-bold">${tmp.writer }</span>
-								<span class="fw-light text-muted mx-1">${tmp.regdate }</span>
-							</dt>
-							<dd>
-								<c:if test="${tmp.num ne tmp.comment_group }">
-									<span class="p-1 m-1 text-muted" style="font-size:.875rem;">
-				                     	<i>@${tmp.target_id }</i>
-				                    </span>
-				                    <pre id="pre${tmp.num }">${tmp.content }</pre>
-				                    <a data-num="${tmp.num }" href="javascript:" class="reply-link text-decoration-none"
-                     				style="padding-left:9.5px; color:#198754;">댓글</a>
-								</c:if>
-								<c:if test="${id ne null && tmp.writer eq id }">
-									<a data-num="${tmp.num }" class="update-link text-decoration-none link-dark px-2" href="javascript:">수정</a>
-									<a data-num="${tmp.num }" class="delete-link text-decoration-none link-dark" href="javascript:">삭제</a>
-								</c:if>
-							</dd>
-							<dd>
-							<%--대댓글 폼 --%>
-							<form id="reForm${tmp.num }" class="animate__animated comment-form re-insert-form" 
-							action="comment_insert.jsp" method="post">
-								<input type="hidden" name="ref_group"
-								value="${dto.num }"/>
-								<input type="hidden" name="target_id"
-			 					value="${tmp.writer }"/>
-			 					<input type="hidden" name="comment_group"
-								value="${tmp.comment_group }"/>
-								<textarea name="content"></textarea>
-								<div align="right">
-								<button class="btn btn-sm btn-outline-success" type="submit">등록</button>
-								</div>
-							</form>  
-							</dd>
-							<dd>
-							<%--대댓글 수정 폼 --%>
-							<c:if test="${tmp.writer eq id }">
-								<form id="updateForm${tmp.num }" class="comment-form update-form" 
-								action="comment_update.jsp" method="post">
-									<input type="hidden" name="num" value="${tmp.num }" />
-					 				<textarea name="content">${tmp.content }</textarea>
+							<dl>
+								<dt>
+									<c:if test="${ empty tmp.profile }">
+										<svg class="profile-image me-2" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+					                          <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+					                          <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+					                     </svg>
+									</c:if>
+									<c:if test="${not empty tmp.profile }">
+										<img class="profile-image me-2" src="${pageContext.request.contextPath}${tmp.profile }"/>
+									</c:if>
+									<span class="fw-bold">${tmp.writer }</span>
+									<span class="fw-light text-muted mx-1">${tmp.regdate }</span>
+								</dt>
+								<dd>
+									<c:if test="${tmp.num ne tmp.comment_group }">
+										<span class="p-1 m-1 text-muted" style="font-size:.875rem;">
+					                     	<i>@${tmp.target_id }</i>
+					                    </span>
+					                    <pre id="pre${tmp.num }">${tmp.content }</pre>
+					                    <a data-num="${tmp.num }" href="javascript:" class="reply-link text-decoration-none"
+	                     				style="padding-left:9.5px; color:#198754;">댓글</a>
+									</c:if>
+									<c:if test="${id ne null && tmp.writer eq id }">
+										<a data-num="${tmp.num }" class="update-link text-decoration-none link-dark px-2" href="javascript:">수정</a>
+										<a data-num="${tmp.num }" class="delete-link text-decoration-none link-dark" href="javascript:">삭제</a>
+									</c:if>
+								</dd>
+								<dd>
+								<%--대댓글 폼 --%>
+								<form id="reForm${tmp.num }" class="animate__animated comment-form re-insert-form" 
+								action="comment_insert.do" method="post">
+									<input type="hidden" name="ref_group"
+									value="${dto.num }"/>
+									<input type="hidden" name="target_id"
+				 					value="${tmp.writer }"/>
+				 					<input type="hidden" name="comment_group"
+									value="${tmp.comment_group }"/>
+									<textarea name="content"></textarea>
 									<div align="right">
-									<button class="btn btn-sm btn-outline-success" type="submit">수정</button>
+									<button class="btn btn-sm btn-outline-success" type="submit">등록</button>
 									</div>
-								</form>
-							</c:if>
-							</dd>
-						</dl>
-				</c:otherwise>
+								</form>  
+								</dd>
+								<dd>
+								<%--대댓글 수정 폼 --%>
+								<c:if test="${tmp.writer eq id }">
+									<form id="updateForm${tmp.num }" class="comment-form update-form" 
+									action="comment_update.jsp" method="post">
+										<input type="hidden" name="num" value="${tmp.num }" />
+						 				<textarea name="content">${tmp.content }</textarea>
+										<div align="right">
+										<button class="btn btn-sm btn-outline-success" type="submit">수정</button>
+										</div>
+									</form>
+								</c:if>
+								</dd>
+							</dl>
+						</li>
+				</c:otherwise>					
+			</c:choose>				
 		</c:forEach>
 	</ul>
 	</div>
@@ -314,32 +314,40 @@
 	</div>
 </div>
 <script src="${pageContext.request.contextPath}/resources/js/gura_util.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script>
-	//url 클립보드에 복사하기
-	var currentUrl = document.getElementById("urlInput");
-	currentUrl.value = window.document.location.href;  // 현재 URL 을 세팅해 줍니다.
-	function urlClipCopy(){
-		currentUrl.select();  // 해당 값이 선택되도록 select() 합니다
-		document.execCommand("copy"); // 클립보드에 복사합니다.
-		currentUrl.blur();
-		alert("URL이 클립보드에 복사되었습니다."); 
-	}
+	const base_url="http://localhost8888/minton05";	
 	
+	//Vue 객체
+	let app = new Vue({
+		el:'#ccontainer',
+		data:{
+			likeCounter:0,
+			base_url,
+		},
+		computed:{
+			
+		},
+		methods:{
+
+		},
+		created(){
+			this.likeCounter = ${dto.likeCount}
+		}
+	});
 	
-	
-	//클라이언트가 로그인 했는지 여부
-	let isLogin=${isLogin};	
 	
 	//하트를 누르면 좋아요 1씩 증가
 	$("#like").on("click",function(){
-		if(isLogin){
+		if(${isLogin}){
 			let likeCounter = Number($("#likeCounter").text());
 			$("#likeCounter").text(likeCounter+1);
 			//좋아요 개수를 서버로 전송한다
 			$.ajax({	
-				url:"${pageContext.request.contextPath}/cafe/private/like_insert.jsp",
+				url:"${pageContext.request.contextPath}/cafe/like_insert.do",
 				type:"get",
-				data: "likeCounter="+likeCounter+"&num=${num}",
+				data: "likeCounter="+likeCounter+"&num=${dto.num}>",
 				success:function(data){
 					if(data.isSuccess){
 						$("#likeCounter1").text(${dto.likeCount});
@@ -350,18 +358,26 @@
 			alert("로그인 후 좋아요를 누를 수 있습니다.");
 		};	
 	})
+
+	//url 클립보드에 복사하기
+	var currentUrl = document.getElementById("urlInput");
+	currentUrl.value = window.document.location.href;  // 현재 URL 을 세팅해 줍니다.
+	function urlClipCopy(){
+		currentUrl.select();  // 해당 값이 선택되도록 select() 합니다
+		document.execCommand("copy"); // 클립보드에 복사합니다.
+		currentUrl.blur();
+		alert("URL이 클립보드에 복사되었습니다."); 
+	}	
 	
-
-
 	   
    document.querySelector(".insert-form")
       .addEventListener("submit", function(e){
          //만일 로그인 하지 않았으면 
-         if(!isLogin){
+         if(!${isLogin}){
             //폼 전송을 막고 
             e.preventDefault();
             //로그인 폼으로 이동 시킨다.
-            location.href="${pageContext.request.contextPath}/users/loginform.jsp?url=${pageContext.request.contextPath}/cafe/detail.jsp?num=${num}";
+            location.href="${pageContext.request.contextPath}/users/loginform.do?url=${pageContext.request.contextPath}/cafe/detail.do?num=${dto.num}";
          }
       });
     
@@ -411,15 +427,14 @@
             해당 페이지의 내용을 ajax 요청을 통해서 받아온다.
             "pageNum=xxx&num=xxx" 형식으로 GET 방식 파라미터를 전달한다. 
          */
-         ajaxPromise("ajax_comment_list.jsp","get",
-               "pageNum="+currentPage+"&num=${num}")
+         ajaxPromise("ajax_comment_list.do","get",
+               "pageNum="+currentPage+"&num=${dto.num}")
          .then(function(response){
             //json 이 아닌 html 문자열을 응답받았기 때문에  return response.text() 해준다.
             return response.text();
          })
          .then(function(data){
             //data 는 html 형식의 문자열이다. 
-            console.log(data);
             // beforebegin | afterbegin | beforeend | afterend
             document.querySelector(".comments ul")
                .insertAdjacentHTML("beforeend", data);
@@ -484,11 +499,11 @@
       for(let i=0; i<replyLinks.length; i++){
          replyLinks[i].addEventListener("click", function(){
             
-            if(!isLogin){
-               const isMove=confirm("로그인이 필요 합니다. 로그인 페이지로 이동 하시겠습니까?");
+            if(!${isLogin}){
+               const isMove=confirm("로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?");
                if(isMove){
                   location.href=
-                     "${pageContext.request.contextPath}/users/loginform.jsp?url=${pageContext.request.contextPath}/cafe/detail.jsp?num=<%=num%>";
+                     "${pageContext.request.contextPath}/users/loginform.do?url=${pageContext.request.contextPath}/cafe/detail.do?num=${dto.num}";
                }
                return;
             }

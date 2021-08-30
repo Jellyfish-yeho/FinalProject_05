@@ -44,6 +44,7 @@ public class UsersController {
       mView.setViewName("redirect:/users/info.do");
       return mView;
    }
+   
    //ajax 프로필 사진 업로드 요청처리
    @RequestMapping(value = "/users/ajax_profile_upload",
          method=RequestMethod.POST)
@@ -91,7 +92,7 @@ public class UsersController {
       return mView;
    }
    
-   
+   //로그아웃 처리 
    @RequestMapping("/users/logout")
    public String logout(HttpSession session) {
       //세션에서 id 라는 키값으로 저장된 값 삭제 
@@ -99,6 +100,7 @@ public class UsersController {
       return "users/logout";
    }
    
+   //회원가입 폼 요청처리
    @RequestMapping(value = "/users/signup_form", method = RequestMethod.GET)
    public String signupForm() {
       
@@ -118,7 +120,7 @@ public class UsersController {
    public ModelAndView signup(ModelAndView mView, UsersDto dto) {
       
       service.addUser(dto);
-      
+      mView.addObject("id", dto.getId());
       mView.setViewName("users/signup");
       return mView;
    }
@@ -129,6 +131,7 @@ public class UsersController {
       
       return "users/loginform";
    }
+   
    //로그인 요청 처리
    @RequestMapping("/users/login")
    public ModelAndView login(ModelAndView mView, UsersDto dto,

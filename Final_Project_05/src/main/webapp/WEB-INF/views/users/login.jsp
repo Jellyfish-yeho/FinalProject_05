@@ -5,25 +5,57 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>/users/login.jsp</title>
+<title>회원정보</title>
+<link href="${pageContext.request.contextPath}/resources/formCss/form.css" rel="stylesheet">
+<jsp:include page="../../include/resource.jsp"></jsp:include>
+<jsp:include page="../../include/icon.jsp"></jsp:include>
+<jsp:include page="../../include/font.jsp"></jsp:include>
 </head>
 <body>
 <div class="container">
-	<h1>알림</h1>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+function swalSuccess(seq){
+	Swal.fire({
+		title:'로그인 성공',
+		text: '${id }님, 로그인 되었습니다.',
+		icon: 'success',
+		confirmButtonColor: '#198754',
+		confirmButtonText: '확인'
+	}).then((result) => {
+		if (result.value) {
+		<%-- 원래 페이지로 넘겨주기 : url 값  --%>
+		location.href="${pageContext.request.contextPath}/home.do";
+	  }
+	})
+}
+function swalFail(seq){
+	Swal.fire({
+		title: '로그인 실패',
+		text: '아이디나 비밀번호가 일치하지 않습니다.',
+		icon: 'error',
+		confirmButtonColor: '#198754',
+		confirmButtonText: '재시도'
+	}).then((result) => {
+		if (result.value) {
+		<%-- 인코딩된 url값 가지고 loginform으로 돌려보내기 --%>
+		location.href="${pageContext.request.contextPath}/users/loginform.do";
+	  }
+	})
+}
+</script>
 	<c:choose>
 		<c:when test="${not empty sessionScope.id }">
-			<p>
-				<strong>${sessionScope.id }</strong>님 로그인 되었습니다.
-				<a href="${requestScope.url }">돌아가기</a>
-			</p>
+		<script>
+		swalSuccess();
+		</script>
 		</c:when>
 		<c:otherwise>
-			<p>
-				아이디 혹은 비밀 번호가 틀려요
-				<a href="loginform.do?url=${requestScope.encodedUrl }">다시 시도</a>
-			</p>
+		<script>
+		swalFail();
+		</script>	
 		</c:otherwise>
 	</c:choose>
-</div>	
+</div>		
 </body>
 </html>

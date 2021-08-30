@@ -80,4 +80,10 @@
 		WHERE num=#{num}
 	</delete>
 	
+	<select id="getFirstData" parameterType="noticeDto" resultType="noticeDto">
+		SELECT num,writer,title,viewCount,to_char(regdate,'yyyy-mm-dd HH24:MI') as regdate
+		FROM board_notice
+		WHERE num IN(SELECT MAX(NUM) FROM board_notice)
+	</select>
+	
 </mapper>

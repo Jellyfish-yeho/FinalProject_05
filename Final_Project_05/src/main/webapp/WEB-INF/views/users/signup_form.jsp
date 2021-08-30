@@ -4,37 +4,57 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>/views/users/signup_form.jsp</title>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.css" />
+<title>회원정보</title>
+<link href="${pageContext.request.contextPath}/resources/formCss/form.css" rel="stylesheet">
+<jsp:include page="../../include/resource.jsp"></jsp:include>
+<jsp:include page="../../include/icon.jsp"></jsp:include>
+<jsp:include page="../../include/font.jsp"></jsp:include>
+<style>
+	.bd-placeholder-img{
+		font-size : 1.125rem;
+		text-anchor : middle;
+		-webkit-user-select : none;
+		-moz-user-select:none;
+		user-select:none;
+	}
+	@media (min-width:768px){
+		.bd-placeholder-img-lg{
+			font-size:3.5rem;
+		}
+	}
+</style>
 </head>
 <body>
-<div class="container">
-	<h1>회원 가입 폼 입니다.</h1>
-	<form action="signup.do" method="post" id="myForm">
+<div class="container form-signin">
 	<form action="${pageContext.request.contextPath}/users/signup.do" method="post" id="myForm">
-		<div>
-			<label class="control-label" for="id">아이디</label>
-			<input class="form-control" type="text" name="id" id="id"/>
-			<small>아이디는 5~10자 이내의 영문 소문자여야 합니다. </small>
-			<div class="invalid-feedback">이 아이디는 사용할 수 없습니다.</div>
-		</div>
-		<div>
-			<label class="control-label" for="pwd">비밀번호</label>
-			<input class="form-control" type="password" name="pwd" id="pwd"/>
-			<small>비밀번호는 5~10자 이내여야 합니다. </small>	
-			<div class="invalid-feedback">이 비밀번호는 사용할 수 없습니다.</div>
-		</div>
-		<div>
-			<label class="control-label" for="pwd2">비밀번호 확인</label>
-			<input class="form-control" type="password" name="pwd2" id="pwd2"/>
-		</div>
-		<div>
-			<label class="control-label" for="email">이메일</label>
-			<input class="form-control" type="text" name="email" id="email"/>
-			<div class="invalid-feedback">이메일 형식을 확인 하세요.</div>
-		</div>
-		<button class="btn btn-primary" type="submit">가입하기</button>
-	</form>
+		<img class="mb-4" src="${pageContext.request.contextPath}/resources/images/shuttlecock_main.png" width="100" height="100"/>
+		<h1 class="fw-bold my-4">회원가입</h1>	
+			<div class="form-floating">
+				<input class="form-control" type="text" name="id" id="id" />
+				<label class="control-label" for="id">아이디</label>				
+				<small>아이디는 5~10자 이내의 영문 소문자여야 합니다. </small>
+				<div class="invalid-feedback">이 아이디는 사용 할 수 없습니다.</div>
+			</div>
+			<div class="form-floating">
+				<input class="form-control" type="password" name="pwd" id="pwd" />	
+				<label class="control-label" for="pwd">비밀번호</label>				
+				<small>비밀번호는 5~10자 이내여야 합니다. </small>	
+				<div class="invalid-feedback">이 비밀번호는 사용 할 수 없습니다.</div>
+			</div>
+			<div class="form-floating">
+				<input class="form-control" type="password" name="pwd2" id="pwd2" />
+				<label class="control-label" for="pwd2">비밀번호 확인</label>	
+				<small> </small>				
+			</div>
+			<div class="form-floating">
+				<input class="form-control" type="email" name="email" id="email" />
+				<label class="control-label" for="email">이메일</label>
+				<small>이메일 형식에 맞게 입력해주세요. </small>
+				<div class="invalid-feedback">이 이메일은 사용 할 수 없습니다.</div>					
+			</div>
+			<button class="mt-4 w-50 btn btn-sm btn-outline-success" type="submit">가입하기</button>	
+			<a class="mt-1 w-50 btn btn-sm btn-outline-success" href="${request.getContextPath()}/">메인으로</a>	
+		</form>
 </div>
 <script src="${pageContext.request.contextPath}/resources/js/gura_util.js"></script>
 <script>

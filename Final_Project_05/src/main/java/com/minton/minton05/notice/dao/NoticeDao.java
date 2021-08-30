@@ -30,4 +30,7 @@ public interface NoticeDao {
 	
 	//공지사항 글 삭제하는 메소드 : int num 글번호
 	public void delete(int num);
+	
+	//공지사항의 가장 최신글만 리턴하는 메소드 - 자유게시판용
+	public NoticeDto getFirstData();
 }

@@ -3,6 +3,7 @@ package com.minton.minton05.cafe.dao;
 import java.util.List;
 
 import com.minton.minton05.cafe.dto.CafeDto;
+import com.minton.minton05.users.dto.UsersDto;
 
 
 public interface CafeDao {
@@ -22,6 +23,10 @@ public interface CafeDao {
     public void delete(int num);
     //글 수정
     public void update(CafeDto dto);
-    //좋아요
-    public void addLikeCount(int num);
+    
+   
+    //게시글의 댓글개수 업데이트하기
+    public void updateReplyCount(int num);
+    
+
 }
