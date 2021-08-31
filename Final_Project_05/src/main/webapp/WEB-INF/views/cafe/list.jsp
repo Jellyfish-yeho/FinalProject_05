@@ -11,14 +11,7 @@
 <%-- icon, resource include --%>
 <jsp:include page="../../include/icon.jsp"></jsp:include>
 <jsp:include page="../../include/resource.jsp"></jsp:include>
-<!-- include libraries(jQuery, bootstrap) -->
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
-<!-- include summernote css/js -->
-<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 <style>
    .page-ui a{
       text-decoration: none;
@@ -68,6 +61,10 @@
 		padding:5px; 
 		background-color:rgb(255,255,255, 0.9); 
 		border-radius: 30px
+	}
+	iframe{
+		height:500px !important;
+		width:100% !important;
 	}
 </style>
 </head>
@@ -126,7 +123,7 @@
 			</tr>
       </tbody>
 		<tbody>
-		<tr v-for="(cafe, index) in currentCafeList" :key="cafe.num">
+		<tr v-for="(cafe, index) in cafeList" :key="cafe.num">
 			<td>{{cafe.num}}</td>
 			<td>{{cafe.category}}</td>
 			<td>
@@ -184,84 +181,23 @@
 		</ul>
 	
 	</div>
-	
-	<!-- 검색기능 rev. -->
-	<div class="row g-3 align-items-center my-4">
-		<div class="col-auto">
-			<input v-model="searchInput" class="form-control form-control-sm" type="text" id="keyword" name="keyword" placeholder="검색어를 입력하세요."/>
-		</div>
-		<div class="col-auto">
-			<button @click="clickSearch" class="btn btn-sm btn-outline-success">검색</button>
-		</div>
-   </div>
-	 
-
-	<p v-if="searchedNum != 0" class="my-3" style="font-size:0.875rem;">
-		<strong>{{searchedNum}}</strong> 개의 글이 검색되었습니다.
-	</p>
-	
-	<!-- 새 글 작성용 Modal -->
-    <div class="modal fade" ref="insertModal">
-        <div class="modal-dialog modal-dialog-centered modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fw-bold my-4">새 글 작성</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div> 
-                <div class="modal-body">
-					<form action="insert.jsp" method="post" id="insertForm">
-						<div class="d-flex d-inline-flex flex-column mb-3">
-							<div>
-								<label class="form-label" for="category">분류</label>
-							</div>
-							<div>	
-								<select class="form-select form-select-sm" name="category" id="category">
-								<option value="잡담">잡담</option>
-								<option value="후기">후기</option>
-								</select>
-							</div>
-							
-						<div class="my-2">	
-							<label class="form-label" for="title">제목</label>
-							<input class="form-control form-control-sm" type="text" name="title" id="title"/>	
-							<small class="text-muted" style="font-size:0.875rem;">제목은 5글자 이상이어야 합니다.</small>
-						</div>	
-						</div>
-						<div>
-							<label for="content">내용</label>
-							<div id="summernote"></div> 
-						</div>
-						<button class="btn btn-sm btn-outline-success" type="submit">작성</button>
-					</form>  				
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>   
     
 </div>
 <%-- footer --%>
 <jsp:include page="../../include/footer.jsp"></jsp:include>
+
 <script src="../resources/js/gura_util.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 
 <script>
-	$(document).ready(function() {
-		  $('#summernote').summernote();
-	});
-	
+
 	const base_url="http://localhost:8888/minton05";
 	
 	let app=new Vue({
 		el:"#app",
 		data:{
 			firstNotice:{},
-			searchInput: '',
-			searchedNum:0,
 			cafeList:[],
-			currentCafeList:[],
 			base_url,
 			detailItem:{},
 			startPageNum:1,
@@ -280,47 +216,24 @@
 			}
 		},
 		methods:{
-			insertCafe(){
-				//insert 모달
-				let modalElement=this.$refs.insertModal;
-				//bootstrap modal 띄우기
-				let modal=new bootstrap.Modal(modalElement);
-				modal.show();
+			insert(){
+				//폼 제출
+				//폼의 참조값
+				const form = document.querySelector("#insertForm");
+				ajaxFormPromise(form)
+				.then(function(response){
+					return response.json();
+				})
+				.then(function(data){
+					console.log(data);
+					alert("글이 추가되었습니다.");
+				})
 			},
 			movePage(pageNum){
 				this.pageNum=pageNum;
 				this.updateUI();
 			},
-			clickSearch(){
-				//제목에서 필터한 배열
-				let titleFiltered = this.currentCafeList.filter(item=>-1 != item.title.indexOf(this.searchInput));
-				//내용에서 필터한 배열
-				let contentFiltered = this.currentCafeList.filter(item=>-1 != item.content.indexOf(this.searchInput));
-				//제목 + 내용 필터한 배열
-				let sum = titleFiltered.concat(contentFiltered);
-				//indexOf 값과 배열에 위치하는 값이 같은 값을 추출 = 합집합
-				let union = sum.filter((item,index)=>sum.indexOf(item)===index);
-				//검색 결과에 넣어준다.
-				this.currentCafeList=union;
-				//검색 결과의 개수를 모델에 넣어준다.
-				this.searchedNum = union.length;
-				//검색 결과에 따라 list, paging 처리를 다시 한다.
-				
-				//하단 페이징 처리 데이터 받아오기
-				ajaxPromise(base_url+"/ajax/cafe/paging.do","get","pageNum="+this.pageNum)
-				.then(function(response){
-					return response.json();
-				})
-				.then(function(data){
-					//data는 startPageNum, endPageNum, totalPageCount가 들어 있는 {}
-					//console.log(data);
-					//받아온 데이터를 data의 모델에 넣어준다
-					self.startPageNum=data.startPageNum;
-					self.endPageNum=data.endPageNum;
-					self.totalPageCount=data.totalPageCount;
-					//pageNum을 업데이트 => couputed
-				});
-			},
+			
 			updateUI(){
 				//cafe 글 목록 요청해서 받아오기
 				let self=this;
@@ -334,7 +247,6 @@
 					//console.log(data);
 					//받아온 데이터를 data의 모델에 넣어준다
 					self.cafeList=data;
-					self.currentCafeList=data;
 				});
 				//하단 페이징 처리 데이터 받아오기
 				ajaxPromise(base_url+"/ajax/cafe/paging.do","get","pageNum="+this.pageNum)
@@ -368,6 +280,7 @@
 			this.updateUI();
 		}
 	});
+
 
 
 

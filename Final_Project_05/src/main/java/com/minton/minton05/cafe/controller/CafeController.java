@@ -27,6 +27,19 @@ public class CafeController {
 	@Autowired private CafeService service;
 	@Autowired private CafeDao cafeDao;
 	
+	//새 글 저장 - ajax 요청에 대한 폼 제출
+	@RequestMapping("/cafe/ajax/insert")
+	@ResponseBody
+	public Map<String, Object> authAjaxInsert(CafeDto dto, HttpServletRequest request) {
+		//글 작성자는 세션에서 얻어낸다. 
+		String id=(String)request.getSession().getAttribute("id");
+		//CafeDto 객체에 글 작성자도 담기
+		dto.setWriter(id);
+		service.saveContent(dto);
+		Map<String, Object>	map=new HashMap<>();
+		map.put("isSuccess", true);
+		return map;
+	}
 	
 	//꽉 찬 하트일 때 
 	@RequestMapping(value="/ajax/cafe/offLike", method = RequestMethod.POST)
