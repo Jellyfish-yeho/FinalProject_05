@@ -27,6 +27,13 @@ public class CafeController {
 	@Autowired private CafeService service;
 	@Autowired private CafeDao cafeDao;
 	
+	//ajax로 게시글 정보 얻어오기
+	@RequestMapping("/ajax/cafe/detail")
+	@ResponseBody
+	public CafeDto ajaxDetail(@RequestParam int num) {
+		service.updateReplyCount(num);		
+		return service.ajaxDetail(num);
+	}
 	
 	//꽉 찬 하트일 때 
 	@RequestMapping(value="/ajax/cafe/offLike", method = RequestMethod.POST)

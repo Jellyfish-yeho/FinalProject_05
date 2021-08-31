@@ -107,43 +107,36 @@
  -->
 	
 	<div class="article-head mt-4">
-		<div class="d-flex flex-column mb-4">
-			<div class="profile d-inline-flex me-2">
-			<c:choose>
-				<c:when test="${not empty dto.profile}">
-					<img class="profile-image" src="${pageContext.request.contextPath}${dto.profile}"/>
-				</c:when>
-				<c:otherwise>
-					<svg class="profile-image" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+		<div v-bind="detail" class="d-flex flex-column mb-4">
+			<div class="profile d-inline-flex me-2">			
+					<img v-if="detail.num != null" class="profile-image" :src="base_url+detail.profile"/>
+					<svg v-else class="profile-image" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
 						<path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
 						<path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
 					</svg>	
-				</c:otherwise>
-			</c:choose>
-
 			<div class="writerInfo2 d-flex flex-column">
 				<p class="writer fw-bold mb-0"> 
-					${dto.writer }
+					{{detail.writer}}
 				</p>				
 				<p class="date text-muted mb-0">
-					${dto.regdate }
+					{{detail.regdate}}
 				</p>
 			</div>
 		</div>
 		<div class="category">
-			${dto.category }
+			{{detail.category}}
 		</div>
 		<div class="title my-4 py-2">
 			<h2 class="fw-bold">
-				${dto.title }
+				{{detail.title}}
 			</h2>
 		</div>
 		<div class="view my-4 pb-4">
 			<span class="me-1 text-muted">조회수</span>
-			<span class="fw-bold me-3">${dto.viewCount }</span>
+			<span class="fw-bold me-3">{{detail.viewCount}}</span>
 		</div>
 		<div class="mainContent my-5">
-			${dto.content }
+			{{detail.content}}
 		</div>
 	</div>
 	
@@ -203,27 +196,7 @@
 	<span id="likeCounter" class="text-muted mx-1">
 		{{likeCounter}}
 	</span>
-	<!-- 
-	
-	<a data-num="${dto.num}" id="like" class="text-decoration-none link-danger">
-			<c:choose>
-				<c:when test="${isLogin eq true}">
-					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
-						<path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
-					</svg>
-				</c:when>
-				<c:otherwise>
-					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
-						<path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
-					</svg>
-				</c:otherwise>
-			</c:choose>			
-		</a>
-		<span id="likeCounter" class="text-muted mx-1">
-			{{likeCounter}}
-		</span>
-	 -->
-		
+
 	
    <%-- 댓글 목록 --%>
 	<hr class="mb-3" style="border: solid 1px gray;">
@@ -389,7 +362,19 @@
 		},
 		created(){
 			const self=this;
-			//this.likeCounter = ${dto.likeCount}
+			
+			//글 정보 읽어오기
+			ajaxPromise(base_url+"/ajax/cafe/detail","GET","num="+num)	
+			.then(function(response){
+				return response.json();
+			})
+			.then(function(data){
+				//data는 {num:xx, writer:xx, content: xx . . . . }
+				console.log(data);
+			})
+			//얻어온 정보를 model에 넣기
+			self.detail=data;
+			
 			//로그인 정보를 얻어와서
 			ajaxPromise(base_url+"/ajax/cafe/isLogin")
 			.then(function(response){

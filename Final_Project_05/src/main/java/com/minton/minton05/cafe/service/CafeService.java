@@ -39,4 +39,7 @@ public interface CafeService {
 	   
 	   //로그인 확인하기
 	   public Map<String, Object> ajaxCheckLogin(HttpServletRequest request);
+	   
+	   //ajax - 글 정보 가져오기
+	   public CafeDto ajaxDetail(@RequestParam int num);
 }
