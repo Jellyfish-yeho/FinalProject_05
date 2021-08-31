@@ -83,7 +83,8 @@
 <!-- 메인 carousel -->
   
 	<div>
-		<img src="${pageContext.request.contextPath}/resources/images/baaaaadminton.jpg" class="d-block w-100" alt=mainImage">
+		<%--<img src="${pageContext.request.contextPath}/resources/images/baaaaadminton.jpg" class="d-block w-100" alt=mainImage"> --%>
+		<img src="${pageContext.request.contextPath}/resources/images/bd.png" class="d-block w-100" alt=mainImage">
 	</div>
 	<div class="container-fluid mt-5" style="margin:0 auto; padding:5px;">
 	<div class="row">
