@@ -77,7 +77,7 @@
    <h1 class="fw-bold text-center my-4">자유게시판</h1> 
 	<%-- 새 글 작성 링크 --%>
 	<div class="mb-2" style="float:right;">
-		<a @click.prevent="insertCafe" href="" class="link-success text-decoration-none" >
+		<a href="insertForm.do" class="link-success text-decoration-none" >
 			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
 				<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
 				<path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
@@ -183,7 +183,7 @@
 	</div>
 	
 	<!-- 검색 -->   
-	<form @submit.prevent="search" action="${pageContext.request.contextPath}/ajax/cafe/list.do" method="get" ref="searchForm"> 
+	<form @submit.prevent="updateUI" action="${pageContext.request.contextPath}/ajax/cafe/list.do" method="get" ref="searchForm"> 
 		<div class="row g-3 align-items-center my-4">
 			<div class="col-auto">
 				<label class="form-label mb-0 fw-bold" for="condition">검색조건</label>
@@ -240,12 +240,17 @@
 			}
 		},
 		methods:{
-			search(){
+			movePage(pageNum){
+				this.pageNum=pageNum;
+				this.updateUI();
+			},
+			
+			updateUI(){
 				//cafe 글 목록 요청해서 받아오기
 				let self=this;
-				let form=this.$refs.searchForm;
 				//ajax 요청으로 cafe 글 목록을 json으로 받아온다.
-				ajaxFormPromise(form)
+				ajaxPromise(base_url+"/ajax/cafe/list.do","get", "pageNum="+this.pageNum+
+						"&keyword="+this.keyword+"&condition="+this.condition)
 				.then(function(response){
 					return response.json();
 				})
@@ -258,54 +263,6 @@
 				//하단 페이징 처리 데이터 받아오기
 				ajaxPromise(base_url+"/ajax/cafe/paging.do","get","pageNum="+this.pageNum+
 						"&keyword="+this.keyword+"&condition="+this.condition)
-				.then(function(response){
-					return response.json();
-				})
-				.then(function(data){
-					//data는 startPageNum, endPageNum, totalPageCount가 들어 있는 {}
-					//console.log(data);
-					//받아온 데이터를 data의 모델에 넣어준다
-					self.startPageNum=data.startPageNum;
-					self.endPageNum=data.endPageNum;
-					self.totalPageCount=data.totalPageCount;
-					//pageNum을 업데이트 => couputed
-				});
-			},
-			insert(){
-				//폼 제출
-				//폼의 참조값
-				const form = document.querySelector("#insertForm");
-				ajaxFormPromise(form)
-				.then(function(response){
-					return response.json();
-				})
-				.then(function(data){
-					console.log(data);
-					alert("글이 추가되었습니다.");
-				})
-			},
-			movePage(pageNum){
-				this.pageNum=pageNum;
-				this.updateUI();
-			},
-			
-			updateUI(){
-				//cafe 글 목록 요청해서 받아오기
-				let self=this;
-				//ajax 요청으로 cafe 글 목록을 json으로 받아온다.
-				ajaxPromise(base_url+"/ajax/cafe/list.do","get",
-						"pageNum="+this.pageNum)
-				.then(function(response){
-					return response.json();
-				})
-				.then(function(data){
-					//data는 cafe글 목록이 들어 있는 array
-					//console.log(data);
-					//받아온 데이터를 data의 모델에 넣어준다
-					self.cafeList=data;
-				});
-				//하단 페이징 처리 데이터 받아오기
-				ajaxPromise(base_url+"/ajax/cafe/paging.do","get","pageNum="+this.pageNum)
 				.then(function(response){
 					return response.json();
 				})
