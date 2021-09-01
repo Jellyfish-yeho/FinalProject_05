@@ -181,7 +181,29 @@
 		</ul>
 	
 	</div>
-    
+	
+	<!-- 검색 -->   
+	<form @submit.prevent="search" action="${pageContext.request.contextPath}/ajax/cafe/list.do" method="get" ref="searchForm"> 
+		<div class="row g-3 align-items-center my-4">
+			<div class="col-auto">
+				<label class="form-label mb-0 fw-bold" for="condition">검색조건</label>
+			</div>
+			<div class="col-auto">	
+				<select v-model="condition" class="form-select form-select-sm" name="condition" id="condition">
+					<option value="title_content">제목+내용</option>
+					<option value="title">제목</option>
+					<option value="writer">작성자</option>
+				</select>
+			</div>
+			<div class="col-auto">
+				<input class="form-control form-control-sm" type="text" id="keyword" name="keyword" 
+				placeholder="검색어..." v-model="keyword"/>
+			</div>
+			<div class="col-auto">
+				<button class="btn btn-outline-success btn-sm" type="submit">검색</button>
+			</div>
+		</div>
+	</form>     
 </div>
 <%-- footer --%>
 <jsp:include page="../../include/footer.jsp"></jsp:include>
@@ -196,6 +218,8 @@
 	let app=new Vue({
 		el:"#app",
 		data:{
+			condition:"",
+			keyword:"",
 			firstNotice:{},
 			cafeList:[],
 			base_url,
@@ -216,6 +240,37 @@
 			}
 		},
 		methods:{
+			search(){
+				//cafe 글 목록 요청해서 받아오기
+				let self=this;
+				let form=this.$refs.searchForm;
+				//ajax 요청으로 cafe 글 목록을 json으로 받아온다.
+				ajaxFormPromise(form)
+				.then(function(response){
+					return response.json();
+				})
+				.then(function(data){
+					//data는 cafe글 목록이 들어 있는 array
+					//console.log(data);
+					//받아온 데이터를 data의 모델에 넣어준다
+					self.cafeList=data;
+				});
+				//하단 페이징 처리 데이터 받아오기
+				ajaxPromise(base_url+"/ajax/cafe/paging.do","get","pageNum="+this.pageNum+
+						"&keyword="+this.keyword+"&condition="+this.condition)
+				.then(function(response){
+					return response.json();
+				})
+				.then(function(data){
+					//data는 startPageNum, endPageNum, totalPageCount가 들어 있는 {}
+					//console.log(data);
+					//받아온 데이터를 data의 모델에 넣어준다
+					self.startPageNum=data.startPageNum;
+					self.endPageNum=data.endPageNum;
+					self.totalPageCount=data.totalPageCount;
+					//pageNum을 업데이트 => couputed
+				});
+			},
 			insert(){
 				//폼 제출
 				//폼의 참조값
@@ -238,7 +293,8 @@
 				//cafe 글 목록 요청해서 받아오기
 				let self=this;
 				//ajax 요청으로 cafe 글 목록을 json으로 받아온다.
-				ajaxPromise(base_url+"/ajax/cafe/list.do","get","pageNum="+this.pageNum)
+				ajaxPromise(base_url+"/ajax/cafe/list.do","get",
+						"pageNum="+this.pageNum)
 				.then(function(response){
 					return response.json();
 				})

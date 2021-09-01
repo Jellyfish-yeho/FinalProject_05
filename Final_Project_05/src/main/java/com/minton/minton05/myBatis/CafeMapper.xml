@@ -56,7 +56,7 @@
       ]]>
    </select>
    
-   <select id="getCount" resultType="int">
+   <select id="getCount" parameterType="cafeDto" resultType="int">
       SELECT NVL(MAX(ROWNUM), 0)
       FROM board_cafe
       <include refid="searchCondition"/>

@@ -80,8 +80,9 @@ public class CafeController {
 	//ajax 요청에 대해 cafe 글 하단 페이징 처리에 필요한 데이터를 리턴
 	@RequestMapping("/ajax/cafe/paging")
 	@ResponseBody
-	public Map<String, Object> ajaxPaging(@RequestParam int pageNum){
-		return service.ajaxPaging(pageNum);
+	public Map<String, Object> ajaxPaging(@RequestParam int pageNum,
+			@RequestParam String keyword, @RequestParam String condition){
+		return service.ajaxPaging(pageNum, keyword, condition);
 	}
 	
 	//ajax 요청에 대해 notice 첫번째글 정보 응답

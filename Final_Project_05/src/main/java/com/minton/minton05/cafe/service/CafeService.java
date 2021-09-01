@@ -30,7 +30,8 @@ public interface CafeService {
 	   //ajax 요청용 - cafe 글 목록을 리턴하는 메소드
 	   public List<CafeDto> ajaxGetList(HttpServletRequest request);
 	   //ajax 요청용 - cafe 글하단 페이징 처리에 필요한 데이터를 리턴하는 메소드
-	   public Map<String, Object> ajaxPaging(@RequestParam int pageNum);
+	   public Map<String, Object> ajaxPaging(@RequestParam int pageNum,
+				@RequestParam String keyword, @RequestParam String condition);
 	   //ajax 요청용 - 공지사항 첫번째 글을 리턴하는 메소드
 	   public NoticeDto ajaxGetFirstNotice();
 	   
