@@ -293,7 +293,7 @@
 								<%--대댓글 수정 폼 --%>
 								<c:if test="${tmp.writer eq id }">
 									<form id="updateForm${tmp.num }" class="comment-form update-form" 
-									action="comment_update.jsp" method="post">
+									action="comment_update.do" method="post">
 										<input type="hidden" name="num" value="${tmp.num }" />
 						 				<textarea name="content">${tmp.content }</textarea>
 										<div align="right">

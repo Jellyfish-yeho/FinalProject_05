@@ -19,34 +19,12 @@ function swalSuccess(seq){
 		confirmButtonText: '확인'
 	}).then((result) => {
 		if (result.value) {
-		location.href="../detail.jsp?num=${dto.num}";
+		location.href="${pageContext.request.contextPath}/cafe/detail.do?num=${param.num}";
 	  }
 	})
 }
-function swalFail(seq){
-	Swal.fire({
-		title: '수정 실패',
-		text: '글 수정에 실패하였습니다.',
-		icon: 'error',
-		confirmButtonColor: '#198754',
-		confirmButtonText: '재시도'
-	}).then((result) => {
-		if (result.value) {
-		location.href="updateform.jsp?num=${dto.num}";
-	  }
-	})
-}
+swalSuccess();
 </script>
-	<%-- 
-   <%if(isSuccess){ %>
- 	<script>
-		swalSuccess();
-	</script>
-   <%}else{ %>
-	<script>
-		swalFail();
-	</script>
-   <%} %>
-	--%>
+
 </body>
 </html>

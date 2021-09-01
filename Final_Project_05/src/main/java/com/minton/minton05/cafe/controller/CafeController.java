@@ -106,19 +106,18 @@ public class CafeController {
 	}
 	
 	@RequestMapping("/cafe/insertform")
-	public String authInsertForm(HttpServletRequest request) {		
-		return "cafe/insertform";
+	public ModelAndView authInsertForm(HttpServletRequest request) {		
+		return new ModelAndView("cafe/insertform");
 	}
 	//새글 저장 요청 처리 - auth 처리
 	@RequestMapping("/cafe/insert")
-	public String authInsert(CafeDto dto, HttpServletRequest request) {
+	public ModelAndView authInsert(CafeDto dto, HttpServletRequest request) {
 		//글 작성자는 세션에서 얻어낸다. 
 		String id=(String)request.getSession().getAttribute("id");
 		//CafeDto 객체에 글 작성자도 담기
 		dto.setWriter(id);
 		service.saveContent(dto);
-		
-		return "cafe/insert";
+		return new ModelAndView("cafe/insert");
 	}
 	//글 자세히 보기 요청 처리
 	@RequestMapping("/cafe/detail")
@@ -166,24 +165,22 @@ public class CafeController {
 	}
 	//카페글 삭제 요청 처리
 	@RequestMapping("/cafe/delete")
-	public String authDelete(@RequestParam int num, HttpServletRequest request) {
-		
+	public ModelAndView authDelete(@RequestParam int num, HttpServletRequest request) {
 		service.deleteContent(num, request);
-		
-		return "redirect:/cafe/list.do";
+		return new ModelAndView("cafe/delete");
 	}
 	
 	//카페글 수정 처리
 	@RequestMapping("/cafe/updateform")
-	public String authUpdateForm(HttpServletRequest request) {		
+	public ModelAndView authUpdateForm(HttpServletRequest request) {		
 		service.getData(request);		
-		return "cafe/updateform";
+		return new ModelAndView("cafe/updateform");
 	}
 	//카페글 수정 요청 처리
 	@RequestMapping(value= "/cafe/update", method = RequestMethod.POST)
-	public String authUpdate(CafeDto dto, HttpServletRequest request) {
+	public ModelAndView authUpdate(CafeDto dto, HttpServletRequest request) {
 		service.updateContent(dto);
-		return "cafe/update";
+		return new ModelAndView("cafe/update");
 	}
 }
 
