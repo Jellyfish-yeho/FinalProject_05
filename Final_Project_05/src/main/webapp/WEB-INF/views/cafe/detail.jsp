@@ -9,7 +9,7 @@
 <link rel="icon" href="${pageContext.request.contextPath}/resources/images/shuttlecock_main.png" type="image/x-icon" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 <style>
-   .content{
+    .content{
       border: 1px dotted gray;
    }
    
@@ -88,7 +88,6 @@
    a{
    		cursor:pointer !important;
    }
-
 </style>
 </head>
 <body>
@@ -189,8 +188,8 @@
 		</svg>
 	</a>
 	<%-- 좋아요 / 임시 --%>
-	
-	<a v-if="isLiked" @click.prevent="offLike" id="like" class="text-decoration-none link-danger">
+	<!-- 
+		<a v-if="isLiked" @click.prevent="offLike" id="like" class="text-decoration-none link-danger">
 		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
 			<path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
 		</svg>
@@ -203,36 +202,19 @@
 	<span id="likeCounter" class="text-muted mx-1">
 		{{likeCounter}}
 	</span>
-	<!-- 
 	
-	<a data-num="${dto.num}" id="like" class="text-decoration-none link-danger">
-			<c:choose>
-				<c:when test="${isLogin eq true}">
-					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
-						<path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
-					</svg>
-				</c:when>
-				<c:otherwise>
-					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
-						<path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
-					</svg>
-				</c:otherwise>
-			</c:choose>			
-		</a>
-		<span id="likeCounter" class="text-muted mx-1">
-			{{likeCounter}}
-		</span>
 	 -->
-		
+
+
 	
    <%-- 댓글 목록 --%>
 	<hr class="mb-3" style="border: solid 1px gray;">
 	<p class="fs-5 mb-3"><strong>${totalRow }</strong> 개의 댓글</p>
 	
 	<!-- 원글에 댓글을 작성할 폼 -->
-	   <form class="comment-form insert-form" action="private/comment_insert.jsp" method="post">
+	   <form class="comment-form insert-form" action="comment_insert.do" method="post">
 	      <!-- 원글의 글번호가 댓글의 ref_group 번호가 된다. -->
-	      <input type="hidden" name="ref_group" value="${num }"/>
+	      <input type="hidden" name="ref_group" value="${dto.num }"/>
 	      <!-- 원글의 작성자가 댓글의 대상자가 된다. -->
 	      <input type="hidden" name="target_id" value="${dto.writer }"/>
 	      
@@ -282,10 +264,10 @@
 										<span class="p-1 m-1 text-muted" style="font-size:.875rem;">
 					                     	<i>@${tmp.target_id }</i>
 					                    </span>
-					                    <pre id="pre${tmp.num }">${tmp.content }</pre>
-					                    <a data-num="${tmp.num }" href="javascript:" class="reply-link text-decoration-none"
-	                     				style="padding-left:9.5px; color:#198754;">댓글</a>
-									</c:if>
+					                </c:if>    
+				                    <pre id="pre${tmp.num }">${tmp.content }</pre>
+				                    <a data-num="${tmp.num }" href="javascript:" class="reply-link text-decoration-none"
+                     				style="padding-left:9.5px; color:#198754;">댓글</a>									
 									<c:if test="${id ne null && tmp.writer eq id }">
 										<a data-num="${tmp.num }" class="update-link text-decoration-none link-dark px-2" href="javascript:">수정</a>
 										<a data-num="${tmp.num }" class="delete-link text-decoration-none link-dark" href="javascript:">삭제</a>
@@ -351,8 +333,7 @@
 			base_url,
 		},
 		computed:{
-			//likeCounter의 값이 바뀌면 자동으로 반영
-			
+						
 		},
 		methods:{
 			//전제조건 : 글정보 불러올 때 좋아요 정보도 같이 불러와야 함
@@ -388,10 +369,10 @@
 			},
 		},
 		created(){
+			/*
 			const self=this;
-			//this.likeCounter = ${dto.likeCount}
 			//로그인 정보를 얻어와서
-			ajaxPromise(base_url+"/ajax/cafe/isLogin")
+			ajaxPromise(base_url+"/ajax/cafe/isLogin", "get")
 			.then(function(response){
 				return response.json();
 			})
@@ -400,7 +381,8 @@
 				console.log(data);
 			})
 			//얻어온 정보를 model에 넣기
-			self.id=data.id;
+			self.id=this.id;
+			
 			
 			//id와 글 번호를 전달해서 select된 결과가 있으면 true를 리턴하는 메소드 요청
 			ajaxPromise(base_url+"/ajax/cafe/isLiked",
@@ -416,6 +398,8 @@
 			self.isLiked=true;
 			//data가 false이면 빈하트 표시
 			self.isLiked=false;
+			*/
+			
 			
 			
 		}
@@ -564,7 +548,7 @@
             const isDelete=confirm("댓글을 삭제하시겠습니까?");
             if(isDelete){
                // gura_util.js 에 있는 함수들 이용해서 ajax 요청
-               ajaxPromise("private/comment_delete.jsp", "post", "num="+num)
+               ajaxPromise("comment_delete.do", "post", "num="+num)
                .then(function(response){
                   return response.json();
                })

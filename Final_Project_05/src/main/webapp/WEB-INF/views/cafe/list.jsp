@@ -112,7 +112,7 @@
 				<th>공지</th>
 				<th>
 					<a class="link-dark text-decoration-none fw-bold" 
-      				href="/notice/detail.do"> <%--num 값 전달 --%>
+      				:href="base_url+'/notice/detail.do?num='+firstNotice.num"> <%--num 값 전달 --%>
       				{{firstNotice.title}}
       				</a>
       			</th>
@@ -127,8 +127,8 @@
 			<td>{{cafe.num}}</td>
 			<td>{{cafe.category}}</td>
 			<td>
-				<a class="link-dark text-decoration-none fw-bold">
-				<%-- href="detail.do?num"> --%><%--num 값 전달 --%>
+				<a class="link-dark text-decoration-none fw-bold"
+				:href="base_url+'/cafe/detail.do?num='+cafe.num+'&keyword='+keyword+'&condition='+condition">
 					{{cafe.title}}
 				</a>
 				<%-- 댓글 개수 출력  --%>

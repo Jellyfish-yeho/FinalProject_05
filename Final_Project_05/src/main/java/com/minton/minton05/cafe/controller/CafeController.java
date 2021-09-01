@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.minton.minton05.cafe.dao.CafeDao;
 import com.minton.minton05.cafe.dto.CafeCommentDto;
@@ -129,11 +130,11 @@ public class CafeController {
 	}
 	//새로운 댓글 저장 요청 처리 
 	@RequestMapping("/cafe/comment_insert")
-	public String authCommentInsert(HttpServletRequest request, 
-			@RequestParam int ref_group) {
-		service.saveComment(request);
-		
-		return "redirect:/cafe/detail.do?num="+ref_group;
+	public ModelAndView authCommentInsert(HttpServletRequest request, 
+			@RequestParam int ref_group, ModelAndView mView) {
+		service.saveComment(request);		
+		mView.setViewName("redirect:/cafe/detail.do?num="+ref_group);
+		return mView;
 	}
 	//댓글 더보기 요청 처리
 	@RequestMapping("/cafe/ajax_comment_list")
