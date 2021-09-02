@@ -65,6 +65,7 @@ public class UsersController {
       return mView;
    }
    
+   //비밀번호 업데이트하기 
    @RequestMapping("/users/pwd_update")
    public ModelAndView authPwdUpdate(UsersDto dto, 
          ModelAndView mView, HttpSession session, HttpServletRequest request) {
@@ -75,6 +76,7 @@ public class UsersController {
       return mView;
    }
    
+   //비밀번호 업데이트 폼 
    @RequestMapping("/users/pwd_updateform")
    public ModelAndView authPwdUpdateForm(HttpServletRequest request, ModelAndView mView) {
       
@@ -82,6 +84,7 @@ public class UsersController {
       return mView;
    }
    
+   //회원정보 
    @RequestMapping("/users/info")
    public ModelAndView authInfo(HttpSession session, ModelAndView mView,
          HttpServletRequest request) {

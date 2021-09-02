@@ -16,7 +16,7 @@
 	
 	<!-- 필요한 mapper xml 등록하기 -->
 	<mappers>
-		<mapper resource="com/minton/minton05/myBatis/UsersMapper.xml"/>
+    <mapper resource="com/minton/minton05/myBatis/UsersMapper.xml"/>
 		<mapper resource="com/minton/minton05/myBatis/GalleryMapper.xml"/>
 		<mapper resource="com/minton/minton05/myBatis/CafeMapper.xml"/>
 		<mapper resource="com/minton/minton05/myBatis/CafeCommentMapper.xml"/>

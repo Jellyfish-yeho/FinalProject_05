@@ -28,6 +28,7 @@ public class CafeController {
 	@Autowired private CafeService service;
 	@Autowired private CafeDao cafeDao;
 	
+
 	//새 글 저장 - ajax 요청에 대한 폼 제출
 	@RequestMapping("/cafe/ajax/insert")
 	@ResponseBody
@@ -40,6 +41,15 @@ public class CafeController {
 		Map<String, Object>	map=new HashMap<>();
 		map.put("isSuccess", true);
 		return map;
+  }
+
+	//ajax로 게시글 정보 얻어오기
+	@RequestMapping("/ajax/cafe/detail")
+	@ResponseBody
+	public CafeDto ajaxDetail(@RequestParam int num) {
+		service.updateReplyCount(num);		
+		return service.ajaxDetail(num);
+
 	}
 	
 	//꽉 찬 하트일 때 

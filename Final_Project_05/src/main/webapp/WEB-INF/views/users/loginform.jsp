@@ -6,8 +6,8 @@
 <head>
 <meta charset="UTF-8">
 <title>회원정보</title>
-<link rel="icon" href="${request.getContextPath()}/resources/images/shuttlecock_main.png" type="image/x-icon" />
-<link href="${pageContext.request.contextPath}/resources/formCss/form.css" rel="stylesheet">
+<link rel="icon" href="${request.getContextPath()}../../resources/images/shuttlecock_main.png" type="image/x-icon" />
+<link href="${pageContext.request.contextPath}../../resources/formCss/form.css" rel="stylesheet">
 <jsp:include page="../../include/resource.jsp"></jsp:include>
 <jsp:include page="../../include/icon.jsp"></jsp:include>
 <jsp:include page="../../include/font.jsp"></jsp:include>
@@ -27,7 +27,6 @@
 	
 </style>
 </head>
-<body>
 <div class="text-center container form-signin">
 	<form action="${pageContext.request.contextPath}/users/login.do" method="post">
 	<img class="mb-4" src="${pageContext.request.contextPath}/resources/images/shuttlecock_main.png" width="100" height="100"/>

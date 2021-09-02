@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <title>회원정보</title>
 <link rel="icon" href="${pageContext.request.contextPath}/images/shuttlecock_main.png" type="image/x-icon" />
+<link href="${pageContext.request.contextPath}/resources/formCss/form.css" rel="stylesheet">
 <jsp:include page="../../include/resource.jsp"></jsp:include>
 <jsp:include page="../../include/icon.jsp"></jsp:include>
 <jsp:include page="../../include/font.jsp"></jsp:include>
@@ -54,23 +55,23 @@
 		<input type="hidden" name="profile" 
 			value="${ empty dto.profile ? '' : dto.profile}"/>
 			<div class="d-flex d-inline-flex flex-column justify-content-center">
-			<div>
+			<div style="margin:7px;">
 				<label class="form-label" for="id">아이디</label>
 				<input class="form-control form-control-sm" type="text" id="id" value="${id }" disabled/>
 				</div>
-			<div style = "padding: 5px 1px 2px 3px;">  
+			<div style="margin:7px;">  
 				<label class="form-label" for="pwd">비밀번호</label>
 				<a href="${pageContext.request.contextPath}/users/pwd_updateform.do">
-				<svg class="text-decoration-none" style="color:#198754" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+				<svg class="text-decoration-none" style="color:#198754" "padding: 5px 1px 2px 3px;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
 				<path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
 				</svg>
 				</a>
 			</div>
-		<div>
-			<label class="form-label" for="email">이메일</label>
+		<div style = "margin: -2px;">
+			<label class="form-label" for="email" >이메일</label>
 			<input class="form-control form-control-sm" type="text" name="email" id="email" value="${dto.email }"/>
 		</div>
-		<div style = "padding: 5px 1px 2px 3px;">  
+		<div style = "margin: 8px;">  
 			<button class="btn w-50 btn-outline-success btn-sm" type="submit">적용 </button>
 			<a class="mt-2 mb-4 w-50 btn btn-sm btn-outline-danger" href="javascript:history.back();">뒤로가기</a>
 		</div>

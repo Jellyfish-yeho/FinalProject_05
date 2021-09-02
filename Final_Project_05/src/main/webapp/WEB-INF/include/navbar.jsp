@@ -14,7 +14,6 @@
 <%-- homeController에서 모든 요청에 대해 
 	thisPage읽어오기, 로그인된 아이디 읽어와서 request에 저장, url 경로 구성 request에 저장--%>
 	<div class="container2 d-flex justify-content-end align-items-center" style="background-color: #014618;">
-		
 		<c:choose>
 			<c:when test="${empty id}">
 				<a class="btn btn-outline-light btn-sm m-1" 

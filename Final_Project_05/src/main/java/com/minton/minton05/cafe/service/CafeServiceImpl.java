@@ -519,6 +519,16 @@ public class CafeServiceImpl implements CafeService{
 		}
 	}
 	
+	//ajax - 글 정보 가져오기
+	@Override
+	public CafeDto ajaxDetail(int num) {
+		//조회수 올리기
+		cafeDao.addViewCount(num);
+		//글번호를 사용하여 글정보 가져오기
+		CafeDto dto = cafeDao.getData(num);
+		return dto;
+	}
+	
 
 	
 

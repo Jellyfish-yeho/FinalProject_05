@@ -23,7 +23,6 @@ public class GalleryDaoImpl implements GalleryDao{
 	//gallery 의 모든 리스트 가져오기
 	@Override
 	public List<GalleryDto> getList(GalleryDto dto) {
-		
 		return session.selectList("gallery.getList", dto);
 	}
 	
@@ -59,18 +58,19 @@ public class GalleryDaoImpl implements GalleryDao{
 	 * parameterType : int
 	 * resultType : GalleryDto
 	 */
+	//gallery 사진게시글 한개정보
 	@Override
 	public GalleryDto getData(int num) {
 		return session.selectOne("gallery.getData", num);
 	}
-	//gallery 사진게시글삭제
+	//gallery 사진게시글 삭제
 	@Override
 	public void delete(int num) {
 		session.delete("gallery.delete", num);
 	}
 	//좋아요 수 증가시키기
-	@Override
-	public void addLikeCount(int num) {
-		session.update("gallery.addLikeCount", num);
-	}
+	//@Override
+	//public void addLikeCount(int num) {
+	//	session.update("gallery.addLikeCount", num);
+	//}
 }

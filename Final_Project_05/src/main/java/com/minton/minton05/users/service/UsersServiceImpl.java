@@ -22,7 +22,8 @@ import com.minton.minton05.users.dto.UsersDto;
 public class UsersServiceImpl implements UsersService {
    @Autowired
    private UsersDao dao;
-
+   
+   //아이디 중복 확인 
    @Override
    public Map<String, Object> isExistId(String inputId) {
       //Map 객체를 생성해서 
@@ -33,7 +34,7 @@ public class UsersServiceImpl implements UsersService {
             return map;
          }
 
-  
+    //비밀번호 암호화 
     @Override
      public void addUser(UsersDto dto) {
      //사용자가 입력한 비밀 번호를 읽어와서 
@@ -47,7 +48,7 @@ public class UsersServiceImpl implements UsersService {
      dao.insert(dto);
     }
 
- 
+    //로그인 처리 
    @Override
    public void loginProcess(UsersDto dto, HttpSession session) {
 	   //입력한 정보가 맞는여부
@@ -68,7 +69,7 @@ public class UsersServiceImpl implements UsersService {
          session.setAttribute("id", dto.getId());
       }
    }
-
+   //회원정보 불러오기 
    @Override
    public void getInfo(HttpSession session, ModelAndView mView) {
       //로그인된 아이디를 읽어온다. 
@@ -78,6 +79,7 @@ public class UsersServiceImpl implements UsersService {
       //ModelAndView 객체에 담아준다.
       mView.addObject("dto", dto);
    }
+   //회원 비밀번호 업데이트 
    @Override
    public void updateUserPwd(HttpSession session, UsersDto dto, ModelAndView mView) {
       //세션 영역에서 로그인된 아이디 읽어오기
@@ -109,7 +111,7 @@ public class UsersServiceImpl implements UsersService {
       //로그인된 아이디도 담아준다.
       mView.addObject("id", id);
    }
-
+   //프로필 이미지 
    @Override
    public Map<String, Object> saveProfileImage(HttpServletRequest request, MultipartFile mFile) {
       //업로드된 파일에 대한 정보를 MultipartFile 객체를 이용해서 얻어낼수 있다.   
@@ -142,6 +144,7 @@ public class UsersServiceImpl implements UsersService {
 
       return map;
    }
+   	  //회원 정보 수정 
       @Override
       public void updateUser(UsersDto dto, HttpSession session) {
          //수정할 회원의 아이디
@@ -152,6 +155,8 @@ public class UsersServiceImpl implements UsersService {
          //UsersDao 를 이용해서 수정 반영한다.
          dao.update(dto);
       }
+      
+   //회원 탈퇴 처리    
    @Override
    public void deleteUser(HttpSession session, ModelAndView mView) {
       //로그인된 아이디를 얻어와서 
