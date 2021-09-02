@@ -58,7 +58,7 @@ public class CafeController {
 	public Map<String, Object> ajaxOffLike(LikeDto likeDto){
 		Map<String, Object>	map=new HashMap<>();
 		cafeDao.like_delete(likeDto);
-		cafeDao.minusViewCount(likeDto.getCafe_num());
+		cafeDao.minusLikeCount(likeDto.getCafe_num());
 		map.put("isSuccess", true);
 		return map;
 	}
@@ -68,9 +68,14 @@ public class CafeController {
 	@ResponseBody
 	public Map<String, Object> ajaxOnLike(LikeDto likeDto){
 		Map<String, Object>	map=new HashMap<>();
-		cafeDao.like_insert(likeDto);
-		cafeDao.addViewCount(likeDto.getCafe_num());
-		map.put("isSuccess", true);
+		//중복 좋아요를 방지하기 위해 확인 후 insert
+		if(service.ajaxCheckLike(likeDto)!=null) {
+			cafeDao.like_insert(likeDto);
+			cafeDao.addLikeCount(likeDto.getCafe_num());
+			map.put("isSuccess", true);
+		}else {
+			map.put("isSuccess", false);
+		}		
 		return map;
 	}
 	
@@ -82,7 +87,7 @@ public class CafeController {
 	}
 	
 	//로그인 유저가 특정 게시물을 추천했는지 확인
-	@RequestMapping("/ajax/cafe/isLiked")
+	@RequestMapping(value="/ajax/cafe/isLiked", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> ajaxIsLiked(LikeDto likeDto){
 		return service.ajaxCheckLike(likeDto);

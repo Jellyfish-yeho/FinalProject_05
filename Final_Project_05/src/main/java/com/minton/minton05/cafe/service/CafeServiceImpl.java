@@ -494,6 +494,8 @@ public class CafeServiceImpl implements CafeService{
 	//로그인한 유저가 게시물을 추천했는지 확인
 	@Override
 	public Map<String, Object> ajaxCheckLike(LikeDto dto) {
+		//System.out.println(dto.getLiked_user());
+		//System.out.println(dto.getCafe_num());
 		LikeDto likeDto = cafeDao.isLiked(dto);
 		Map<String, Object>	map=new HashMap<>();
 		if(likeDto != null) {			
@@ -517,6 +519,7 @@ public class CafeServiceImpl implements CafeService{
 			map.put("id", "");
 			return map;
 		}
+		
 	}
 	
 	//ajax - 글 정보 가져오기

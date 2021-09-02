@@ -89,11 +89,16 @@ public class CafeDaoImpl implements CafeDao{
 		session.delete("cafe.likeDelete", dto);
 	}
 
-	//조회수 내리기
+	//좋아요수 내리기
 	@Override
-	public void minusViewCount(int num) {
-		session.update("cafe.minusViewCount", num);
+	public void minusLikeCount(int num) {
+		session.update("cafe.minusLikeCount", num);
 	}
 
+	//좋아요수 올리기
+	@Override
+	public void addLikeCount(int num) {
+		session.update("cafe.addLikeCount", num);
+	}
 
 }

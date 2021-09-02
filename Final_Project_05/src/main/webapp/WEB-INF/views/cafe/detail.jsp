@@ -19,6 +19,8 @@
       height: 50px;
       border: 1px solid #cecece;
       border-radius: 50%;
+      margin-right: 10px;
+      margin-bottom: 10px;
    }
    /* ul 요소의 기본 스타일 제거 */
    .comments ul{
@@ -96,15 +98,14 @@
 	<jsp:param value="cafe" name="thisPage"/>
 </jsp:include>
 <div class="container my-4 py-4" id="ccontainer">
-<!-- 
-	<c:if test="${ not empty keyword }">
-			<p>	
-				<strong>${condition }</strong> 조건, 
-				<strong>${keyword }</strong> 검색어로 검색된 내용 자세히 보기 
-			</p>
-		</c:if>
- -->
-	
+
+<c:if test="${ not empty param.keyword }">
+	<p>	
+		<strong>${param.condition }</strong> 조건, 
+		<strong>${param.keyword }</strong> 검색어로 검색된 내용 자세히 보기 
+	</p>
+</c:if>
+
 	<div class="article-head mt-4">
 		<div v-bind="detail" class="d-flex flex-column mb-4">
 			<div class="profile d-inline-flex me-2">			
@@ -115,27 +116,27 @@
 					</svg>	
 			<div class="writerInfo2 d-flex flex-column">
 				<p class="writer fw-bold mb-0"> 
-					{{detail.writer}}
+					${dto.writer}
 				</p>				
 				<p class="date text-muted mb-0">
-					{{detail.regdate}}
+					${dto.regdate}
 				</p>
 			</div>
 		</div>
 		<div class="category">
-			{{detail.category}}
+			${dto.category}
 		</div>
 		<div class="title my-4 py-2">
 			<h2 class="fw-bold">
-				{{detail.title}}
+				${dto.title}
 			</h2>
 		</div>
 		<div class="view my-4 pb-4">
 			<span class="me-1 text-muted">조회수</span>
-			<span class="fw-bold me-3">{{detail.viewCount}}</span>
+			<span class="fw-bold me-3">${dto.viewCount}</span>
 		</div>
 		<div class="mainContent my-5">
-			{{detail.content}}
+			${dto.content}
 		</div>
 	</div>
 	
@@ -181,21 +182,21 @@
 		</svg>
 	</a>
 	<%-- 좋아요 / 임시 --%>
-	<!-- 
-		<a v-if="isLiked" @click.prevent="offLike" id="like" class="text-decoration-none link-danger">
+	
+	<a v-if="isLiked === true" @click.prevent="offLike" class="text-decoration-none link-danger">
 		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
 			<path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
 		</svg>
 	</a>
-	<a v-else @click.prevent="onLike" id="like" class="text-decoration-none link-danger">
+	<a v-else @click.prevent="onLike" class="text-decoration-none link-danger">
 		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
 			<path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
 		</svg>
 	</a>
-	<span id="likeCounter" class="text-muted mx-1">
-		{{likeCounter}}
+	<span v-bind="detail" class="text-muted mx-1">
+		{{detail.likeCount}}
 	</span>	
-	 -->
+	 
 
 
 	
@@ -309,10 +310,11 @@
 	</div>
 </div>
 <script src="${pageContext.request.contextPath}/resources/js/gura_util.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script>
-	const base_url="http://localhost8888/minton05";	
+	const base_url="http://localhost:8888/minton05";	
 
 	//Vue 객체
 	let app = new Vue({
@@ -320,121 +322,104 @@
 		data:{
 			detail:{},
 			id:"",
-			isLiked:false,
-			likeCounter:0,
+			isLiked:"",
 			base_url,
 		},
 		computed:{
-						
+			
 		},
 		methods:{
 			//전제조건 : 글정보 불러올 때 좋아요 정보도 같이 불러와야 함
 			offLike(){
+				const self=this;
 				//likeCount -1, liketo table에서 좋아요 정보 삭제하는 요청
-				ajaxPromise(base_url+"/ajax/cafe/offLike", "POST", 
+				ajaxPromise(base_url+"/ajax/cafe/offLike.do", "POST", 
 						"liked_user="+self.id+"&cafe_num="+self.detail.num)
 				.then(function(response){
 					return response.json();
 				})
 				.then(function(data){
 					//data는 {isSuccess:true}
-					console.log(data);
+					if(data.isSuccess){
+						//결과를 모델에 반영하기 - 빈하트 표시, counter-1
+						self.isLiked=false;
+						self.detail.likeCount --;
+					}
 				})
-				//결과를 모델에 반영하기 - 빈하트 표시, counter-1
-				this.isLiked=false;
-				this.likeCounter = this.likeCounter -1;
+				
 			},
 			onLike(){
-				//likeCount +1, liketo table에서 좋아요 정보 추가하는 요청
-				ajaxPromise(base_url+"/ajax/cafe/onLike", "POST", 
-						"liked_user="+self.id+"&cafe_num="+self.detail.num)
-				.then(function(response){
-					return response.json();
-				})
-				.then(function(data){
-					//data는 {isSuccess:true}
-					console.log(data);
-				})
-				//결과를 모델에 반영하기 - 찬하트 표시, counter+1
-				this.isLiked=true;
-				this.likeCounter = this.likeCounter +1;
+				const self=this;
+				//로그인을 해야 좋아요를 누를 수 있도록 함
+				let isExist=false;
+				if(self.id === ""){
+					alert("로그인을 해야 좋아요를 누를 수 있습니다.");
+				}else{
+					//likeCount +1, liketo table에서 좋아요 정보 추가하는 요청
+					ajaxPromise(base_url+"/ajax/cafe/onLike.do", "POST", 
+							"liked_user="+self.id+"&cafe_num="+self.detail.num)
+					.then(function(response){
+						return response.json();
+					})
+					.then(function(data){
+						//data는 {isSuccess:true / false}
+						//console.log(data);
+						if(data.isSuccess){ //isSuccess가 true일 경우에 하트 추가
+							//결과를 모델에 반영하기 - 찬하트 표시, counter+1
+							self.isLiked=true;
+							self.detail.likeCount ++;
+						}
+					})					
+				}				
 			},
 		},
-		created(){
-			/*
+		created(){			
 			const self=this;
 			
 			//글 정보 읽어오기
-			ajaxPromise(base_url+"/ajax/cafe/detail","GET","num="+num)	
+			ajaxPromise(base_url+"/ajax/cafe/detail.do","GET","num="+${param.num})	
 			.then(function(response){
 				return response.json();
 			})
 			.then(function(data){
 				//data는 {num:xx, writer:xx, content: xx . . . . }
-				console.log(data);
+				//얻어온 정보를 model에 넣기
+				self.detail=data;
 			})
-			//얻어온 정보를 model에 넣기
-			self.detail=data;
-
+			
+			
 			//로그인 정보를 얻어와서
-			ajaxPromise(base_url+"/ajax/cafe/isLogin", "get")
+			ajaxPromise(base_url+"/ajax/cafe/isLogin.do", "GET")
 			.then(function(response){
 				return response.json();
 			})
 			.then(function(data){
 				//data는 {id:xxx 또는 빈문자열}
-				console.log(data);
+				//얻어온 정보를 model에 넣기
+				self.id=data.id;
 			})
-			//얻어온 정보를 model에 넣기
-			self.id=this.id;
 			
-			
-			//id와 글 번호를 전달해서 select된 결과가 있으면 true를 리턴하는 메소드 요청
-			ajaxPromise(base_url+"/ajax/cafe/isLiked",
-					"get","liked_user="+self.id+"&cafe_num="+self.detail.num)
+			ajaxPromise(base_url+"/ajax/cafe/isLiked.do",
+					"get","liked_user="+'${id}'+"&cafe_num="+${param.num})
 			.then(function(response){
 				return response.json();
 			})
 			.then(function(data){
 				//data는 {isLiked:true/false}
-				console.log(data);
-			});
-			//data가 true이면 꽉찬하트 표시
-			self.isLiked=true;
-			//data가 false이면 빈하트 표시
-			self.isLiked=false;
-			*/
-			
-			
-			
+				//console.log(data);
+				if(data.isLiked == true){
+					//data가 true이면 꽉찬하트 표시
+					self.isLiked=true;
+				}else{
+					//data가 false이면 빈하트 표시
+					self.isLiked=false;
+				}
+				
+			});	
 		}
 	});
 	
 	
-	
-	/*
-		$("#like").on("click",function(){
-		if(${isLogin}){
-			let likeCounter = Number($("#likeCounter").text());
-			$("#likeCounter").text(likeCounter+1);
-			//좋아요 개수를 서버로 전송한다
-			$.ajax({	
-				url:"${pageContext.request.contextPath}/cafe/like_insert.do",
-				type:"get",
-				data: "likeCounter="+likeCounter+"&num=${dto.num}>",
-				success:function(data){
-					if(data.isSuccess){
-						$("#likeCounter1").text(${dto.likeCount});
-					}
-				}
-			});
-		}else{
-			alert("로그인 후 좋아요를 누를 수 있습니다.");
-		};	
-	})
-	*/
-
-
 	//url 클립보드에 복사하기
 	var currentUrl = document.getElementById("urlInput");
 	currentUrl.value = window.document.location.href;  // 현재 URL 을 세팅해 줍니다.
