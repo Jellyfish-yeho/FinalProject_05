@@ -73,17 +73,10 @@
 </head>
 <body>
 
-<%-- navbar include --%> 
 <jsp:include page="../include/navbar.jsp"></jsp:include>
-	
-<%-- 쿠키 읽어오기 --%>
 
-<%-- 팝업 띄우기 --%>
-
-<!-- 메인 carousel -->
-  
+	<!-- 메인 carousel -->  
 	<div>
-		<%--<img src="${pageContext.request.contextPath}/resources/images/baaaaadminton.jpg" class="d-block w-100" alt=mainImage"> --%>
 		<img src="${pageContext.request.contextPath}/resources/images/bd.png" class="d-block w-100" alt=mainImage">
 	</div>
 	<div id="app" class="container-fluid mt-5" style="margin:0 auto; padding:5px;">
@@ -321,6 +314,19 @@
 				//console.log(data);
 				//받아온 데이터를 data의 모델에 넣어준다
 				self.galleryList=data;
+			});
+			
+			//popup을 띄울지 여부를 받아온다
+			ajaxPromise(base_url+"/popup/isPopup.do","get")
+			.then(function(response){
+				return response.json();
+			})
+			.then(function(data){
+				//data는 {isPopup:false} 또는 없음
+				//true이면 popup을 열도록 한다
+				if(data.isPopup != false){
+					window.open(base_url+"/popup/popup.do","창의제목","width=470,height=470,top=100,left=100");
+				}
 			});
 		}
 	});
