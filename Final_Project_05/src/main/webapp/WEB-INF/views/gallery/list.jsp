@@ -72,7 +72,7 @@
 </jsp:include>
 <div class="container my-4" id="ccontainer">
 	<h1 class="fw-bold my-4 text-center">갤러리</h1>
-
+	<a href="${pageContext.request.contextPath}/gallery/vue-gallery.html">뷰 갤러리 ㄱㄱㄱ</a>
    	<%-- 새 글 작성 링크 --%>
 	<div class="mb-2 d-flex justify-content-end">
 		<a class="link-success text-decoration-none" href="${pageContext.request.contextPath}/gallery/ajax_form.do">

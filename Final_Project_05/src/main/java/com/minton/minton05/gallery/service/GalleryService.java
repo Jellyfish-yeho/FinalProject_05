@@ -27,4 +27,6 @@ public interface GalleryService {
 	//갤러리 글 삭제하기
 	public void deleteContent(int num);
 	
+	//갤러리 목록을 리턴하는 메소드 
+	public List<GalleryDto> getList2(HttpServletRequest request);
 }

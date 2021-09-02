@@ -32,7 +32,7 @@ public class GalleryController {
 	@ResponseBody
 	public Map<String, Object> paging(@RequestParam int pageNum){
 		//한 페이지에 몇개씩 표시할 것인지
-		final int PAGE_ROW_COUNT=8;
+		final int PAGE_ROW_COUNT=9;
 		//하단 페이지를 몇개씩 표시할 것인지
 		final int PAGE_DISPLAY_COUNT=5;
 		//하단 시작 페이지 번호 
@@ -101,24 +101,24 @@ public class GalleryController {
 	}
 	
 	
-	//ajax 요청에 대해 Gallery 목록을 출력할 컨트롤러 메소드 
-//	@RequestMapping("/api/gallery/list")
-//	@ResponseBody 
-//	public List<GalleryDto> getList2(HttpServletRequest request){
-//		return service.getList2(request);
-//	}
+	//ajax 요청에 대해 Gallery 목록을 출력할 컨트롤러 메소드  -vue페이지 용
+	@RequestMapping("/api/gallery/list")
+	@ResponseBody 
+	public List<GalleryDto> getList2(HttpServletRequest request){
+		return service.getList2(request);
+	}
 	
-	//gallery 사진 업로드 - ajax
+	//gallery 사진 업로드 - ajax -vue페이지용
 	//json 으로 return 할 것
-//	@RequestMapping(value = "/gallery/ajax_upload2")
-//	@ResponseBody
-//	public Map<String, Object> testAjaxUpload2(GalleryDto dto, HttpServletRequest request){		
+	@RequestMapping(value = "/gallery/ajax_upload2")
+	@ResponseBody
+	public Map<String, Object> testAjaxUpload2(GalleryDto dto, HttpServletRequest request){		
 		//form 에서 dto 로 데이터 받아옴
 		//dto : MultipartFile image 를 가지고 있다.
 		//request : imagePath 만드는데 사용, session 영역의 id 가져오는데 사용
 		//return : { "imagePath" : "/upload/123456img_name.png" } 형식의 JSON 응답
-//		return service.uploadAjaxImage(dto, request);
-//	}	
+		return service.uploadAjaxImage(dto, request);
+	}	
 	
 	//imagePath 구성 X -> dto 로 imagePath 를 받아서 DB 에 저장하기
 	@RequestMapping(value = "/gallery/insert")
