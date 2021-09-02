@@ -532,6 +532,31 @@ public class CafeServiceImpl implements CafeService{
 		return dto;
 	}
 	
+	//ajax 요청용 - cafe 글 목록을 리턴하는 메소드 - index용 : 5개씩 리턴, 검색X
+	@Override
+	public List<CafeDto> ajaxGetListIndex(HttpServletRequest request) {
+		//한 페이지에 몇개씩 표시할 것인지
+		final int PAGE_ROW_COUNT=5;
+		
+		//보여줄 페이지의 번호는 1
+		int pageNum=1;
+				
+		//보여줄 페이지의 시작 ROWNUM
+		int startRowNum=1+(pageNum-1)*PAGE_ROW_COUNT;
+		//보여줄 페이지의 끝 ROWNUM
+		int endRowNum=pageNum*PAGE_ROW_COUNT;
+		
+		//CafeDto 객체에 startRowNum 과 endRowNum 을 담는다.
+		CafeDto dto=new CafeDto();
+		dto.setStartRowNum(startRowNum);
+		dto.setEndRowNum(endRowNum);
+
+		//글 목록 얻어오기 
+		List<CafeDto> list=cafeDao.getList(dto);
+
+		return list;
+	}
+	
 
 	
 

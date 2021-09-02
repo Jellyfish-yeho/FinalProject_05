@@ -42,4 +42,7 @@ public interface CafeService {
 	   
 	   //ajax - 글 정보 가져오기
 	   public CafeDto ajaxDetail(@RequestParam int num);
+	   
+	   //ajax 요청용 - cafe 글 목록을 리턴하는 메소드 - index용
+	   public List<CafeDto> ajaxGetListIndex(HttpServletRequest request);
 }

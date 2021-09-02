@@ -183,6 +183,31 @@ public class GalleryServiceImpl implements GalleryService {
 		dao.update(dto);
 	}
 
+	//ajax 요청용 - 갤러리 목록을 가져오는 메소드 
+	@Override
+	public List<GalleryDto> ajaxGetListIndex(HttpServletRequest request) {
+		//한 페이지에 몇개씩 표시할 것인지
+		final int PAGE_ROW_COUNT=5;
+	
+		//보여줄 페이지의 번호를 일단 1이라고 초기값 지정
+		int pageNum=1;
+				   
+		//보여줄 페이지의 시작 ROWNUM
+		int startRowNum=1+(pageNum-1)*PAGE_ROW_COUNT;
+		//보여줄 페이지의 끝 ROWNUM
+		int endRowNum=pageNum*PAGE_ROW_COUNT;	
+		
+		//Dto 객체에 startRowNum 과 endRowNum 을 담는다.
+		GalleryDto dto=new GalleryDto();
+		dto.setStartRowNum(startRowNum);
+		dto.setEndRowNum(endRowNum);
+
+		//글 목록 얻어오기 
+		List<GalleryDto> list=dao.getList(dto);
+	      
+		return list;
+	}
+
 //	@Override
 //	public List<GalleryDto> getList2(HttpServletRequest request) {
 		//한 페이지에 몇개씩 표시할 것인지

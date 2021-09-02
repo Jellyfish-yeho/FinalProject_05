@@ -9,8 +9,7 @@ import com.minton.minton05.notice.dto.NoticeDto;
 public interface NoticeService {
 	//공지사항 목록을 가져오는 메소드 - request 영역에 저장 
 	public void getList(HttpServletRequest request);
-	public List<NoticeDto> getList2(HttpServletRequest request);
-	
+		
 	//공지사항 글 1개에 대한 정보를 가져오는 메소드 - request 영역에 저장
 	public void getData(HttpServletRequest request); 
 	
@@ -25,4 +24,7 @@ public interface NoticeService {
 	
 	//공지사항 글 삭제하는 메소드
 	public void deleteContent(int num);
+	
+	//ajax 요청용 - 공지사항 목록을 가져오는 메소드 
+	public List<NoticeDto> ajaxGetListIndex(HttpServletRequest request);
 }

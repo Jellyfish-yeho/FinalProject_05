@@ -18,12 +18,11 @@ public class NoticeController {
 
 	@Autowired private NoticeService service; //service 주입
 	
-	//공지사항 목록을 가져오는 메소드
-	@RequestMapping("/api/notice/list")
+	//공지사항 목록을 가져오는 메소드 - index용
+	@RequestMapping("/ajax/notice/listIndex")
 	@ResponseBody 
-	public List<NoticeDto> getList2(HttpServletRequest request) {
-		
-		return service.getList2(request); //같은 위치로 리턴
+	public List<NoticeDto> ajaxGetListIndex(HttpServletRequest request) {		
+		return service.ajaxGetListIndex(request);
 	}
 	
 	//공지사항 목록을 가져오는 메소드

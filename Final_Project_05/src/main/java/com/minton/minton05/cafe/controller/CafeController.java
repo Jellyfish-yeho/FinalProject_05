@@ -28,6 +28,12 @@ public class CafeController {
 	@Autowired private CafeService service;
 	@Autowired private CafeDao cafeDao;
 	
+	//ajax 요청에 대해 cafe 글 목록을 출력 - index page 용
+	@RequestMapping("/ajax/cafe/listIndex")
+	@ResponseBody
+	public List<CafeDto> ajaxGetListIndex(HttpServletRequest request){
+		return service.ajaxGetListIndex(request);
+	}
 
 	//새 글 저장 - ajax 요청에 대한 폼 제출
 	@RequestMapping("/cafe/ajax/insert")
