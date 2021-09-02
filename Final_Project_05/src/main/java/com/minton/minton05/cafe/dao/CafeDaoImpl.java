@@ -22,9 +22,9 @@ public class CafeDaoImpl implements CafeDao{
 	}
 	
 	@Override
-	public int getCount() {
+	public int getCount(CafeDto dto) {
 		
-		return session.selectOne("cafe.getCount");
+		return session.selectOne("cafe.getCount", dto);
 	}
 	
 	@Override

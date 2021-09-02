@@ -71,22 +71,22 @@
 			<div class="collapse navbar-collapse me-5" id="navbarNav">
 			<ul class="navbar-nav me-auto">
 				<li class="nav-item me-5">
-					<a class="nav-link ${empty thisPage?'active':''}" href="${pageContext.request.contextPath}/">홈</a>
+					<a class="nav-link ${empty param.thisPage?'active':''}" href="${pageContext.request.contextPath}/">홈</a>
 				</li>
 				<li class="nav-item me-5">
-					<a class="nav-link ${thisPage eq 'club'?'active':''}" href="${pageContext.request.contextPath}/info/aboutClub.do">소개</a>
+					<a class="nav-link ${param.thisPage eq 'club'?'active':''}" href="${pageContext.request.contextPath}/info/aboutClub.do">소개</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link me-5 ${thisPage eq 'notice'?'active':''}" href="${pageContext.request.contextPath}/notice/list.do">공지사항</a>
+					<a class="nav-link me-5 ${param.thisPage eq 'notice'?'active':''}" href="${pageContext.request.contextPath}/notice/list.do">공지사항</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link me-5 ${thisPage eq 'cafe'?'active':''}" href="${pageContext.request.contextPath}/cafe/list.do">자유게시판</a>
+					<a class="nav-link me-5 ${param.thisPage eq 'cafe'?'active':''}" href="${pageContext.request.contextPath}/cafe/list.do">자유게시판</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link me-5 ${thisPage eq 'gallery'?'active':''}" href="${pageContext.request.contextPath}/gallery/list.do">갤러리</a>
+					<a class="nav-link me-5 ${param.thisPage eq 'gallery'?'active':''}" href="${pageContext.request.contextPath}/gallery/list.do">갤러리</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link me-5 ${thisPage eq 'faq'?'active':''}" href="${pageContext.request.contextPath}/faq/faq.do">FAQ</a>
+					<a class="nav-link me-5 ${param.thisPage eq 'faq'?'active':''}" href="${pageContext.request.contextPath}/faq/faq.do">FAQ</a>
 				</li>
 			</ul>
 			</div>
