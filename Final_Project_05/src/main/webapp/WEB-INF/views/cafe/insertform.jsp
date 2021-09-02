@@ -7,8 +7,9 @@
 <meta charset="UTF-8">
 <title>자유게시판</title>
 <link rel="icon" href="${pageContext.request.contextPath}/images/shuttlecock_main.png" type="image/x-icon" />
-<link href="${pageContext.request.contextPath}/users/form.css" rel="stylesheet">
-
+<jsp:include page="../../include/resource.jsp"></jsp:include>
+<jsp:include page="../../include/icon.jsp"></jsp:include>
+<link href="${pageContext.request.contextPath}/resources/formCss/form.css" rel="stylesheet">
 <style>
 	#content{
 		height: 400px;
@@ -19,7 +20,7 @@
 <body>
 <div class="container my-4">
 	<h1 class="fw-bold my-4">새 글 작성</h1>
-	<form action="insert.jsp" method="post" id="insertForm">
+	<form action="insert.do" method="post" id="insertForm">
 		<div class="d-flex d-inline-flex flex-column mb-3">
 			<div>
 				<label class="form-label" for="category">분류</label>

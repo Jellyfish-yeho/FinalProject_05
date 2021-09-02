@@ -11,7 +11,7 @@ public interface CafeDao {
 	//글목록
 	public List<CafeDto> getList(CafeDto dto); 
 	//글의 갯수
-    public int getCount();
+    public int getCount(CafeDto dto);
     //글 추가
     public void insert(CafeDto dto);
     //글정보 얻어오기

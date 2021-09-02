@@ -41,7 +41,7 @@
 			(SELECT <include refid="dto"/>,
 				LAG(num,1,0) OVER (ORDER BY num DESC) AS prevNum,
 				LEAD(num,1,0) OVER (ORDER BY num DESC) AS nextNum
-			FROM board_notice
+			FROM board_notice) result1
 		WHERE num=#{num}
 	</select>
 	
@@ -52,7 +52,7 @@
 				LAG(num,1,0) OVER (ORDER BY num DESC) AS prevNum,
 				LEAD(num,1,0) OVER (ORDER BY num DESC) AS nextNum
 			FROM board_notice
-		<include refid="searchCondition"/>)result1
+		<include refid="searchCondition"/>) result1
 		WHERE num=#{num}
 	</select>
 	
@@ -65,8 +65,8 @@
 	<insert id="insert" parameterType="noticeDto">
 		INSERT INTO board_notice
 		(num, writer, title, content, viewCount, regdate)
-		VALUES (board_notice_seq.NEXTVAL), #{writer}, #{title},
-		#{content}, #{viewCount}, SYSDATE)
+		VALUES(board_notice_seq.NEXTVAL, #{writer}, #{title},
+		#{content}, 0, SYSDATE)
 	</insert>
 	
 	<update id="update" parameterType="noticeDto">
