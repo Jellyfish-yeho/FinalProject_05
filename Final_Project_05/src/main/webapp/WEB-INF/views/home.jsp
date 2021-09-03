@@ -205,7 +205,7 @@
 		</div>
 	</div>
 	
-	<%-- 갤러리  --%>
+	<!-- gallery -->
 	<div class="row pt-3 text-center vertical">
 	<h2 class="text-center my-3" style="color:rgb(2,38,94);text-shadow:1px 1px 1px rgb(1,148,148);">갤러리</h2>
 		<div class="col-lg-12 col-xs-12">
@@ -226,7 +226,7 @@
 		</div>
 	</div>
 </div>
-<%--footer include --%>
+<!-- footer -->
 <jsp:include page="../include/footer.jsp"></jsp:include>
 <script src="https://code.jquery.com/jquery-latest.js"></script> 
 <!-- The Modal -->

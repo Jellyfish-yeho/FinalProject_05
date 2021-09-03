@@ -1,6 +1,7 @@
 package com.minton.minton05.notice.service;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -25,6 +26,14 @@ public interface NoticeService {
 	//공지사항 글 삭제하는 메소드
 	public void deleteContent(int num);
 	
-	//ajax 요청용 - 공지사항 목록을 가져오는 메소드 
+	//ajax 요청용/index용- 공지사항 목록을 가져오는 메소드 
 	public List<NoticeDto> ajaxGetListIndex(HttpServletRequest request);
+
+	//ajax 요청용 - 공지사항 목록을 가져오는 메소드 
+	public List<NoticeDto> ajaxGetList(HttpServletRequest request);
+
+	//ajax 요청용 - 공지사항 글하단 페이징 처리에 필요한 데이터를 리턴하는 메소드
+	public Map<String, Object> ajaxPaging(HttpServletRequest request);
+	  
+
 }

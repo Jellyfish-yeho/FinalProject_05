@@ -28,6 +28,21 @@ public class CafeController {
 	@Autowired private CafeService service;
 	@Autowired private CafeDao cafeDao;
 	
+	//ajax - 댓글 페이지 정보 가져오기
+	@RequestMapping("/ajax/cafe/commentPaging")
+	@ResponseBody
+	public Map<String, Object> ajaxGetCommentPaging(HttpServletRequest request){
+		return service.ajaxGetCommentPaging(request);
+	}
+	
+
+	//ajax - 댓글 정보 가져오기
+	@RequestMapping("/ajax/cafe/commentList")
+	@ResponseBody
+	public List<CafeCommentDto> ajaxGetCommentList(HttpServletRequest request){
+		return service.ajaxGetCommentList(request);
+	}
+	
 	//ajax 요청에 대해 cafe 글 목록을 출력 - index page 용
 	@RequestMapping("/ajax/cafe/listIndex")
 	@ResponseBody
@@ -52,9 +67,10 @@ public class CafeController {
 	//ajax로 게시글 정보 얻어오기
 	@RequestMapping("/ajax/cafe/detail")
 	@ResponseBody
-	public CafeDto ajaxDetail(@RequestParam int num) {
+	public CafeDto ajaxDetail(HttpServletRequest request) {
+		int num = Integer.parseInt(request.getParameter("num"));
 		service.updateReplyCount(num);		
-		return service.ajaxDetail(num);
+		return service.ajaxDetail(request);
 
 	}
 	

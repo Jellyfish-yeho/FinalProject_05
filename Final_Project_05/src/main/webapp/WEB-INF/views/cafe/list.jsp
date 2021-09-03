@@ -91,10 +91,7 @@
       <thead>
          <tr>
             <th>번호</th>
-            <th>
-            
-            	카테고리
-            </th>
+            <th>카테고리</th>
             <th>제목</th>
             <th>작성자</th>
             <th>날짜</th>
@@ -160,7 +157,7 @@
       </tbody>
    </table>
    <div class="page-ui">
-		<%-- 페이지 앞으로 가기 --%>
+		<!-- 페이징 -->
 		<ul class="pagination justify-content-center">
 			<li v-if="startPageNum != 1" class="page-item">
 				<a v-on:click.prevent="movePage(startPageNum-1)" class="page-link" href="">&lt;</a>

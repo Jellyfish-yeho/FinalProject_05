@@ -97,15 +97,13 @@
 <jsp:include page="../../include/navbar.jsp">
 	<jsp:param value="cafe" name="thisPage"/>
 </jsp:include>
-<div class="container my-4 py-4" id="ccontainer">
-
+<div class="container my-4 py-4" id="app">
 <c:if test="${ not empty param.keyword }">
 	<p>	
 		<strong>${param.condition }</strong> 조건, 
 		<strong>${param.keyword }</strong> 검색어로 검색된 내용 자세히 보기 
 	</p>
 </c:if>
-
 	<div class="article-head mt-4">
 		<div v-bind="detail" class="d-flex flex-column mb-4">
 			<div class="profile d-inline-flex me-2">			
@@ -116,73 +114,64 @@
 					</svg>	
 			<div class="writerInfo2 d-flex flex-column">
 				<p class="writer fw-bold mb-0"> 
-					${dto.writer}
+					{{detail.writer}}
 				</p>				
 				<p class="date text-muted mb-0">
-					${dto.regdate}
+					{{detail.regdate}}
 				</p>
 			</div>
 		</div>
 		<div class="category">
-			${dto.category}
+			{{detail.category}}
 		</div>
 		<div class="title my-4 py-2">
 			<h2 class="fw-bold">
-				${dto.title}
+				{{detail.title}}
 			</h2>
 		</div>
 		<div class="view my-4 pb-4">
 			<span class="me-1 text-muted">조회수</span>
-			<span class="fw-bold me-3">${dto.viewCount}</span>
+			<span class="fw-bold me-3">{{detail.viewCount}}</span>
 		</div>
-		<div class="mainContent my-5">
-			${dto.content}
-		</div>
+		<div v-html="detail.content" class="mainContent my-5"></div>
 	</div>
 	
 	<ul class="d-flex flex-row ps-0 justify-content-end" style="list-style:none;">	
-		<c:if test="${dto.writer eq id }">
-			<li>
-				<a class="link-dark text-decoration-none mx-1" href="updateform.do?num=${dto.num }">수정</a>
-			</li>
-			<li>
-				<a class="link-dark text-decoration-none mx-1" href="delete.do?num=${dto.num }">삭제</a>
-			</li>
-		</c:if> 
+		<li v-if="detail.writer === id">
+			<a class="link-dark text-decoration-none mx-1" :href="'updateform.do?num='+detail.num">수정</a>
+		</li>
+		<li v-if="detail.writer === id">
+			<a class="link-dark text-decoration-none mx-1" href="'delete.do?num='+detail.num">삭제</a>
+		</li>
 	</ul>
 	
 	<ul class="mb-5 d-flex flex-row ps-0 justify-content-center" style="list-style:none;">
-	   
-	    <c:if test="${dto.prevNum ne 0 }">
-	   	<li>
-			<a class="link-success text-decoration-none" href="detail.do?num=${dto.prevNum }&keyword=${encodedK }&condition=${condition }">
+	   	<li v-if="detail.prevNum != 0">
+			<a class="link-success text-decoration-none" 
+			v-on:click.prevent="movePagePrev">
 			&lt이전글
 			</a>
 		</li>
-		</c:if>
 		<li class="mx-3">
 			<a class="fw-bold link-success text-decoration-none" href="list.do">목록보기</a>
 		</li>
-		<c:if test="${dto.nextNum ne 0 }">
-		<li>			   
-			<a class="link-success text-decoration-none" href="detail.do?num=${dto.nextNum }&keyword=${encodedK }&condition=${condition }">
+		<li v-if="detail.nextNum != 0">			   
+			<a class="link-success text-decoration-none" 
+			v-on:click.prevent="movePageNext">
 			다음글&gt	     	
 	      </a>
-		</li>
-		</c:if>    	    
+		</li>   	    
 	</ul>
-	<%-- 북마크 --%>	
+	<!-- 북마크 -->
 	<input type="text" id="urlInput" class="form-control form-control-sm"
-	style="display:block; position:absolute; left:-100000px"/>
-		
+	style="display:block; position:absolute; left:-100000px"/>		
 	<a id="bookmark" class="text-decoration-none link-dark mx-2"
-	onclick="javascript:urlClipCopy();">
+	@click="urlClipCopy">
 		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-fill" viewBox="0 0 16 16">
 			<path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/>
 		</svg>
 	</a>
-	<%-- 좋아요 / 임시 --%>
-	
+	<!-- 좋아요 -->
 	<a v-if="isLiked === true" @click.prevent="offLike" class="text-decoration-none link-danger">
 		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
 			<path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
@@ -196,112 +185,131 @@
 	<span v-bind="detail" class="text-muted mx-1">
 		{{detail.likeCount}}
 	</span>	
-	 
-
 
 	
-   <%-- 댓글 목록 --%>
+	<!-- 댓글 -->
 	<hr class="mb-3" style="border: solid 1px gray;">
-	<p class="fs-5 mb-3"><strong>${totalRow }</strong> 개의 댓글</p>
+	<p v-bind:value="totalRow" class="fs-5 mb-3"><strong>{{totalRow}}</strong> 개의 댓글</p>
 	
-	<!-- 원글에 댓글을 작성할 폼 -->
-	   <form class="comment-form insert-form" action="comment_insert.do" method="post">
-	      <!-- 원글의 글번호가 댓글의 ref_group 번호가 된다. -->
-	      <input type="hidden" name="ref_group" value="${dto.num }"/>
-	      <!-- 원글의 작성자가 댓글의 대상자가 된다. -->
-	      <input type="hidden" name="target_id" value="${dto.writer }"/>
+		<form class="comment-form insert-form" action="comment_insert.do" method="post">
+			<!-- 원글의 글번호가 댓글의 ref_group 번호가 된다. -->
+			<input type="hidden" name="ref_group" v-bind:value="detail.num"/>
+			<!-- 원글의 작성자가 댓글의 대상자가 된다. -->
+			<input type="hidden" name="target_id" v-bind:value="detail.writer"/>
 	      
-	      <textarea name="content" placeholder="새 댓글 작성하기">
-	      <c:if test="${id ==null }">
-				댓글 작성을 위해 로그인이 필요합니다.
-	      </c:if>
-	      </textarea>
-	      <div align="right">
-	      	<button class="btn btn-sm btn-outline-success" type="submit">등록</button>
-	      </div>		
-	   </form>
-	
-   <div class="comments">
-		<ul>
-			<c:forEach var="tmp" items="${commentList }">
-				<c:choose>
-					<c:when test="${tmp.deleted eq 'yes' }">
-						<li>삭제된 댓글입니다.</li>
-					</c:when>
-					<c:otherwise>
-					<c:if test="${tmp.num eq tmp.comment_group }">
-						<li id="reli${tmp.num }">
-					</c:if>
-					<c:if test="${tmp.num ne tmp.comment_group }">
-						<li id="reli${tmp.num }" style="padding-left:50px;">
-							<svg class="reply-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-return-right" viewBox="0 0 16 16">
-								<path fill-rule="evenodd" d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5z"/>
+			<textarea v-if="id!=''" name="content" placeholder="새 댓글 작성하기"></textarea>
+			<textarea v-else name="content" style="text-align:center;">댓글 작성을 위해 로그인이 필요합니다.</textarea>
+			
+			<div align="right">
+				<button class="btn btn-sm btn-outline-success" type="submit">등록</button>
+			</div>		
+		</form>
+
+		<div class="comments">
+	   		<ul v-for="comment in commentList" :key="comment.num">
+	   			<li v-if="comment.deleted === 'yes'">삭제된 댓글입니다.</li> 
+	   			<li v-else-if="comment.num === comment.comment_group" id="reli+comment.num">
+					<dl>
+						<dt>
+							<svg v-if="comment.profile === null" class="profile-image me-2" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+								<path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+								<path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
 							</svg>
-					</c:if>
-							<dl>
-								<dt>
-									<c:if test="${ empty tmp.profile }">
-										<svg class="profile-image me-2" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
-					                          <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-					                          <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
-					                     </svg>
-									</c:if>
-									<c:if test="${not empty tmp.profile }">
-										<img class="profile-image me-2" src="${pageContext.request.contextPath}${tmp.profile }"/>
-									</c:if>
-									<span class="fw-bold">${tmp.writer }</span>
-									<span class="fw-light text-muted mx-1">${tmp.regdate }</span>
-								</dt>
-								<dd>
-									<c:if test="${tmp.num ne tmp.comment_group }">
-										<span class="p-1 m-1 text-muted" style="font-size:.875rem;">
-					                     	<i>@${tmp.target_id }</i>
-					                    </span>
-					                </c:if>    
-				                    <pre id="pre${tmp.num }">${tmp.content }</pre>
-				                    <a data-num="${tmp.num }" href="javascript:" class="reply-link text-decoration-none"
-                     				style="padding-left:9.5px; color:#198754;">댓글</a>									
-									<c:if test="${id ne null && tmp.writer eq id }">
-										<a data-num="${tmp.num }" class="update-link text-decoration-none link-dark px-2" href="javascript:">수정</a>
-										<a data-num="${tmp.num }" class="delete-link text-decoration-none link-dark" href="javascript:">삭제</a>
-									</c:if>
-								</dd>
-								<dd>
-								<%--대댓글 폼 --%>
-								<form id="reForm${tmp.num }" class="animate__animated comment-form re-insert-form" 
+							<img v-else class="profile-image me-2" :src="base_url+comment.profile"/>
+							<span class="fw-bold">{{comment.writer}}</span>
+							<span class="fw-light text-muted mx-1">{{comment.regdate}}</span>
+						</dt>
+						<dd>
+							<span v-if="comment.num != comment.comment_group" class="p-1 m-1 text-muted" style="font-size:.875rem;">
+								<i>@{{comment.target_id}}</i>
+							</span>
+							<pre id="pre+comment.num">{{comment.content}}</pre>
+							<a data-num="comment.num" href="javascript:" class="reply-link text-decoration-none"
+								style="padding-left:9.5px; color:#198754;">댓글</a>
+							<a v-if="id !=null && comment.writer===id" data-num="comment.num" 
+								class="update-link text-decoration-none link-dark px-2" href="javascript:">수정</a>
+							<a v-if="id !=null && comment.writer===id" data-num="comment.num" 
+								class="delete-link text-decoration-none link-dark" href="javascript:">삭제</a>									
+						</dd>	
+						<dd>
+							<form id="reForm+comment.num" class="animate__animated comment-form re-insert-form" 
 								action="comment_insert.do" method="post">
-									<input type="hidden" name="ref_group"
-									value="${dto.num }"/>
-									<input type="hidden" name="target_id"
-				 					value="${tmp.writer }"/>
-				 					<input type="hidden" name="comment_group"
-									value="${tmp.comment_group }"/>
-									<textarea name="content"></textarea>
-									<div align="right">
+								<input type="hidden" name="ref_group" value="detail.num"/>
+								<input type="hidden" name="target_id" value="comment.writer"/>
+			 					<input type="hidden" name="comment_group" value="comment.comment_group"/>
+								<textarea name="content"></textarea>
+								<div align="right">
 									<button class="btn btn-sm btn-outline-success" type="submit">등록</button>
-									</div>
-								</form>  
-								</dd>
-								<dd>
-								<%--대댓글 수정 폼 --%>
-								<c:if test="${tmp.writer eq id }">
-									<form id="updateForm${tmp.num }" class="comment-form update-form" 
-									action="comment_update.do" method="post">
-										<input type="hidden" name="num" value="${tmp.num }" />
-						 				<textarea name="content">${tmp.content }</textarea>
-										<div align="right">
-										<button class="btn btn-sm btn-outline-success" type="submit">수정</button>
-										</div>
-									</form>
-								</c:if>
-								</dd>
-							</dl>
-						</li>
-				</c:otherwise>					
-			</c:choose>				
-		</c:forEach>
-	</ul>
-	</div>
+								</div>
+							</form>  
+						</dd>	
+						<dd>
+							<form id="updateForm+comment.num" class="comment-form update-form" 
+								action="comment_update.do" method="post">
+								<input type="hidden" name="num" value="detail.num" />
+				 				<textarea name="content">{{comment.content}}</textarea>
+								<div align="right">
+									<button class="btn btn-sm btn-outline-success" type="submit">수정</button>
+								</div>
+							</form>					
+						</dd>							
+					</dl>	
+	   			</li> 
+	   			<li v-else="comment.num != comment.comment_group" id="reli+comment.num" style="padding-left:50px;">
+	   				<svg class="reply-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-return-right" viewBox="0 0 16 16">
+						<path fill-rule="evenodd" d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5z"/>
+					</svg>				
+					<dl>
+						<dt>
+							<svg v-if="comment.profile === null" class="profile-image me-2" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+								<path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+								<path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+							</svg>
+							<img v-else class="profile-image me-2" :src="base_url+comment.profile"/>
+							<span class="fw-bold">{{comment.writer}}</span>
+							<span class="fw-light text-muted mx-1">{{comment.regdate}}</span>
+						</dt>
+						<dd>
+							<span v-if="comment.num != comment.comment_group" class="p-1 m-1 text-muted" style="font-size:.875rem;">
+								<i>@{{comment.target_id}}</i>
+							</span>
+							<pre id="pre+comment.num">{{comment.content}}</pre>
+							<a data-num="comment.num" href="javascript:" class="reply-link text-decoration-none"
+								style="padding-left:9.5px; color:#198754;">댓글</a>
+							<a v-if="id !=null && comment.writer===id" data-num="comment.num" 
+								class="update-link text-decoration-none link-dark px-2" href="javascript:">수정</a>
+							<a v-if="id !=null && comment.writer===id" data-num="comment.num" 
+								class="delete-link text-decoration-none link-dark" href="javascript:">삭제</a>									
+						</dd>	
+						<dd>
+							<form id="reForm+comment.num" class="animate__animated comment-form re-insert-form" 
+								action="comment_insert.do" method="post">
+								<input type="hidden" name="ref_group" value="detail.num"/>
+								<input type="hidden" name="target_id" value="comment.writer"/>
+			 					<input type="hidden" name="comment_group" value="comment.comment_group"/>
+								<textarea name="content"></textarea>
+								<div align="right">
+									<button class="btn btn-sm btn-outline-success" type="submit">등록</button>
+								</div>
+							</form>  
+						</dd>	
+						<dd>
+							<form id="updateForm+comment.num" class="comment-form update-form" 
+								action="comment_update.do" method="post">
+								<input type="hidden" name="num" value="detail.num" />
+				 				<textarea name="content">{{comment.content}}</textarea>
+								<div align="right">
+									<button class="btn btn-sm btn-outline-success" type="submit">수정</button>
+								</div>
+							</form>					
+						</dd>							
+					</dl>				
+	   			</li>  			
+	   		</ul>
+			<div @click="moreComment" v-if="isMoreButtonShow" class="d-grid gap-2">
+				<button class="btn btn-outline-success">댓글 더보기</button>
+			</div>
+		</div>
 		<div class="loader my-4">
 			<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-circle-fill" viewBox="0 0 16 16">
 				<circle cx="8" cy="8" r="8"/>
@@ -309,6 +317,7 @@
 		</div>
 	</div>
 </div>
+<jsp:include page="../../include/footer.jsp"></jsp:include>
 <script src="${pageContext.request.contextPath}/resources/js/gura_util.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -318,8 +327,16 @@
 
 	//Vue 객체
 	let app = new Vue({
-		el:'#ccontainer',
+		el:'#app',	
 		data:{
+			keyword:'',
+			encodedK:'',
+			condition:'',
+			totalRow:0,
+			isMoreButtonShow:false,
+			totalPageCount:0,//댓글 총 페이지
+			pageNum:1,//댓글 페이지 - 초기값1
+			commentList:[],
 			detail:{},
 			id:"",
 			isLiked:"",
@@ -329,7 +346,214 @@
 			
 		},
 		methods:{
-			//전제조건 : 글정보 불러올 때 좋아요 정보도 같이 불러와야 함
+			movePageNext(){ //다음 페이지
+				const self=this;				
+				//글 정보 읽어오기
+				ajaxPromise(base_url+"/ajax/cafe/detail.do","GET",
+						"num="+self.detail.nextNum+"&keyword="+self.encodedK+"&condition="+self.condition)	
+				.then(function(response){
+					return response.json();
+				})
+				.then(function(data){
+					//data는 {num:xx, writer:xx, content: xx . . . . }
+					//얻어온 정보를 model에 넣기
+					self.detail=data;
+				})
+				//댓글 정보 읽어오기
+				ajaxPromise(base_url+"/ajax/cafe/commentList.do","GET",
+						"pageNum="+this.pageNum+"&num="+self.detail.nextNum)	
+				.then(function(response){
+					return response.json();
+				})
+				.then(function(data){
+					//data는 {num:xx, writer:xx, content: xx . . . . }
+					//얻어온 정보를 model에 넣기
+					self.commentList=data;
+					//만약 댓글 총 페이지가 1개 이하이면 더보기 버튼 숨기기
+				})
+				
+				//댓글 정보 읽어오기
+				ajaxPromise(base_url+"/ajax/cafe/commentList.do","GET",
+						"pageNum="+this.pageNum+"&num="+self.detail.nextNum)	
+				.then(function(response){
+					return response.json();
+				})
+				.then(function(data){
+					//data는 {num:xx, writer:xx, content: xx . . . . }
+					//얻어온 정보를 model에 넣기
+					self.commentList=data;
+					//만약 댓글 총 페이지가 1개 이하이면 더보기 버튼 숨기기
+				})
+				
+				//로그인한 유저가 좋아요를 눌렀는지 확인
+				ajaxPromise(base_url+"/ajax/cafe/isLiked.do",
+						"get","liked_user="+'${id}'+"&cafe_num="+self.detail.nextNum)
+				.then(function(response){
+					return response.json();
+				})
+				.then(function(data){
+					//data는 {isLiked:true/false}
+					//console.log(data);
+					if(data.isLiked == true){
+						//data가 true이면 꽉찬하트 표시
+						self.isLiked=true;
+					}else{
+						//data가 false이면 빈하트 표시
+						self.isLiked=false;
+					}				
+				});	
+				
+				//로그인 정보를 얻어와서
+				ajaxPromise(base_url+"/ajax/cafe/isLogin.do", "GET")
+				.then(function(response){
+					return response.json();
+				})
+				.then(function(data){
+					//data는 {id:xxx 또는 빈문자열}
+					//얻어온 정보를 model에 넣기
+					self.id=data.id;
+				})	
+				
+				//댓글 더보기 처리를 위해 totalPageCount가져오기
+				ajaxPromise(base_url+"/ajax/cafe/commentPaging.do","GET",
+						"pageNum="+this.pageNum+"&num="+self.detail.nextNum)	
+				.then(function(response){
+					return response.json();
+				})
+				.then(function(data){
+					//data는 {totalPageCount:x, totalRow:x}
+					//얻어온 정보를 model에 넣기
+					self.totalRow=data.totalRow;
+					self.totalPageCount=data.totalPageCount;
+					//만약 댓글 총 페이지가 2 이상이면 더보기버튼 보이기
+					if(data.totalPageCount>=2){
+						self.isMoreButtonShow=true;
+					}
+				})			
+			},			
+			movePagePrev(){ //이전 페이지
+				const self=this;				
+				//글 정보 읽어오기
+				ajaxPromise(base_url+"/ajax/cafe/detail.do","GET",
+						"num="+self.detail.prevNum+"&keyword="+self.encodedK+"&condition="+self.condition)	
+				.then(function(response){
+					return response.json();
+				})
+				.then(function(data){
+					//data는 {num:xx, writer:xx, content: xx . . . . }
+					//얻어온 정보를 model에 넣기
+					self.detail=data;
+				})
+				//댓글 정보 읽어오기
+				ajaxPromise(base_url+"/ajax/cafe/commentList.do","GET",
+						"pageNum="+this.pageNum+"&num="+self.detail.prevNum)	
+				.then(function(response){
+					return response.json();
+				})
+				.then(function(data){
+					//data는 {num:xx, writer:xx, content: xx . . . . }
+					//얻어온 정보를 model에 넣기
+					self.commentList=data;
+					//만약 댓글 총 페이지가 1개 이하이면 더보기 버튼 숨기기
+				})
+				
+				//댓글 정보 읽어오기
+				ajaxPromise(base_url+"/ajax/cafe/commentList.do","GET",
+						"pageNum="+this.pageNum+"&num="+self.detail.prevNum)	
+				.then(function(response){
+					return response.json();
+				})
+				.then(function(data){
+					//data는 {num:xx, writer:xx, content: xx . . . . }
+					//얻어온 정보를 model에 넣기
+					self.commentList=data;
+					//만약 댓글 총 페이지가 1개 이하이면 더보기 버튼 숨기기
+				})
+				
+				//로그인한 유저가 좋아요를 눌렀는지 확인
+				ajaxPromise(base_url+"/ajax/cafe/isLiked.do",
+						"get","liked_user="+'${id}'+"&cafe_num="+self.detail.prevNum)
+				.then(function(response){
+					return response.json();
+				})
+				.then(function(data){
+					//data는 {isLiked:true/false}
+					//console.log(data);
+					if(data.isLiked == true){
+						//data가 true이면 꽉찬하트 표시
+						self.isLiked=true;
+					}else{
+						//data가 false이면 빈하트 표시
+						self.isLiked=false;
+					}				
+				});	
+				
+				//로그인 정보를 얻어와서
+				ajaxPromise(base_url+"/ajax/cafe/isLogin.do", "GET")
+				.then(function(response){
+					return response.json();
+				})
+				.then(function(data){
+					//data는 {id:xxx 또는 빈문자열}
+					//얻어온 정보를 model에 넣기
+					self.id=data.id;
+				})	
+				
+				//댓글 더보기 처리를 위해 totalPageCount가져오기
+				ajaxPromise(base_url+"/ajax/cafe/commentPaging.do","GET",
+						"pageNum="+this.pageNum+"&num="+self.detail.prevNum)	
+				.then(function(response){
+					return response.json();
+				})
+				.then(function(data){
+					//data는 {totalPageCount:x, totalRow:x}
+					//얻어온 정보를 model에 넣기
+					self.totalRow=data.totalRow;
+					self.totalPageCount=data.totalPageCount;
+					//만약 댓글 총 페이지가 2 이상이면 더보기버튼 보이기
+					if(data.totalPageCount>=2){
+						self.isMoreButtonShow=true;
+					}
+				})				
+			},
+			urlClipCopy(){
+				//url 클립보드에 복사하기
+				var currentUrl = document.getElementById("urlInput");
+				currentUrl.value = window.document.location.href;  // 현재 URL
+				function urlClipCopy(){
+					currentUrl.select();  // url 값을 select()로 선택
+					document.execCommand("copy"); // 클립보드에 복사
+					currentUrl.blur();
+					alert("URL이 클립보드에 복사되었습니다."); 
+				}
+			},
+			moreComment(){ //댓글 더 가져오기
+				const self=this;
+				//마지막 페이지는 totalPageCount 이다.  
+				//totalPageCount는 commentList에서  얻어오기
+				let lastPage=this.commentList[0].totalPageCount;
+				console.log(lastPage);
+				//현재 페이지가 마지막 페이지인지 여부 알아내기 : 현재페이지 = 마지막페이지, 마지막페이지=0
+				let isLast = currentPage == lastPage;
+				let isLastNone= lastPage==0;
+				//마지막 페이지가 아니라면 
+				if(!isLast && !isLastNone){		         
+					//현재 댓글 페이지를 1 증가 시키고 
+					currentPage++;
+					ajaxPromise(base_url+"/ajax/cafe/commentList.do","GET",
+						"pageNum="+currentPage+"&num="+self.detail.num)
+					.then(function(response){
+						return response.json();
+					})
+					.then(function(data){
+						//데이터를 모델에 추가하고 댓글 다시 불러와서 표시하기
+						self.commentList=[self.commentList, ...data];
+						
+						//더보기 버튼 숨기기
+						self.isMoreButtonShow=false;
+					});
+				}					
+			},
 			offLike(){
 				const self=this;
 				//likeCount -1, liketo table에서 좋아요 정보 삭제하는 요청
@@ -376,8 +600,21 @@
 		created(){			
 			const self=this;
 			
+			let condition='${param.condition}';
+			let keyword='${param.keyword}';
+			let encodedK=encodeURI('${param.keyword}');			
+			//키워드와 조건이 존재하면 모델에 넣어주기
+			if(!condition){
+				self.condition=condition;
+			}
+			if(!keyword){
+				self.keyword=keyword;
+				self.encodedK=encodedK;	
+			}
+			
 			//글 정보 읽어오기
-			ajaxPromise(base_url+"/ajax/cafe/detail.do","GET","num="+${param.num})	
+			ajaxPromise(base_url+"/ajax/cafe/detail.do","GET",
+					"num="+${param.num}+"&keyword="+encodedK+"&condition="+condition)	
 			.then(function(response){
 				return response.json();
 			})
@@ -387,18 +624,33 @@
 				self.detail=data;
 			})
 			
-			
-			//로그인 정보를 얻어와서
-			ajaxPromise(base_url+"/ajax/cafe/isLogin.do", "GET")
+			//댓글 정보 읽어오기
+			ajaxPromise(base_url+"/ajax/cafe/commentList.do","GET",
+					"pageNum="+this.pageNum+"&num="+${param.num})	
 			.then(function(response){
 				return response.json();
 			})
 			.then(function(data){
-				//data는 {id:xxx 또는 빈문자열}
+				//data는 {num:xx, writer:xx, content: xx . . . . }
 				//얻어온 정보를 model에 넣기
-				self.id=data.id;
+				self.commentList=data;
+				//만약 댓글 총 페이지가 1개 이하이면 더보기 버튼 숨기기
 			})
 			
+			//댓글 정보 읽어오기
+			ajaxPromise(base_url+"/ajax/cafe/commentList.do","GET",
+					"pageNum="+this.pageNum+"&num="+${param.num})	
+			.then(function(response){
+				return response.json();
+			})
+			.then(function(data){
+				//data는 {num:xx, writer:xx, content: xx . . . . }
+				//얻어온 정보를 model에 넣기
+				self.commentList=data;
+				//만약 댓글 총 페이지가 1개 이하이면 더보기 버튼 숨기기
+			})
+			
+			//로그인한 유저가 좋아요를 눌렀는지 확인
 			ajaxPromise(base_url+"/ajax/cafe/isLiked.do",
 					"get","liked_user="+'${id}'+"&cafe_num="+${param.num})
 			.then(function(response){
@@ -413,22 +665,41 @@
 				}else{
 					//data가 false이면 빈하트 표시
 					self.isLiked=false;
-				}
-				
+				}				
 			});	
+			
+			//로그인 정보를 얻어와서
+			ajaxPromise(base_url+"/ajax/cafe/isLogin.do", "GET")
+			.then(function(response){
+				return response.json();
+			})
+			.then(function(data){
+				//data는 {id:xxx 또는 빈문자열}
+				//얻어온 정보를 model에 넣기
+				self.id=data.id;
+			})	
+			
+			//댓글 더보기 처리를 위해 totalPageCount가져오기
+			ajaxPromise(base_url+"/ajax/cafe/commentPaging.do","GET",
+					"pageNum="+this.pageNum+"&num="+${param.num})	
+			.then(function(response){
+				return response.json();
+			})
+			.then(function(data){
+				//data는 {totalPageCount:x, totalRow:x}
+				//얻어온 정보를 model에 넣기
+				self.totalRow=data.totalRow;
+				self.totalPageCount=data.totalPageCount;
+				//만약 댓글 총 페이지가 2 이상이면 더보기버튼 보이기
+				if(data.totalPageCount>=2){
+					self.isMoreButtonShow=true;
+				}
+			})
 		}
 	});
 	
 	
-	//url 클립보드에 복사하기
-	var currentUrl = document.getElementById("urlInput");
-	currentUrl.value = window.document.location.href;  // 현재 URL 을 세팅해 줍니다.
-	function urlClipCopy(){
-		currentUrl.select();  // 해당 값이 선택되도록 select() 합니다
-		document.execCommand("copy"); // 클립보드에 복사합니다.
-		currentUrl.blur();
-		alert("URL이 클립보드에 복사되었습니다."); 
-	}	
+	
 	
 	   
    document.querySelector(".insert-form")
@@ -460,12 +731,7 @@
    
    //추가로 댓글을 요청하고 그 작업이 끝났는지 여부를 관리할 변수 
    let isLoading=false; //현재 로딩중인지 여부 
-   
-   /*
-      window.scrollY => 위쪽으로 스크롤된 길이
-      window.innerHeight => 웹브라우저의 창의 높이
-      document.body.offsetHeight => body 의 높이 (문서객체가 차지하는 높이)
-   */
+ 
    window.addEventListener("scroll", function(){
       //바닥 까지 스크롤 했는지 여부 
       const isBottom = 
