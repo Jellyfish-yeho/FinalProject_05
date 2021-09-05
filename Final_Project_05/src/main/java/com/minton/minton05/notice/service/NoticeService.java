@@ -35,5 +35,7 @@ public interface NoticeService {
 	//ajax 요청용 - 공지사항 글하단 페이징 처리에 필요한 데이터를 리턴하는 메소드
 	public Map<String, Object> ajaxPaging(HttpServletRequest request);
 	  
+	//ajax 요청용 - 공지사항 글 자세히 보기
+	public NoticeDto ajaxGetDetail(HttpServletRequest request);
 
 }

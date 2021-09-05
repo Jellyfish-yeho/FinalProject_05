@@ -335,6 +335,45 @@ public class NoticeServiceImpl implements NoticeService{
 		return map;
 	}
 
+	//ajax 요청용 - 공지사항 글 자세히 보기
+	@Override
+	public NoticeDto ajaxGetDetail(HttpServletRequest request) {
+		//파라미터로 넘어오는 글번호, keyword, condition 
+		int num = Integer.parseInt(request.getParameter("num"));
+		String keyword = (String)request.getParameter("keyword");
+		String condition = (String)request.getParameter("condition");
+		//조회수 올리기
+		noticeDao.addViewCount(num);
+		//만일 키워드가 넘어오지 않는다면 
+		if(keyword==null){
+			//키워드와 검색 조건에 빈 문자열을 넣어준다. 
+			//클라이언트 웹브라우저에 출력할때 "null" 을 출력되지 않게 하기 위해서  
+			keyword="";
+			condition=""; 
+		}
+		//특수기호를 인코딩한 키워드를 미리 준비한다. 
+		String encodedK=URLEncoder.encode(keyword);
+		
+		NoticeDto dto=new NoticeDto();
+		
+		if(!keyword.equals("")){
+			//검색 조건이 무엇이냐에 따라 분기 하기
+			if(condition.equals("title_content")){//제목 + 내용 검색인 경우
+				//검색 키워드를 CafeDto 에 담아서 전달한다.
+				dto.setTitle(keyword);
+				dto.setContent(keyword);
+			}else if(condition.equals("title")){ //제목 검색인 경우
+				dto.setTitle(keyword);
+			}else if(condition.equals("writer")){ //작성자 검색인 경우
+				dto.setWriter(keyword);
+			} // 다른 검색 조건을 추가 하고 싶다면 아래에 else if() 를 계속 추가 하면 된다.
+		}
+		
+		dto.setNum(num);
+		dto = noticeDao.getData(num);
+		return dto;
+	}
+
 	
 }
 

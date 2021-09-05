@@ -19,6 +19,13 @@ public class NoticeController {
 
 	@Autowired private NoticeService service; //service 주입
 	
+	//ajax - 공지사항 글 자세히보기
+	@RequestMapping("/ajax/notice/detail")
+	@ResponseBody
+	public NoticeDto ajaxGetDetail(HttpServletRequest request) {
+		return service.ajaxGetDetail(request);
+	}
+	
 	//ajax - 공지사항 하단 페이징 처리
 	@RequestMapping("/ajax/notice/paging")
 	@ResponseBody

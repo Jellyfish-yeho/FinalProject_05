@@ -113,7 +113,9 @@
 			//회원 정보 가져오기
 			ajaxPromise(base_url+"/ajax/users/getUser.do","get")
 			.then(function(response){
-				return response.json();
+				if(response != null){
+					return response.json();
+				}				
 			})
 			.then(function(data){
 				//data는 {id:xxx, pwd:xxx, profile:xxx...}
