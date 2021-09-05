@@ -25,6 +25,13 @@ public class UsersController {
    @Autowired
    private com.minton.minton05.users.service.UsersService service;
    
+   //ajax - 회원 정보 가져오기
+   @RequestMapping("/ajax/users/getUser")
+   @ResponseBody
+   public UsersDto ajaxGetUser(HttpServletRequest request) {
+	   return service.ajaxGetUser(request);	   
+   }
+   
    //회원 탈퇴 요청 처리
    @RequestMapping("/users/delete")
    public ModelAndView authDelete(HttpSession session, ModelAndView mView,

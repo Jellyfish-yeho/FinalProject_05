@@ -163,7 +163,7 @@
 
 <script>
 
-const base_url="http://localhost:8888/minton05";
+//const base_url="http://localhost:8888/minton05";
 
 let app=new Vue({
 	el:"#app",

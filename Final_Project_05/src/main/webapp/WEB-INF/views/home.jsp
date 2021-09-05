@@ -263,7 +263,7 @@
        setTimeout(function() { $('#myModal').hide();}, 5000)
        
 	//Vue 관련 로직       
-	const base_url="http://localhost:8888/minton05";
+	//const base_url="http://localhost:8888/minton05";
        
 	let app=new Vue({ 
 		el:"#app",

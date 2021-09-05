@@ -170,6 +170,17 @@ public class UsersServiceImpl implements UsersService {
       
       
    }
+
+	//ajax - 로그인한 아이디가 있으면 회원 정보를 리턴
+	@Override
+	public UsersDto ajaxGetUser(HttpServletRequest request) {
+		String id = (String)request.getSession().getAttribute("id");
+		if(id != null) {
+			return dao.getData(id);
+		}else {
+			return null;
+		}		
+	}
       
 
 }
