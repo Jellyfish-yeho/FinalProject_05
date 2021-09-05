@@ -116,7 +116,6 @@
 		      <thead>
 		         <tr>
 		            <th style="color: #48a697;">번호</th>
-		            <th style="color: #48a697;">카테고리</th>
 		            <th style="color: #48a697;">제목</th>
 		            <th style="color: #48a697;">작성자</th>
 		            <th style="color: #48a697;">날짜</th>
@@ -131,7 +130,6 @@
 		      <tbody>
 					<tr v-for="(cafe, index) in cafeList" :key="cafe.num">
 						<td>{{cafe.num}}</td>
-						<td>{{cafe.category}}</td>
 						<td>
 							<a class="link-dark text-decoration-none fw-bold"
 							:href="base_url+'/cafe/detail.do?num='+cafe.num">
