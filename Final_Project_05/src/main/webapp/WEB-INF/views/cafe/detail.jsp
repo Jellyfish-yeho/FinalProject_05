@@ -6,6 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>자유게시판</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 <link rel="icon" href="${pageContext.request.contextPath}/resources/images/shuttlecock_main.png" type="image/x-icon" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 <style>
@@ -306,15 +307,17 @@
 					</dl>				
 	   			</li>  			
 	   		</ul>
-			<div @click="moreComment" v-if="isMoreButtonShow" class="d-grid gap-2">
+	   		<transition enter-active-class="animate__animated animate__fadeIn"
+				leave-active-class="animate__animated animate__fadeOut">
+				<div v-if="isLoading" class="d-flex justify-content-center my-3">
+					<div class="spinner-border text-success" role="status"></div>
+				</div>
+			</transition>
+			<div @click="moreComment" v-if="isMoreButtonShow" class="d-grid gap-2 my-2">
 				<button class="btn btn-outline-success">댓글 더보기</button>
 			</div>
-		</div>
-		<div class="loader my-4">
-			<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-circle-fill" viewBox="0 0 16 16">
-				<circle cx="8" cy="8" r="8"/>
-			</svg>
-		</div>
+
+		</div>		
 	</div>
 </div>
 <jsp:include page="../../include/footer.jsp"></jsp:include>
@@ -329,6 +332,7 @@
 	let app = new Vue({
 		el:'#app',	
 		data:{
+			isLoading:false,
 			keyword:'',
 			encodedK:'',
 			condition:'',
@@ -529,29 +533,38 @@
 			},
 			moreComment(){ //댓글 더 가져오기
 				const self=this;
-				//마지막 페이지는 totalPageCount 이다.  
-				//totalPageCount는 commentList에서  얻어오기
-				let lastPage=this.commentList[0].totalPageCount;
-				console.log(lastPage);
+				//마지막 페이지는 totalPageCount 이다. 			
 				//현재 페이지가 마지막 페이지인지 여부 알아내기 : 현재페이지 = 마지막페이지, 마지막페이지=0
-				let isLast = currentPage == lastPage;
-				let isLastNone= lastPage==0;
+				let isLast = self.pageNum == self.totalPageCount;
+				let isLastNone= self.totalPageCount==0;
 				//마지막 페이지가 아니라면 
 				if(!isLast && !isLastNone){		         
 					//현재 댓글 페이지를 1 증가 시키고 
-					currentPage++;
-					ajaxPromise(base_url+"/ajax/cafe/commentList.do","GET",
-						"pageNum="+currentPage+"&num="+self.detail.num)
-					.then(function(response){
-						return response.json();
-					})
-					.then(function(data){
-						//데이터를 모델에 추가하고 댓글 다시 불러와서 표시하기
-						self.commentList=[self.commentList, ...data];
-						
-						//더보기 버튼 숨기기
-						self.isMoreButtonShow=false;
-					});
+					self.pageNum++;
+					//2초 후 댓글 목록 업데이트
+					//로딩바 띄우기
+					self.isLoading = true;
+					setTimeout(function(){
+						ajaxPromise(base_url+"/ajax/cafe/commentList.do","GET",
+							"pageNum="+self.pageNum+"&num="+self.detail.num)
+						.then(function(response){
+							return response.json();
+						})
+						.then(function(data){
+							//console.log(data);
+							//데이터를 모델에 추가하고 댓글 다시 불러와서 표시하기
+							self.commentList=[...self.commentList, ...data];	
+							//console.log(self.commentList);
+							//현재 페이지가 마지막 페이지보다 작으면 댓글 더보기 버튼이 나와야 한다. 
+							if(self.pageNum < self.totalPageCount){
+								self.isMoreButtonShow=true;
+							}else{
+								self.isMoreButtonShow=false;
+							}							
+						});
+						//로딩바 끄기
+						self.isLoading=false;
+					}, 2000);
 				}					
 			},
 			offLike(){
@@ -697,11 +710,7 @@
 			})
 		}
 	});
-	
-	
-	
-	
-	   
+
    document.querySelector(".insert-form")
       .addEventListener("submit", function(e){
          //만일 로그인 하지 않았으면 
@@ -723,62 +732,6 @@
    addDeleteListener(".delete-link");
    addReplyListener(".reply-link");
    
-   
-   //댓글의 현재 페이지 번호를 관리할 변수를 만들고 초기값 1 대입하기
-   let currentPage=1;
-   //마지막 페이지는 totalPageCount 이다.  
-   let lastPage=${totalPageCount};
-   
-   //추가로 댓글을 요청하고 그 작업이 끝났는지 여부를 관리할 변수 
-   let isLoading=false; //현재 로딩중인지 여부 
- 
-   window.addEventListener("scroll", function(){
-      //바닥 까지 스크롤 했는지 여부 
-      const isBottom = 
-         window.innerHeight + window.scrollY  >= document.body.offsetHeight;
-      //현재 페이지가 마지막 페이지인지 여부 알아내기
-      let isLast = currentPage == lastPage;
-      let isLast1= lastPage==0;
-      //현재 바닥까지 스크롤 했고 로딩중이 아니고 현재 페이지가 마지막이 아니라면
-      if(isBottom && !isLoading && !isLast && !isLast1){
-         //로딩바 띄우기
-         document.querySelector(".loader").style.display="block";
-         
-         //로딩 작업중이라고 표시
-         isLoading=true;
-         
-         //현재 댓글 페이지를 1 증가 시키고 
-         currentPage++;
-         
-         /*
-            해당 페이지의 내용을 ajax 요청을 통해서 받아온다.
-            "pageNum=xxx&num=xxx" 형식으로 GET 방식 파라미터를 전달한다. 
-         */
-         ajaxPromise("ajax_comment_list.do","get",
-               "pageNum="+currentPage+"&num=${dto.num}")
-         .then(function(response){
-            //json 이 아닌 html 문자열을 응답받았기 때문에  return response.text() 해준다.
-            return response.text();
-         })
-         .then(function(data){
-            //data 는 html 형식의 문자열이다. 
-            // beforebegin | afterbegin | beforeend | afterend
-            document.querySelector(".comments ul")
-               .insertAdjacentHTML("beforeend", data);
-            //로딩이 끝났다고 표시한다.
-            isLoading=false;
-            //새로 추가된 댓글 li 요소 안에 있는 a 요소를 찾아서 이벤트 리스너 등록 하기 
-            addUpdateListener(".page-"+currentPage+" .update-link");
-            addDeleteListener(".page-"+currentPage+" .delete-link");
-            addReplyListener(".page-"+currentPage+" .reply-link");
-            //새로 추가된 댓글 li 요소 안에 있는 댓글 수정폼에 이벤트 리스너 등록하기
-            addUpdateFormListener(".page-"+currentPage+" .update-form");
-            
-            //로딩바 숨기기
-            document.querySelector(".loader").style.display="none";
-         });
-      }
-   });
    
    //인자로 전달되는 선택자를 이용해서 이벤트 리스너를 등록하는 함수 
    function addUpdateListener(sel){
@@ -880,13 +833,6 @@
             })
             .then(function(data){
                if(data.isSuccess){
-                  /*
-                     document.querySelector() 는 html 문서 전체에서 특정 요소의 
-                     참조값을 찾는 기능
-                     
-                     특정문서의 참조값.querySelector() 는 해당 문서 객체의 자손 요소 중에서
-                     특정 요소의 참조값을 찾는 기능
-                  */
                   const num=form.querySelector("input[name=num]").value;
                   const content=form.querySelector("textarea[name=content]").value;
                   //수정폼에 입력한 value 값을 pre 요소에도 출력하기 
