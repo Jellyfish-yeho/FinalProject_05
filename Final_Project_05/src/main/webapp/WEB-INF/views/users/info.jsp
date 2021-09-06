@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>회원정보</title>
-<link href="${pageContext.request.contextPath}../../resources/formCss/form.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/resources/formCss/form2.css" rel="stylesheet">
 <jsp:include page="../../include/resource.jsp"></jsp:include>
 <jsp:include page="../../include/icon.jsp"></jsp:include>
 <jsp:include page="../../include/font.jsp"></jsp:include>
@@ -61,9 +61,9 @@
 </style>
 </head>
 <body class="text-center">
-	<div class="container my-4 form-signin">
+	<div class="container my-4">
 		<h1 class="fw-bold my-4">회원 정보</h1>
-		
+		<div class="d-flex d-inline-flex flex-column justify-content-center">
 		<div class="profile my-3">
 		
 		<c:choose>
@@ -91,6 +91,7 @@
 		</div>
 		<div>
 			<a class="mt-2 mb-4 w-50 btn btn-sm btn-outline-success" href="${pageContext.request.contextPath }/home.do">메인으로</a>
+		</div>
 		</div>
 		</div>
 		
