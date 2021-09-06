@@ -131,7 +131,7 @@
 
     <!-- 갤러리 목록 -->
       <div class="row row-cols-1 row-cols-md-3 g-4">
-        <div v-for="(item, index) in galleryList" v-bind:key="item.num" class="col-6 col-md-4 col-lg-3">
+        <div v-for="(item, index) in galleryList" v-bind:key="item.num">
             <div class="col align-middle">
             <div class="card text-center mb-3 h-100">
                 <a @click.prevent="showDetail(index)" href="">
@@ -179,7 +179,7 @@
     
    <!-- 갤러리 자세히보기 Modal -->
    <div class="modal fade" ref="detailModal">
-        <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-dialog modal-dialog-centered-scrollable modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title">{{detailItem.title}}</h5>
@@ -203,10 +203,24 @@
                                         <path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/>
                                     </svg>
                                 </a>
+                            <!-- 좋아요 -->
+		                    <svg style="color:#dc3545;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="me-2 bi bi-heart-fill" viewBox="0 0 16 16">
+		                        <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+		                    </svg>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
+                	<ul class="d-flex flex-row ps-0 mt-3 justify-content-end" style="list-style:none;">	
+						<!-- <v-if="${dto.writer eq id }"> -->
+							<li>
+								<a class="link-dark text-decoration-none mx-1" href="updateform.do?num=${dto.num }">수정</a>
+							</li>
+							<li>
+								<a class="link-dark text-decoration-none mx-1" href="delete.do?num=${dto.num }">삭제</a>
+							</li>
+						<!--<v:if> -->
+					</ul>	
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
