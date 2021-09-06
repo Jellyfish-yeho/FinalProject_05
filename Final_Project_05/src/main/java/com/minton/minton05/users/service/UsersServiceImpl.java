@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -166,10 +167,22 @@ public class UsersServiceImpl implements UsersService {
       //로그아웃 처리도 한다.
       session.removeAttribute("id");
       //ModelAndView 객체에 탈퇴한 회원의 아이디를 담아준다.
-      mView.addObject("id", id);
-      
-      
+      mView.addObject("id", id);         
    }
+
+
+	//ajax - 로그인한 아이디가 있으면 회원 정보를 리턴
+	@Override
+	public UsersDto ajaxGetUser(HttpServletRequest request) {
+		String id = (String)request.getSession().getAttribute("id");
+		if(id != null) {
+			return dao.getData(id);
+		}else {
+			return null;
+		}		
+	}
       
 
 }
+
+

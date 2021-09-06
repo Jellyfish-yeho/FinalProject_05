@@ -1,6 +1,7 @@
 package com.minton.minton05.notice.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -18,12 +19,32 @@ public class NoticeController {
 
 	@Autowired private NoticeService service; //service 주입
 	
-	//공지사항 목록을 가져오는 메소드
-	@RequestMapping("/api/notice/list")
+	//ajax - 공지사항 글 자세히보기
+	@RequestMapping("/ajax/notice/detail")
+	@ResponseBody
+	public NoticeDto ajaxGetDetail(HttpServletRequest request) {
+		return service.ajaxGetDetail(request);
+	}
+	
+	//ajax - 공지사항 하단 페이징 처리
+	@RequestMapping("/ajax/notice/paging")
+	@ResponseBody
+	public Map<String, Object> ajaxPaging(HttpServletRequest request) {
+		return service.ajaxPaging(request);
+	}
+	
+	//ajax - 공지사항 목록을 가져오는 메소드
+	@RequestMapping("/ajax/notice/list")
+	@ResponseBody
+	public List<NoticeDto> ajaxGetList(HttpServletRequest request) {
+		return service.ajaxGetList(request);
+	}
+	
+	//ajax - 공지사항 목록을 가져오는 메소드 - index용
+	@RequestMapping("/ajax/notice/listIndex")
 	@ResponseBody 
-	public List<NoticeDto> getList2(HttpServletRequest request) {
-		
-		return service.getList2(request); //같은 위치로 리턴
+	public List<NoticeDto> ajaxGetListIndex(HttpServletRequest request) {		
+		return service.ajaxGetListIndex(request);
 	}
 	
 	//공지사항 목록을 가져오는 메소드

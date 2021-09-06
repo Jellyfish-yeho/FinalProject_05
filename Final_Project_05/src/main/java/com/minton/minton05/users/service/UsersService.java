@@ -22,4 +22,8 @@ public interface UsersService {
    public void updateUser(UsersDto dto, HttpSession session);
    public void deleteUser(HttpSession session, ModelAndView mView);
 
+
+   //ajax - 로그인한 아이디가 있으면 회원 정보를 리턴
+   public UsersDto ajaxGetUser(HttpServletRequest request); 
+
 }

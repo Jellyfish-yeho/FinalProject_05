@@ -23,20 +23,26 @@
 	</insert>
 	
 	<delete id="likeDelete" parameterType="likeDto">
-		DELETE FROM likedto
-		WHERE cafe_num=#{cafe_num}, liked_user=#{liked_user}
+		DELETE FROM liketo
+		WHERE cafe_num=#{cafe_num} AND liked_user=#{liked_user}
 	</delete>
 	
-	<update id="minusViewCount" parameterType="int">
+	<update id="minusLikeCount" parameterType="int">
 		UPDATE board_cafe
-		SET viewCount=viewCount-1
+		SET likeCount=likeCount-1
 		 WHERE num=#{num}
 	</update>
+	
+	<update id="addLikeCount" parameterType="int">
+      UPDATE board_cafe
+      SET likeCount=likeCount+1
+      WHERE num=#{num}
+	</update>
    
-	<select id="isLiked" parameterType="likeDto">
-		SELECT cafe_num, liked_user
+	<select id="isLiked" parameterType="likeDto" resultType="likeDto">
+		SELECT *
 		FROM liketo
-		WHERE cafe_num=#{cafe_num}, liked_user=#{liked_user}
+		WHERE cafe_num=#{cafe_num} AND liked_user=#{liked_user}
 	</select>
 
    <select id="getList" parameterType="cafeDto" resultType="cafeDto">
@@ -88,8 +94,8 @@
    <select id="getData2" parameterType="cafeDto" resultType="cafeDto">
       SELECT result1.*
       FROM
-         (SELECT num,writer,title,category,
-         	content,reply_count,viewCount,likeCount,
+         (SELECT num,writer,title,category,content,
+         	reply_count,viewCount,likeCount,
             TO_CHAR(board_cafe.regdate,'YY.MM.DD HH24:MI') AS regdate,profile,
             LAG(num,1,0) OVER (ORDER BY num DESC) AS prevNum,
             LEAD(num,1,0) OVER (ORDER BY num DESC) AS nextNum

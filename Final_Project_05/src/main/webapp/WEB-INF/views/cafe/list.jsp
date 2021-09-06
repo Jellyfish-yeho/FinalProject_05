@@ -91,10 +91,7 @@
       <thead>
          <tr>
             <th>번호</th>
-            <th>
-            
-            	카테고리
-            </th>
+            <th>카테고리</th>
             <th>제목</th>
             <th>작성자</th>
             <th>날짜</th>
@@ -117,7 +114,12 @@
       				{{firstNotice.title}}
       				</a>
       			</th>
-				<th>{{firstNotice.writer}}</th>
+				<th>
+					<svg class="text-success profile-image" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gear-fill" viewBox="0 0 16 16">
+						<path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z"/>
+					</svg>
+					{{firstNotice.writer}}
+					 </th>
 				<th>{{firstNotice.regdate}}</th>
 				<th>{{firstNotice.viewCount}}</th>
 				<th></th>  
@@ -145,10 +147,9 @@
             	{{cafe.writer}}
             </td>
             <td v-else>
-           		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="listProfile bi bi-person-circle" viewBox="0 0 16 16">
-					<path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-					<path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
-				</svg>
+				<svg class="profile-image text-success" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-emoji-smile-fill" viewBox="0 0 16 16">
+					<path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zM7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5zM4.285 9.567a.5.5 0 0 1 .683.183A3.498 3.498 0 0 0 8 11.5a3.498 3.498 0 0 0 3.032-1.75.5.5 0 1 1 .866.5A4.498 4.498 0 0 1 8 12.5a4.498 4.498 0 0 1-3.898-2.25.5.5 0 0 1 .183-.683zM10 8c-.552 0-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5S10.552 8 10 8z"/>
+				</svg>	
 				{{cafe.writer}}
 			</td>        
             <td>{{cafe.regdate}}</td>
@@ -160,7 +161,7 @@
       </tbody>
    </table>
    <div class="page-ui">
-		<%-- 페이지 앞으로 가기 --%>
+		<!-- 페이징 -->
 		<ul class="pagination justify-content-center">
 			<li v-if="startPageNum != 1" class="page-item">
 				<a v-on:click.prevent="movePage(startPageNum-1)" class="page-link" href="">&lt;</a>
@@ -214,7 +215,7 @@
 
 <script>
 
-	const base_url="http://localhost:8888/minton05";
+	//const base_url="http://localhost:8888/minton05";
 	
 	let app=new Vue({
 		el:"#app",

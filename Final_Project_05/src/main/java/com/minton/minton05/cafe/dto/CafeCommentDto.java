@@ -12,12 +12,13 @@ public class CafeCommentDto {
 	private String profile;
 	private int startRowNum;
 	private int endRowNum;
+	private int totalPageCount;
 	
 	//디폴트 생성자
 	public CafeCommentDto() {}
 
 	public CafeCommentDto(int num, String writer, String content, String target_id, int ref_group, int comment_group,
-			String deleted, String regdate, String profile, int startRowNum, int endRowNum) {
+			String deleted, String regdate, String profile, int startRowNum, int endRowNum, int totalPageCount) {
 		super();
 		this.num = num;
 		this.writer = writer;
@@ -30,6 +31,7 @@ public class CafeCommentDto {
 		this.profile = profile;
 		this.startRowNum = startRowNum;
 		this.endRowNum = endRowNum;
+		this.totalPageCount = totalPageCount;
 	}
 
 	public int getNum() {
@@ -119,6 +121,16 @@ public class CafeCommentDto {
 	public void setEndRowNum(int endRowNum) {
 		this.endRowNum = endRowNum;
 	}
+
+	public int getTotalPageCount() {
+		return totalPageCount;
+	}
+
+	public void setTotalPageCount(int totalPageCount) {
+		this.totalPageCount = totalPageCount;
+	}
+
+	
 	
 	
 }

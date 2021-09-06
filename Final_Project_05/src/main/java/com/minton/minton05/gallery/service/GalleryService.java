@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.minton.minton05.gallery.dto.GalleryDto;
+import com.minton.minton05.notice.dto.NoticeDto;
 
 public interface GalleryService {
 	//갤러리의 list 가져오기
@@ -27,4 +28,6 @@ public interface GalleryService {
 	//갤러리 글 삭제하기
 	public void deleteContent(int num);
 	
+	//ajax 요청용 - 갤러리 목록을 가져오는 메소드 
+	public List<GalleryDto> ajaxGetListIndex(HttpServletRequest request);
 }
