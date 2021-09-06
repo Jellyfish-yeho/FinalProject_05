@@ -15,16 +15,15 @@
 	}
 </style>
 <nav class="navbar navbar-dark navbar-expand-lg " style="background-color: #014618;">
-	<div id="app1" class="container d-flex justify-content-end align-items-center" style="background-color: #014618;">
-		<div class="container">
-			<a class="navbar-brand me-5 " href="${pageContext.request.contextPath}/">
-				<img src="${pageContext.request.contextPath}/resources/images/logo2.png" class="me-3 mb-1 ima" width="30" height="30" />
-				High-clear!
-			</a>
-			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="collapse navbar-collapse me-5" id="navbarNav">
+	<div id="app1" class="container" style="background-color: #014618;">
+		<a class="navbar-brand me-5 " href="${pageContext.request.contextPath}/">
+			<img src="${pageContext.request.contextPath}/resources/images/logo2.png" class="me-3 mb-1 ima" width="30" height="30" />
+			High-clear!
+		</a>
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse me-5" id="navbarNav">
 			<ul class="navbar-nav me-auto">
 				<li class="nav-item me-5">
 					<a class="nav-link ${empty thisPage?'active':''}" href="${pageContext.request.contextPath}/">홈</a>
@@ -45,8 +44,7 @@
 					<a class="nav-link me-5 ${thisPage eq 'faq'?'active':''}" href="${pageContext.request.contextPath}/faq/faq.do">FAQ</a>
 				</li>
 			</ul>
-			</div>
-	      </div> 
+		</div>
 		<div v-if="id != ''" class="container2 d-flex justify-content-end align-items-center">
 			<img v-if="userInfo.profile!=''" class="profileImage" 
 				:src="base_url+userInfo.profile" />
