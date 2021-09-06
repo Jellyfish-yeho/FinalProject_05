@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <title>회원정보</title>
 <link rel="icon" href="${pageContext.request.contextPath}/images/shuttlecock_main.png" type="image/x-icon" />
+<link href="${pageContext.request.contextPath}/resources/formCss/form2.css" rel="stylesheet">
 <jsp:include page="../../include/resource.jsp"></jsp:include>
 <jsp:include page="../../include/icon.jsp"></jsp:include>
 <jsp:include page="../../include/font.jsp"></jsp:include>
@@ -24,7 +25,7 @@
 	 } 
 	 #body-content { 
 		 margin-top: 0px; 
-		 padding-bottom: 200px; 
+		 padding-bottom: 0px; 
 	 /* footer의 높이 */ 
 	 } 
 	 footer { 
@@ -54,7 +55,8 @@
 	}
 </style>
 </head>
-<body class="text-center body-wrapper">
+<body class="text-center">
+	<div id="body-wrapper">
 	<div id="body-content" class="container my-4">
 		<h1 class="fw-bold my-4">회원 정보 수정</h1>
 		<div class="profile my-3">
@@ -99,13 +101,14 @@
 			<button class="btn w-50 btn-outline-success btn-sm" type="submit">적용 </button>
 			<a class="mt-2 mb-4 w-50 btn btn-sm btn-outline-danger" href="javascript:history.back();">뒤로가기</a>
 		</div>
+		</div>
 	</form>
-
 	<form action="${pageContext.request.contextPath}/users/ajax_profile_upload.do" method="post" 
 				id="imageForm" enctype="multipart/form-data">
 		<input type="file" name="image" id="image" 
 			accept=".jpg, .jpeg, .png, .JPG, .JPEG, .gif"/>
 	</form>
+</div>
 </div>
 <script src="${pageContext.request.contextPath}/resources/js/gura_util.js"></script>
 <script>

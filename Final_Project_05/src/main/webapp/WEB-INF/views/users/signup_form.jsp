@@ -26,7 +26,7 @@
 </head>
 <body class="text-center">
 <div class="container form-signin">
-
+<div class="d-flex d-inline-flex flex-column justify-content-center">
 	<form action="${pageContext.request.contextPath}/users/signup.do" method="post" id="myForm">
 		<img class="mb-4" src="${pageContext.request.contextPath}/resources/images/shuttlecock_main.png" width="100" height="100"/>
 		<h1 class="fw-bold my-4">회원가입</h1>	
@@ -56,7 +56,9 @@
 			<button class="mt-4 w-50 btn btn-sm btn-outline-success" type="submit">가입하기</button>	
 			<a class="mt-1 w-50 btn btn-sm btn-outline-success" href="${pageContext.request.contextPath}/">메인으로</a>	
 		</form>
+		</div>
 </div>
+
 <script src="${pageContext.request.contextPath}/resources/js/gura_util.js"></script>
 <script>
 	//아이디, 비밀번호, 이메일의 유효성 여부를 관리한 변수 만들고 초기값 대입

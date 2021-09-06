@@ -8,7 +8,6 @@
 <title>회원정보</title>
 <link rel="icon" href="${request.getContextPath()}../../resources/images/shuttlecock_main.png" type="image/x-icon" />
 <link href="${pageContext.request.contextPath}/resources/formCss/form2.css" rel="stylesheet">
-<link href="../resources/formCss/form2.css" rel="stylesheet">
 <jsp:include page="../../include/resource.jsp"></jsp:include>
 <jsp:include page="../../include/icon.jsp"></jsp:include>
 <jsp:include page="../../include/font.jsp"></jsp:include>
@@ -25,7 +24,7 @@
 		 position: relative; 
 	 } 
 	 #body-content { 
-		 margin-top: 10px; 
+		 margin-top: 0px; 
 		 padding-bottom: 200px; 
 	 /* footer의 높이 */ 
 	 } 
@@ -56,6 +55,7 @@
 </head>
 <div id="body-wrapper" class="text-center container form-signin">
 	<div id="body-content">
+	<div class="d-flex d-inline-flex flex-column justify-content-center">
 	<form action="${pageContext.request.contextPath}/users/login.do" method="post">
 	<img class="mb-4" src="${pageContext.request.contextPath}/resources/images/shuttlecock_main.png" width="100" height="100"/>
 		<c:choose>
@@ -84,6 +84,7 @@
 			<button class="mt-4 w-50 btn btn-sm btn-outline-success" type="submit">로그인</button>
 			<a class="mt-2 my-4 w-50 btn btn-sm btn-outline-success" href="${pageContext.request.contextPath}/">메인으로</a>
 		</form>	
+	</div>
 	</div>
 	</div>
 </body>
