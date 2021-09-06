@@ -25,7 +25,7 @@ function swalSuccess(seq){
 	}).then((result) => {
 		if (result.value) {
 		<%-- 원래 페이지로 넘겨주기 : url 값  --%>
-		location.href="${pageContext.request.contextPath}/home.do";
+		location.href="${param.url }";
 	  }
 	})
 }
