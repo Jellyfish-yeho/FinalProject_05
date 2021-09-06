@@ -70,9 +70,8 @@
 <jsp:include page="../../include/navbar.jsp">
 	<jsp:param value="gallery" name="thisPage"/>
 </jsp:include>
-<div class="container my-4" id="ccontainer app">
+<div class="container my-4" id="ccontainer">
 	<h1 class="fw-bold my-4 text-center">갤러리</h1>
-
    	<%-- 새 글 작성 링크 --%>
 	<div class="mb-2 d-flex justify-content-end">
 		<a class="link-success text-decoration-none" href="${pageContext.request.contextPath}/gallery/ajax_form.do">
@@ -83,7 +82,6 @@
 			새 사진 올리기
 		</a>
 	</div>
-	
 	<div class="row row-cols-1 row-cols-md-3 g-4">
 		<c:forEach var="tmp" items="${list}">
 		<div class="col align-middle">

@@ -66,22 +66,6 @@ public class GalleryController {
 		return "gallery/list";
 	}
 	
-	//gallery 사진 업로드 form 페이지로 이동
-//	@RequestMapping(value = "/gallery/upload_form")
-//	public ModelAndView authUploadForm(HttpServletRequest request) {
-//		return new ModelAndView("gallery/upload_form");
-//	}
-	
-	//gallery 사진 업로드 & DB 저장
-//	@RequestMapping(value = "/gallery/upload")
-//	public ModelAndView authUpload(GalleryDto dto, HttpServletRequest request) {
-		//form 에서 dto 로 데이터 받아옴
-		//dto : caption, MultipartFile image 를 가지고 있다.
-		//request :  imagePath 만드는데 사용, session 영역의 id 가져오는데 사용
-//		service.saveImage(dto, request);
-//		return new ModelAndView("gallery/upload");
-//	}
-	
 	//gallery 사진 업로드 form - ajax form
 	@RequestMapping(value = "/gallery/ajax_form")
 	public ModelAndView authAjaxForm(HttpServletRequest request) {
@@ -148,13 +132,6 @@ public class GalleryController {
 		mView.setViewName("gallery/detail");
 		return mView;
 	}
-	
-//	//gallery 글 수정 요청 처리
-//	@RequestMapping("/gallery/update")
-//	public String update(HttpServletRequest request, GalleryDto dto) {
-//		service.updateContent(request, dto);
-//		return "gallery/update";
-//	}
 	
 	//gallery 글 수정 요청 처리 
 	@RequestMapping(value = "/gallery/update", method = RequestMethod.POST)
