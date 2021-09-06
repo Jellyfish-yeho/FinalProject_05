@@ -75,15 +75,19 @@
 
 <jsp:include page="../include/navbar.jsp"></jsp:include>
 
-	<!-- 메인 carousel -->  
+<!-- 메인 carousel -->
 	<div>
-		<img src="${pageContext.request.contextPath}/resources/images/bd.png" class="d-block w-100" alt=mainImage">
+		<%--<img src="${pageContext.request.contextPath}/resources/images/baaaaadminton.jpg" class="d-block w-100" alt=mainImage"> --%>
+		<img src="${pageContext.request.contextPath}/resources/images/bd.png" class="d-block w-100" alt="mainImage">
+
 	</div>
 	<div id="app" class="container-fluid mt-5" style="margin:0 auto; padding:5px;">
 	<!-- 공지사항 -->
 	<div class="row">
 		<div class="col">
-			<h2 class="text-center my-3" style="color:#009647;text-shadow:1px 1px 1px #D9D9D9; font-weight:bold;">공지사항</h2>
+			<h2 class="text-center my-3" style="color:#009647;text-shadow:1px 1px 1px #D9D9D9; font-weight:bold;">
+			<img src="${pageContext.request.contextPath}/resources/images/new2.png" class="mb-3" width="40" height="40" />
+			공지사항</h2>
 		    <table class="table table-hover text-center">
 				<thead>
 					<tr>
@@ -111,7 +115,9 @@
 		
 		<!-- 자유게시판 -->
 		<div class="col">
-			<h2 class="text-center my-3" style="color:#009647;text-shadow:1px 1px 1px #D9D9D9; font-weight:bold;">자유게시판</h2>
+			<h2 class="text-center my-3" style="color:#009647;text-shadow:1px 1px 1px #D9D9D9; font-weight:bold;">
+			<img src="${pageContext.request.contextPath}/resources/images/new2.png" class="mb-3" width="40" height="40" />
+			자유게시판</h2>
 			<table class="table table-hover text-center">
 		      <thead>
 		         <tr>
@@ -205,7 +211,9 @@
 	
 	<!-- gallery -->
 	<div class="row pt-3 text-center vertical">
-	<h2 class="text-center my-3" style="color:#009647;text-shadow:1px 1px 1px #D9D9D9;font-weight:bold; ">갤러리</h2>
+	<h2 class="text-center my-3" style="color:#009647;text-shadow:1px 1px 1px #D9D9D9;font-weight:bold; ">
+	<img src="${pageContext.request.contextPath}/resources/images/new2.png" class="mb-3" width="40" height="40" />
+	갤러리</h2>
 		<div class="col-lg-12 col-xs-12">
 			<span class="col-lg-1" style="float:none; margin:0 auto;">		            
 				<img class="p-2" src="${pageContext.request.contextPath}/resources/images/shuttlecock_main.png" width="50" height="50"/>

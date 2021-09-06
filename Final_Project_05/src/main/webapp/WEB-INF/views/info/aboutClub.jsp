@@ -20,7 +20,7 @@
 			font-weight: bold; 
 		}
 		p {
-			color:#02802C;
+			color:#111111;
 			font-size: 1em; 
 			line-height: 2em; 
 			font-weight: bold; 
@@ -39,7 +39,8 @@
 	<div style="width: 1000px; margin:0 auto; padding:5px;">
 	<div class="row">
 		<div class="col text-center my-2">
-			<img class="img-fluid d-block w-100" src="${pageContext.request.contextPath}/resources/images/Badminton-main.jpg"  />
+			<img class="img-fluid d-block w-100" src="${pageContext.request.contextPath}/resources/images/bdm1.jpg"/>
+			<!-- <img class="img-fluid d-block w-100" src="${pageContext.request.contextPath}/resources/images/Badminton-main.jpg"  /> -->
 		</div>
 	</div>
 	<div class="row">
