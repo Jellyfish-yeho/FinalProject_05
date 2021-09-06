@@ -88,8 +88,7 @@ public class GalleryController {
 		return new ModelAndView("gallery/ajax_form");
 	}
 
-	//gallery 사진 업로드 - ajax
-	//json 으로 return 할 것
+	//gallery 사진 업로드 - ajax / json 으로 return 
 	@RequestMapping(value = "/gallery/ajax_upload")
 	@ResponseBody
 	public Map<String, Object> authAjaxUpload(GalleryDto dto, HttpServletRequest request){		
