@@ -31,7 +31,7 @@
 	 } 
 	 footer { 
 		 width: 100%; 
-		 height: 180px; 
+		 height: 200px; 
 		 /* footer의 높이 */ 
 		 position: absolute; 
 		 bottom: 0; 
