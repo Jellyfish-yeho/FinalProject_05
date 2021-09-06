@@ -20,8 +20,7 @@ public interface CafeDao {
     public CafeDto getData(CafeDto dto);
     //조회수 증가 시키기
     public void addViewCount(int num);
-    //조회수 내리기
-    public void minusViewCount(int num);
+
     //글 삭제
     public void delete(int num);
     //글 수정
@@ -39,4 +38,10 @@ public interface CafeDao {
     
     //추천 없애기
     public void like_delete(LikeDto dto);
+    
+    //좋아요수 내리기
+    public void minusLikeCount(int num);
+    
+    //좋아요수 올리기
+    public void addLikeCount(int num);
 }

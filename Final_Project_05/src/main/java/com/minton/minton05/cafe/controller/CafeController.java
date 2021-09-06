@@ -28,6 +28,27 @@ public class CafeController {
 	@Autowired private CafeService service;
 	@Autowired private CafeDao cafeDao;
 	
+	//ajax - 댓글 페이지 정보 가져오기
+	@RequestMapping("/ajax/cafe/commentPaging")
+	@ResponseBody
+	public Map<String, Object> ajaxGetCommentPaging(HttpServletRequest request){
+		return service.ajaxGetCommentPaging(request);
+	}
+	
+
+	//ajax - 댓글 정보 가져오기
+	@RequestMapping("/ajax/cafe/commentList")
+	@ResponseBody
+	public List<CafeCommentDto> ajaxGetCommentList(HttpServletRequest request){
+		return service.ajaxGetCommentList(request);
+	}
+	
+	//ajax 요청에 대해 cafe 글 목록을 출력 - index page 용
+	@RequestMapping("/ajax/cafe/listIndex")
+	@ResponseBody
+	public List<CafeDto> ajaxGetListIndex(HttpServletRequest request){
+		return service.ajaxGetListIndex(request);
+	}
 
 	//새 글 저장 - ajax 요청에 대한 폼 제출
 	@RequestMapping("/cafe/ajax/insert")
@@ -46,9 +67,10 @@ public class CafeController {
 	//ajax로 게시글 정보 얻어오기
 	@RequestMapping("/ajax/cafe/detail")
 	@ResponseBody
-	public CafeDto ajaxDetail(@RequestParam int num) {
+	public CafeDto ajaxDetail(HttpServletRequest request) {
+		int num = Integer.parseInt(request.getParameter("num"));
 		service.updateReplyCount(num);		
-		return service.ajaxDetail(num);
+		return service.ajaxDetail(request);
 
 	}
 	
@@ -58,7 +80,7 @@ public class CafeController {
 	public Map<String, Object> ajaxOffLike(LikeDto likeDto){
 		Map<String, Object>	map=new HashMap<>();
 		cafeDao.like_delete(likeDto);
-		cafeDao.minusViewCount(likeDto.getCafe_num());
+		cafeDao.minusLikeCount(likeDto.getCafe_num());
 		map.put("isSuccess", true);
 		return map;
 	}
@@ -68,9 +90,14 @@ public class CafeController {
 	@ResponseBody
 	public Map<String, Object> ajaxOnLike(LikeDto likeDto){
 		Map<String, Object>	map=new HashMap<>();
-		cafeDao.like_insert(likeDto);
-		cafeDao.addViewCount(likeDto.getCafe_num());
-		map.put("isSuccess", true);
+		//중복 좋아요를 방지하기 위해 확인 후 insert
+		if(service.ajaxCheckLike(likeDto)!=null) {
+			cafeDao.like_insert(likeDto);
+			cafeDao.addLikeCount(likeDto.getCafe_num());
+			map.put("isSuccess", true);
+		}else {
+			map.put("isSuccess", false);
+		}		
 		return map;
 	}
 	
@@ -82,7 +109,7 @@ public class CafeController {
 	}
 	
 	//로그인 유저가 특정 게시물을 추천했는지 확인
-	@RequestMapping("/ajax/cafe/isLiked")
+	@RequestMapping(value="/ajax/cafe/isLiked", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> ajaxIsLiked(LikeDto likeDto){
 		return service.ajaxCheckLike(likeDto);

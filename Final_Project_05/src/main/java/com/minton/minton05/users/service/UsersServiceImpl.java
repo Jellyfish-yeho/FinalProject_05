@@ -169,6 +169,20 @@ public class UsersServiceImpl implements UsersService {
       //ModelAndView 객체에 탈퇴한 회원의 아이디를 담아준다.
       mView.addObject("id", id);         
    }
-	
-}
+
+
+	//ajax - 로그인한 아이디가 있으면 회원 정보를 리턴
+	@Override
+	public UsersDto ajaxGetUser(HttpServletRequest request) {
+		String id = (String)request.getSession().getAttribute("id");
+		if(id != null) {
+			return dao.getData(id);
+		}else {
+			return null;
+		}		
+	}
       
+
+}
+
+

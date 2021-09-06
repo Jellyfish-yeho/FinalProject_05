@@ -41,5 +41,16 @@ public interface CafeService {
 	   public Map<String, Object> ajaxCheckLogin(HttpServletRequest request);
 	   
 	   //ajax - 글 정보 가져오기
-	   public CafeDto ajaxDetail(@RequestParam int num);
+	   public CafeDto ajaxDetail(HttpServletRequest request);
+	   
+	   //ajax 요청용 - cafe 글 목록을 리턴하는 메소드 - index용
+	   public List<CafeDto> ajaxGetListIndex(HttpServletRequest request);
+	   
+	   //ajax 요청용 - cafe 댓글 목록을 리턴하는 메소드
+	   public List<CafeCommentDto> ajaxGetCommentList(HttpServletRequest request);
+	   
+	   //ajax 요청용 - cafe 글하단 페이징 처리에 필요한 데이터를 리턴하는 메소드
+	   public Map<String, Object> ajaxGetCommentPaging(HttpServletRequest request);
+	   
+	   
 }
