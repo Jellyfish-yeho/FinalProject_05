@@ -10,7 +10,47 @@
 <jsp:include page="../../include/resource.jsp"></jsp:include>
 <jsp:include page="../../include/icon.jsp"></jsp:include>
 <jsp:include page="../../include/font.jsp"></jsp:include>
+<jsp:include page="../../include/footer2.jsp"></jsp:include>
 <style>
+	/* footer 하단 고정 [S] */ 
+	html, body { 
+		margin: 0; 
+		padding: 0; 
+		height: 100%; 
+	} 
+	
+	#body-wrapper {
+		 min-height: 100%; 
+		 position: relative; 
+	 } 
+	 #body-content { 
+		 margin-top: 100px; 
+		 padding-bottom: 228px; 
+	 /* footer의 높이 */ 
+	 } 
+	 footer { 
+		 width: 100%; 
+		 height: 228px; 
+		 /* footer의 높이 */ 
+		 position: absolute; 
+		 bottom: 0; 
+		 left: 0; 
+	 } 
+	 /* footer 하단 고정 [E] */
+
+	.bd-placeholder-img{
+		font-size : 1.125rem;
+		text-anchor : middle;
+		-webkit-user-select : none;
+		-moz-user-select:none;
+		user-select:none;
+	}
+
+@media ( min-width :768px) {
+	.bd-placeholder-img-lg {
+		font-size: 3.5rem;
+	}
+}
 	/* 프로필 이미지를 작은 원형으로 만든다 */
 	#profileImage{
 		width: 50px;
