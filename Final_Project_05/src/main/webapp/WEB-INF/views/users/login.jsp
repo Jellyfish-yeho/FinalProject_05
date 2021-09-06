@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>회원정보</title>
-<link href="${pageContext.request.contextPath}/resources/formCss/form.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}../../resources/formCss/form.css" rel="stylesheet">
 <jsp:include page="../../include/resource.jsp"></jsp:include>
 <jsp:include page="../../include/icon.jsp"></jsp:include>
 <jsp:include page="../../include/font.jsp"></jsp:include>
@@ -25,7 +25,7 @@ function swalSuccess(seq){
 	}).then((result) => {
 		if (result.value) {
 		<%-- 원래 페이지로 넘겨주기 : url 값  --%>
-		location.href="${pageContext.request.contextPath}/home.do";
+		location.href="${param.url }";
 	  }
 	})
 }

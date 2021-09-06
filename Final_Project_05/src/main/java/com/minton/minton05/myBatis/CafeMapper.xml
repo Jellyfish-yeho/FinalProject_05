@@ -15,6 +15,35 @@
          </when>
       </choose>
    </sql>
+   
+	<insert id="likeInsert" parameterType="likeDto">
+		INSERT INTO liketo
+		(cafe_num, liked_user)
+		VALUES(#{cafe_num}, #{liked_user})
+	</insert>
+	
+	<delete id="likeDelete" parameterType="likeDto">
+		DELETE FROM liketo
+		WHERE cafe_num=#{cafe_num} AND liked_user=#{liked_user}
+	</delete>
+	
+	<update id="minusLikeCount" parameterType="int">
+		UPDATE board_cafe
+		SET likeCount=likeCount-1
+		 WHERE num=#{num}
+	</update>
+	
+	<update id="addLikeCount" parameterType="int">
+      UPDATE board_cafe
+      SET likeCount=likeCount+1
+      WHERE num=#{num}
+	</update>
+   
+	<select id="isLiked" parameterType="likeDto" resultType="likeDto">
+		SELECT *
+		FROM liketo
+		WHERE cafe_num=#{cafe_num} AND liked_user=#{liked_user}
+	</select>
 
    <select id="getList" parameterType="cafeDto" resultType="cafeDto">
       SELECT *
@@ -43,7 +72,7 @@
       INSERT INTO board_cafe
       (num,writer,title,category,content,viewCount,reply_count,likeCount,regdate)
       VALUES(board_cafe_seq.NEXTVAL, #{writer}, #{title}, #{category},
-         #{content}, #{viewCount}, 0, SYSDATE)
+         #{content}, #{viewCount}, 0, 0, SYSDATE)
    </insert>
    
    <select id="getData" parameterType="int" resultType="cafeDto">
@@ -65,8 +94,8 @@
    <select id="getData2" parameterType="cafeDto" resultType="cafeDto">
       SELECT result1.*
       FROM
-         (SELECT num,writer,title,category,
-         	content,reply_count,viewCount,likeCount,
+         (SELECT num,writer,title,category,content,
+         	reply_count,viewCount,likeCount,
             TO_CHAR(board_cafe.regdate,'YY.MM.DD HH24:MI') AS regdate,profile,
             LAG(num,1,0) OVER (ORDER BY num DESC) AS prevNum,
             LEAD(num,1,0) OVER (ORDER BY num DESC) AS nextNum

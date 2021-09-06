@@ -19,7 +19,7 @@ function swalSuccess(seq){
 		confirmButtonText: '확인'
 	}).then((result) => {
 		if (result.value) {
-			location.href="${pageContext.request.contextPath}/notice/list.jsp";
+			location.href="${pageContext.request.contextPath}/notice/list.do";
 	  }
 	})
 }

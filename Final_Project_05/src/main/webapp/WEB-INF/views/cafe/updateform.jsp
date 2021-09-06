@@ -7,9 +7,9 @@
 <meta charset="UTF-8">
 <title>자유게시판</title>
 <link rel="icon" href="${pageContext.request.contextPath}/images/shuttlecock_main.png" type="image/x-icon" />
-
-<link href="${pageContext.request.contextPath}/users/form.css" rel="stylesheet">
-
+<jsp:include page="../../include/resource.jsp"></jsp:include>
+<jsp:include page="../../include/icon.jsp"></jsp:include>
+<link href="${pageContext.request.contextPath}/resources/formCss/form.css" rel="stylesheet">
 <style>
 	#content{
 		height: 400px;
@@ -19,8 +19,8 @@
 </head>
 <div class="container my-4">
 	<h1 class="fw-bold my-4">글 수정</h1>
-	<form action="update.jsp" method="post">
-		<input type="hidden" name="num" value="${num }" />
+	<form action="update.do" method="post">
+		<input type="hidden" name="num" value="${dto.num }" />
 		<div class="d-flex d-inline-flex flex-column mb-3">		
 			<div class="mb-3">
 				<div>
@@ -36,7 +36,7 @@
 			
 			<div class="my-2">
 				<label class="form-label" for="title">제목</label>
-				<input class="form-control form-control-sm" type="text" name="title" id="title" value="${title }"/>
+				<input class="form-control form-control-sm" type="text" name="title" id="title" value="${dto.title }"/>
 				<small class="text-muted" style="font-size:0.875rem;">제목은 5글자 이상이어야 합니다.</small>
 			</div>
 		</div>
