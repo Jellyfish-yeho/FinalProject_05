@@ -7,10 +7,6 @@
 <title>footer</title>
 
 <style>
-	/*footer css*/
-	html,body {
-	  height:100%;
-	}
 	.page-wrapper {
 	  min-height: 100%;
 	  margin-bottom: -229px; 
@@ -19,9 +15,6 @@
 	  content: "";
 	  display: block;
 	}
-	.footer-distributed, .page-wrapper:after {
-	  height:229px;
-	}
 	.footer-distributed{
 		background-color: #014618;
 		box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.12);
@@ -29,8 +22,8 @@
 		width: 100%;
 		text-align: left;
 		font: bold 16px sans-serif;
-		padding: 55px 50px;
-		margin-top: 80px;
+		padding: 40px 35px;
+		margin-top: 0px;
 	}
 	.footer-distributed .footer-left,
 	.footer-distributed .footer-center,

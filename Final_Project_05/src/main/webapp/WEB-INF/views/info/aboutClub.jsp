@@ -9,18 +9,18 @@
 
 <style>
 		h1 {
-			color: rgb(2,38,94); 
-			text-shadow:1px 1px 1px rgb(1,148,148); 
+			color: #009647;
+			text-shadow:1px 1px 1px #D9D9D9; 
 			margin: 0; 
-			padding: 10px; 
+			padding: 8px; 
 			font-weight: bold; 
 		}
 		h2 {
-			color: rgb(0,136,236) !important;
+			color: #00EE71 !important;
 			font-weight: bold; 
 		}
 		p {
-			color:rgb(2,38,94);
+			color:#02802C;
 			font-size: 1em; 
 			line-height: 2em; 
 			font-weight: bold; 
@@ -28,9 +28,7 @@
 		a{
 			color:rgb(0,136,236);
 		}
-		.accent {
-			color: red; 
-		}
+		
 
 </style>
 </head>
@@ -41,7 +39,7 @@
 	<div style="width: 1000px; margin:0 auto; padding:5px;">
 	<div class="row">
 		<div class="col text-center my-2">
-			<img class="img-fluid d-block w-100" src="${pageContext.request.contextPath}/resources/images/Badminton_name.jpg"/>
+			<img class="img-fluid d-block w-100" src="${pageContext.request.contextPath}/resources/images/Badminton-main.jpg"  />
 		</div>
 	</div>
 	<div class="row">
@@ -61,7 +59,7 @@
 		<h2>가입하기</h2>
 			<p>
 				하이클리어는 여러분을 환영합니다!
-				<a href="${pageContext.request.contextPath}/users/signupform.do">가입하기</a>
+				<a href="${pageContext.request.contextPath}/users/signupform.do" style="color: red;">가입하기</a>
 			</p>
 		<h2>정기모임</h2>
 			<p>
@@ -80,7 +78,7 @@
 			</p>
 		<h2>HOW TO JOIN?</h2>
 			<p>High-Clear is active on Teams!
-			<a href="${pageContext.request.contextPath}/users/signupform.do">click here to join!</a>
+			<a href="${pageContext.request.contextPath}/users/signupform.do" style="color: red;">click here to join!</a>
 			</p>
 		<h2>Meetings</h2>
 			<p>When: every Saturndays 7:30-9:00 pm<br>

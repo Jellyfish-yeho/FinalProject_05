@@ -83,7 +83,7 @@
 	<!-- 공지사항 -->
 	<div class="row">
 		<div class="col">
-			<h2 class="text-center my-3" style="color:rgb(2,38,94);text-shadow:1px 1px 1px rgb(1,148,148);">공지사항</h2>
+			<h2 class="text-center my-3" style="color:#009647;text-shadow:1px 1px 1px #D9D9D9; font-weight:bold;">공지사항</h2>
 		    <table class="table table-hover text-center">
 				<thead>
 					<tr>
@@ -111,7 +111,7 @@
 		
 		<!-- 자유게시판 -->
 		<div class="col">
-			<h2 class="text-center my-3" style="color:rgb(2,38,94);text-shadow:1px 1px 1px rgb(1,148,148);">자유게시판</h2>
+			<h2 class="text-center my-3" style="color:#009647;text-shadow:1px 1px 1px #D9D9D9; font-weight:bold;">자유게시판</h2>
 			<table class="table table-hover text-center">
 		      <thead>
 		         <tr>
@@ -164,7 +164,7 @@
 	</div>
 	
 	<div class="row pt-3">
-		<h2 class="text-center my-3" style="color:rgb(2,38,94);text-shadow:1px 1px 1px rgb(1,148,148);">참고 영상</h2>
+		<h2 class="text-center my-3" style="color:#009647;text-shadow:1px 1px 1px #D9D9D9; font-weight:bold;" >참고 영상</h2>
 		<div class="col">
 			<div class="card text-center">
                  <iframe height="235" src="https://www.youtube.com/embed/TdeBlsehb6g" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -205,7 +205,7 @@
 	
 	<!-- gallery -->
 	<div class="row pt-3 text-center vertical">
-	<h2 class="text-center my-3" style="color:rgb(2,38,94);text-shadow:1px 1px 1px rgb(1,148,148);">갤러리</h2>
+	<h2 class="text-center my-3" style="color:#009647;text-shadow:1px 1px 1px #D9D9D9;font-weight:bold; ">갤러리</h2>
 		<div class="col-lg-12 col-xs-12">
 			<span class="col-lg-1" style="float:none; margin:0 auto;">		            
 				<img class="p-2" src="${pageContext.request.contextPath}/resources/images/shuttlecock_main.png" width="50" height="50"/>
