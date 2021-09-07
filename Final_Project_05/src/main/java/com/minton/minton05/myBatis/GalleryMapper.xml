@@ -7,7 +7,7 @@
 		FROM	
 			(SELECT result1.*, ROWNUM as rnum
 			FROM
-				(SELECT num, writer, imagePath, regdate
+				(SELECT num, writer, imagePath, regdate, title, content
 				FROM board_gallery
 				ORDER BY num DESC) result1)
 		WHERE rnum BETWEEN #{startRowNum} AND #{endRowNum}

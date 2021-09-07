@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,6 +27,13 @@
       list-style-type: none;
       padding: 0;
    }
+   h1 {
+	  color: rgb(2,38,94); 
+	  text-shadow:1px 1px 1px rgb(1,148,148); 
+	  margin: 0; 
+	  padding: 10px; 
+	  font-weight: bold; 
+	}
    /* card 이미지 부모요소의 높이 지정 */
    .img-wrapper{
       height: 250px;
@@ -39,7 +47,7 @@
    }
    
    .card .card-text{
-      /* 한줄만 text 가 나오고  한줄 넘는 길이에 대해서는 ... 처리 하는 css */
+      /* 한줄만 text 가 나오고  한줄 넘는 길이에 대해서는...처리 하는 css */
       display:block;
       white-space : nowrap;
       text-overflow: ellipsis;
@@ -131,9 +139,8 @@
 
     <!-- 갤러리 목록 -->
       <div class="row row-cols-1 row-cols-md-3 g-4">
-        <div v-for="(item, index) in galleryList" v-bind:key="item.num" class="col-6 col-md-4 col-lg-3">
-            <div class="col align-middle">
-            <div class="card text-center mb-3 h-100">
+        <div v-for="(item, index) in galleryList" v-bind:key="item.num">
+            <div class="card text-center mb-3 h-100 col align-middle">
                 <a @click.prevent="showDetail(index)" href="">
                     <div class="img-wrapper d-flex justify-content-center align-items-center">
                         <img class="card-img-top" v-bind:src="base_url+item.imagePath" 
@@ -152,9 +159,9 @@
                     </p>
                 </div>
             </div>
-            </div>
         </div>
       </div>
+      <br>
 
     <!-- 페이징 -->
     <nav>
@@ -179,7 +186,7 @@
     
    <!-- 갤러리 자세히보기 Modal -->
    <div class="modal fade" ref="detailModal">
-        <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-dialog modal-dialog-centered-scrollable modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title">{{detailItem.title}}</h5>
@@ -203,11 +210,15 @@
                                         <path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/>
                                     </svg>
                                 </a>
+                            <!-- 좋아요 -->
+		                    <svg style="color:#dc3545;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="me-2 bi bi-heart-fill" viewBox="0 0 16 16">
+		                        <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+		                    </svg>
                         </div>
                     </div>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
