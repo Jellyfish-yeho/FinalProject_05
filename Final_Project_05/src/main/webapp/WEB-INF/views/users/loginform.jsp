@@ -7,37 +7,11 @@
 <meta charset="UTF-8">
 <title>회원정보</title>
 <link rel="icon" href="${request.getContextPath()}../../resources/images/shuttlecock_main.png" type="image/x-icon" />
-<link href="${pageContext.request.contextPath}/resources/formCss/form2.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}../../resources/formCss/form.css" rel="stylesheet">
 <jsp:include page="../../include/resource.jsp"></jsp:include>
 <jsp:include page="../../include/icon.jsp"></jsp:include>
 <jsp:include page="../../include/font.jsp"></jsp:include>
-<jsp:include page="../../include/footer2.jsp"></jsp:include>
 <style>
-	/* footer 하단 고정 [S] */ 
-	html, body { 
-		margin: 0; 
-		padding: 0; 
-		height: 100%; 
-	} 
-	#body-wrapper {
-		 min-height: 100%; 
-		 position: relative; 
-	 } 
-	 #body-content { 
-		 margin-top: 0px; 
-		 padding-bottom: 200px; 
-	 /* footer의 높이 */ 
-	 } 
-	 footer { 
-		 width: 100%; 
-		 height: 200px; 
-		 /* footer의 높이 */ 
-		 position: absolute; 
-		 bottom: 0; 
-		 left: 0; 
-	 } 
-	 /* footer 하단 고정 [E] */
-
 	.bd-placeholder-img{
 		font-size : 1.125rem;
 		text-anchor : middle;
@@ -46,15 +20,21 @@
 		user-select:none;
 	}
 
-@media ( min-width :768px) {
-	.bd-placeholder-img-lg {
-		font-size: 3.5rem;
+	@media ( min-width :768px) {
+		.bd-placeholder-img-lg {
+			font-size: 3.5rem;
+		}
 	}
-}
+
+	.form-control{
+		border:1px solid #198754 !important;
+	}
 </style>
 </head>
-<div id="body-wrapper" class="text-center container form-signin">
-	<div id="body-content">
+<body class="text-center">
+<%-- navbar include--%>
+<jsp:include page="../../include/navbar.jsp"></jsp:include>
+<div class="container form-signin my-4">
 	<div class="d-flex d-inline-flex flex-column justify-content-center">
 	<form action="${pageContext.request.contextPath}/users/login.do" method="post">
 	<img class="mb-4" src="${pageContext.request.contextPath}/resources/images/shuttlecock_main.png" width="100" height="100"/>
@@ -86,6 +66,7 @@
 		</form>	
 	</div>
 	</div>
-	</div>
+<%-- footer --%>	
+<jsp:include page="../../include/footer.jsp"></jsp:include>	
 </body>
 </html> 

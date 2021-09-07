@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>회원정보</title>
-<link href="${pageContext.request.contextPath}/resources/formCss/form.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}../../resources/formCss/form.css" rel="stylesheet">
 <jsp:include page="../../include/resource.jsp"></jsp:include>
 <jsp:include page="../../include/icon.jsp"></jsp:include>
 <jsp:include page="../../include/font.jsp"></jsp:include>
@@ -22,10 +22,15 @@
 			font-size:3.5rem;
 		}
 	}
+	.form-control{
+		border:1px solid #198754 !important;
+	}
 </style>
 </head>
 <body class="text-center">
-<div class="container form-signin">
+<%-- navbar include --%>
+<jsp:include page="../../include/navbar.jsp"></jsp:include>
+<div class="container form-signin my-4">
 <div class="d-flex d-inline-flex flex-column justify-content-center">
 	<form action="${pageContext.request.contextPath}/users/signup.do" method="post" id="myForm">
 		<img class="mb-4" src="${pageContext.request.contextPath}/resources/images/shuttlecock_main.png" width="100" height="100"/>
@@ -53,12 +58,15 @@
 				<small>이메일 형식에 맞게 입력해주세요. </small>
 				<div class="invalid-feedback">이 이메일은 사용 할 수 없습니다.</div>					
 			</div>
+			<div class="mt-4" style="padding: 5px 1px 2px 3px;">
 			<button class="mt-4 w-50 btn btn-sm btn-outline-success" type="submit">가입하기</button>	
 			<a class="mt-1 w-50 btn btn-sm btn-outline-success" href="${pageContext.request.contextPath}/">메인으로</a>	
+			</div>
 		</form>
-		</div>
 </div>
-
+</div>
+<%-- footer --%>
+<jsp:include page="../../include/footer.jsp"></jsp:include>
 <script src="${pageContext.request.contextPath}/resources/js/gura_util.js"></script>
 <script>
 	//아이디, 비밀번호, 이메일의 유효성 여부를 관리한 변수 만들고 초기값 대입
