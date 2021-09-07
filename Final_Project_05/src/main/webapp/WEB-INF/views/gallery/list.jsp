@@ -47,7 +47,7 @@
    }
    
    .card .card-text{
-      /* 한줄만 text 가 나오고  한줄 넘는 길이에 대해서는 ... 처리 하는 css */
+      /* 한줄만 text 가 나오고  한줄 넘는 길이에 대해서는...처리 하는 css */
       display:block;
       white-space : nowrap;
       text-overflow: ellipsis;
