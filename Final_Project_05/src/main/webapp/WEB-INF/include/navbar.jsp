@@ -9,6 +9,7 @@
 		border-radius: 50%;
 		width:30px;
 		height:30px;
+		margin-right:5px;
 	}
 	.ima{
 		transform:scale(1.8);
@@ -45,21 +46,30 @@
 				</li>
 			</ul>
 		</div>
-		<div v-if="id != ''" class="container2 d-flex justify-content-end align-items-center">
-			<img v-if="userInfo.profile!=''" class="profileImage" 
-				:src="base_url+userInfo.profile" />
-			<svg v-else class="profileImage me-2 text-success" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-emoji-smile-fill" viewBox="0 0 16 16">
-				<path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zM7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5zM4.285 9.567a.5.5 0 0 1 .683.183A3.498 3.498 0 0 0 8 11.5a3.498 3.498 0 0 0 3.032-1.75.5.5 0 1 1 .866.5A4.498 4.498 0 0 1 8 12.5a4.498 4.498 0 0 1-3.898-2.25.5.5 0 0 1 .183-.683zM10 8c-.552 0-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5S10.552 8 10 8z"/>
-			</svg>	
+		<div v-if="id != '' && userInfo.profile!=null" class="container2 d-flex justify-content-end align-items-center">
+			<img class="profileImage" :src="base_url+userInfo.profile" />				
 			<span class="navbar-text align-middle me-2" style="color:#ffffff;">
 				<a class="text-decoration-none" href="${pageContext.request.contextPath}/users/info.do" >
 					{{id}}
 				</a>님 로그인 중 
 			</span>
-				<a class="btn btn-danger btn-sm m-2" href="${pageContext.request.contextPath}/users/logout.do">
+			<a class="btn btn-danger btn-sm m-2" href="${pageContext.request.contextPath}/users/logout.do">
 				로그아웃
 			</a>
 		</div>
+		<div v-else-if="id != '' && userInfo.profile===null" class="container2 d-flex justify-content-end align-items-center">
+			<svg class="profileImage me-2 text-success" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-emoji-smile-fill" viewBox="0 0 16 16">
+				<path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zM7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5zM4.285 9.567a.5.5 0 0 1 .683.183A3.498 3.498 0 0 0 8 11.5a3.498 3.498 0 0 0 3.032-1.75.5.5 0 1 1 .866.5A4.498 4.498 0 0 1 8 12.5a4.498 4.498 0 0 1-3.898-2.25.5.5 0 0 1 .183-.683zM10 8c-.552 0-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5S10.552 8 10 8z"/>
+			</svg>			
+			<span class="navbar-text align-middle me-2" style="color:#ffffff;">
+				<a href="${pageContext.request.contextPath}/users/info.do" >
+					{{id}}
+				</a>님 로그인 중 
+			</span>
+			<a class="btn btn-danger btn-sm m-2" href="${pageContext.request.contextPath}/users/logout.do">
+				로그아웃
+			</a>
+		</div>			
 		<div v-else>
 			<a class="btn btn-outline-light btn-sm m-1" 
 			href="${pageContext.request.contextPath}/users/signup_form.do">
@@ -113,6 +123,7 @@
 				//console.log(data);
 				//가져온 data를 model에 넣어주기
 				self.userInfo = data;
+				console.log(data.profile);
 			})
 		}
 	});

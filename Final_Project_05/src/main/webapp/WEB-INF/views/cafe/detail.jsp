@@ -141,7 +141,7 @@
 			<a class="link-dark text-decoration-none mx-1" :href="'updateform.do?num='+detail.num">수정</a>
 		</li>
 		<li v-if="detail.writer === id">
-			<a class="link-dark text-decoration-none mx-1" href="'delete.do?num='+detail.num">삭제</a>
+			<a class="link-dark text-decoration-none mx-1" :href="'delete.do?num='+detail.num">삭제</a>
 		</li>
 	</ul>
 	
@@ -165,8 +165,8 @@
 	<!-- 북마크 -->
 	<input type="text" id="urlInput" class="form-control form-control-sm"
 	style="display:block; position:absolute; left:-100000px"/>		
-	<a id="bookmark" class="text-decoration-none link-dark mx-2"
-	@click="urlClipCopy">
+	<a id="bookmark" class="text-decoration-none link-success mx-2"
+	@click.prevent="urlClipCopy">
 		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-fill" viewBox="0 0 16 16">
 			<path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/>
 		</svg>
@@ -522,13 +522,11 @@
 			urlClipCopy(){
 				//url 클립보드에 복사하기
 				var currentUrl = document.getElementById("urlInput");
-				currentUrl.value = window.document.location.href;  // 현재 URL
-				function urlClipCopy(){
-					currentUrl.select();  // url 값을 select()로 선택
-					document.execCommand("copy"); // 클립보드에 복사
-					currentUrl.blur();
-					alert("URL이 클립보드에 복사되었습니다."); 
-				}
+				currentUrl.value = window.document.location.href;  // 현재 URL				
+				currentUrl.select();  // url 값을 select()로 선택
+				document.execCommand("copy"); // 클립보드에 복사
+				currentUrl.blur();
+				alert("URL이 클립보드에 복사되었습니다."); 				
 			},
 			moreComment(){ //댓글 더 가져오기
 				const self=this;

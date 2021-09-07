@@ -21,6 +21,7 @@
 	}
 	.footer-distributed, .page-wrapper:after {
 	  height:229px;
+	  position: absolute;
 	}
 	.footer-distributed{
 		background-color: #014618;
