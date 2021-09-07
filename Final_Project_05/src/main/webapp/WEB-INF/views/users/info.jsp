@@ -6,38 +6,11 @@
 <head>
 <meta charset="UTF-8">
 <title>회원정보</title>
-<link href="${pageContext.request.contextPath}/resources/formCss/form2.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}../../resources/formCss/form.css" rel="stylesheet">
 <jsp:include page="../../include/resource.jsp"></jsp:include>
 <jsp:include page="../../include/icon.jsp"></jsp:include>
 <jsp:include page="../../include/font.jsp"></jsp:include>
-<jsp:include page="../../include/footer2.jsp"></jsp:include>
 <style>
-	/* footer 하단 고정 [S] */ 
-	html, body { 
-		margin: 0; 
-		padding: 0; 
-		height: 100%; 
-	} 
-	
-	#body-wrapper {
-		 min-height: 100%; 
-		 position: relative; 
-	 } 
-	 #body-content { 
-		 margin-top: 100px; 
-		 padding-bottom: 228px; 
-	 /* footer의 높이 */ 
-	 } 
-	 footer { 
-		 width: 100%; 
-		 height: 228px; 
-		 /* footer의 높이 */ 
-		 position: absolute; 
-		 bottom: 0; 
-		 left: 0; 
-	 } 
-	 /* footer 하단 고정 [E] */
-
 	.bd-placeholder-img{
 		font-size : 1.125rem;
 		text-anchor : middle;
@@ -58,10 +31,16 @@
 		border: 1px solid #cecece;
 		border-radius: 50%;
 	}
+	
+	.form-control{
+		border:1px solid #198754 !important;
+	}
 </style>
 </head>
 <body class="text-center">
-	<div class="container my-4">
+<%-- navbar include --%>
+<jsp:include page="../../include/navbar.jsp"></jsp:include>
+	<div class="container form-signin my-4">
 		<h1 class="fw-bold my-4">회원 정보</h1>
 		<div class="d-flex d-inline-flex flex-column justify-content-center">
 		<div class="profile my-3">
@@ -94,7 +73,8 @@
 		</div>
 		</div>
 		</div>
-		
+<%-- footer --%>
+<jsp:include page="../../include/footer.jsp"></jsp:include>
 	<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<script>
 	function swalSuccess(seq){

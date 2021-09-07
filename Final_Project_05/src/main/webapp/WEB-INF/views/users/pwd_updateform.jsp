@@ -28,12 +28,13 @@
 </style>
 </head>
 <body class="text-center">
-<%-- navbar include : cafe - thisPage --%>
+<%-- navbar include --%>
 <jsp:include page="../../include/navbar.jsp"></jsp:include>
 <div class="container form-signin my-4">
+<div class="d-flex d-inline-flex flex-column justify-content-center">
 	<form action="${pageContext.request.contextPath}/users/pwd_update.do" method="post" id="myForm">
 	<img class="mb-4" src="${pageContext.request.contextPath}/resources/images/shuttlecock_main.png" width="100" height="100"/>
-		<h1 class="fw-bold my-4">비밀번호 수정</h1>		
+		<h2 class="fw-bold my-4">비밀번호 수정</h2>		
 		<div class="form-floating" style="padding: 5px 1px 2px 3px;">
 			<input class="form-control" type="password" name="pwd" id="pwd"/>
 			<label class="control-label" for="pwd">기존 비밀번호</label>	
@@ -54,6 +55,7 @@
 		<button class="btn btn-outline-danger btn-sm" type="reset">내용 지우기</button>
 		</div>
 	</form>
+</div>
 </div>
 <%-- footer --%>
 <jsp:include page="../../include/footer.jsp"></jsp:include>
