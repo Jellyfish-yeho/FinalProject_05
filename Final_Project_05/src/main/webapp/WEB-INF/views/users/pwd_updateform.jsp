@@ -28,6 +28,8 @@
 </style>
 </head>
 <body class="text-center">
+<%-- navbar include : cafe - thisPage --%>
+<jsp:include page="../../include/navbar.jsp"></jsp:include>
 <div class="container form-signin my-4">
 	<form action="${pageContext.request.contextPath}/users/pwd_update.do" method="post" id="myForm">
 	<img class="mb-4" src="${pageContext.request.contextPath}/resources/images/shuttlecock_main.png" width="100" height="100"/>
@@ -53,6 +55,8 @@
 		</div>
 	</form>
 </div>
+<%-- footer --%>
+<jsp:include page="../../include/footer.jsp"></jsp:include>
 <script>
 	//폼에 submit 이벤트가 일어났을때 실행할 함수를 등록하고 
 	document.querySelector("#myForm").addEventListener("submit", function(e){
