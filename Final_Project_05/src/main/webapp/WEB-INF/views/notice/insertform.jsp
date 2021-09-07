@@ -28,6 +28,7 @@
 				<small class="text-muted" style="font-size:0.875rem;">제목은 5글자 이상이어야 합니다.</small>
 			</div>
 		</div>
+		<input type="hidden" name="writer" value="${id}" />
 		<div>
 			<label for="content">내용</label>
          	<textarea name="content" id="content"></textarea>

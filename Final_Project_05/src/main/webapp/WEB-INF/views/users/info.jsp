@@ -6,10 +6,51 @@
 <head>
 <meta charset="UTF-8">
 <title>회원정보</title>
+<link href="${pageContext.request.contextPath}/resources/formCss/form2.css" rel="stylesheet">
 <jsp:include page="../../include/resource.jsp"></jsp:include>
 <jsp:include page="../../include/icon.jsp"></jsp:include>
 <jsp:include page="../../include/font.jsp"></jsp:include>
+<jsp:include page="../../include/footer2.jsp"></jsp:include>
 <style>
+	/* footer 하단 고정 [S] */ 
+	html, body { 
+		margin: 0; 
+		padding: 0; 
+		height: 100%; 
+	} 
+	
+	#body-wrapper {
+		 min-height: 100%; 
+		 position: relative; 
+	 } 
+	 #body-content { 
+		 margin-top: 100px; 
+		 padding-bottom: 228px; 
+	 /* footer의 높이 */ 
+	 } 
+	 footer { 
+		 width: 100%; 
+		 height: 228px; 
+		 /* footer의 높이 */ 
+		 position: absolute; 
+		 bottom: 0; 
+		 left: 0; 
+	 } 
+	 /* footer 하단 고정 [E] */
+
+	.bd-placeholder-img{
+		font-size : 1.125rem;
+		text-anchor : middle;
+		-webkit-user-select : none;
+		-moz-user-select:none;
+		user-select:none;
+	}
+
+@media ( min-width :768px) {
+	.bd-placeholder-img-lg {
+		font-size: 3.5rem;
+	}
+}
 	/* 프로필 이미지를 작은 원형으로 만든다 */
 	#profileImage{
 		width: 50px;
@@ -20,9 +61,9 @@
 </style>
 </head>
 <body class="text-center">
-	<div class="container my-4 form-signin">
+	<div class="container my-4">
 		<h1 class="fw-bold my-4">회원 정보</h1>
-		
+		<div class="d-flex d-inline-flex flex-column justify-content-center">
 		<div class="profile my-3">
 		
 		<c:choose>
@@ -50,6 +91,7 @@
 		</div>
 		<div>
 			<a class="mt-2 mb-4 w-50 btn btn-sm btn-outline-success" href="${pageContext.request.contextPath }/home.do">메인으로</a>
+		</div>
 		</div>
 		</div>
 		

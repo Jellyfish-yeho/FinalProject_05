@@ -18,7 +18,7 @@ function swalSuccess(seq){
 		confirmButtonText: '확인'
 	}).then((result) => {
 		if (result.value) {
-		location.href="../detail.do?num=${dto.num}";
+		location.href="${pageContext.request.contextPath}/notice/detail.do?num=${dto.num}";
 	  }
 	})
 }

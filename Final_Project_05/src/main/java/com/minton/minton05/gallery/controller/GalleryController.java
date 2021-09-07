@@ -26,6 +26,13 @@ public class GalleryController {
 	@Autowired
 	private GalleryDao dao;
 	
+	//갤러리 목록을 가져오는 메소드 - index용
+	@RequestMapping("/ajax/gallery/listIndex")
+	@ResponseBody 
+	public List<GalleryDto> ajaxGetListIndex(HttpServletRequest request) {		
+		return service.ajaxGetListIndex(request);
+	}
+	
 	//ajax 요청에 대해 Gallery 하단 페이징 처리에 필요한 데이터 리턴하는 메소드
 	@RequestMapping("/api/gallery/paging")
 	@ResponseBody
