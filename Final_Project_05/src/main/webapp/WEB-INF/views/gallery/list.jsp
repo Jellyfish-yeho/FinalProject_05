@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,6 +27,13 @@
       list-style-type: none;
       padding: 0;
    }
+   h1 {
+	  color: rgb(2,38,94); 
+	  text-shadow:1px 1px 1px rgb(1,148,148); 
+	  margin: 0; 
+	  padding: 10px; 
+	  font-weight: bold; 
+	}
    /* card 이미지 부모요소의 높이 지정 */
    .img-wrapper{
       height: 250px;
@@ -132,8 +140,7 @@
     <!-- 갤러리 목록 -->
       <div class="row row-cols-1 row-cols-md-3 g-4">
         <div v-for="(item, index) in galleryList" v-bind:key="item.num">
-            <div class="col align-middle">
-            <div class="card text-center mb-3 h-100">
+            <div class="card text-center mb-3 h-100 col align-middle">
                 <a @click.prevent="showDetail(index)" href="">
                     <div class="img-wrapper d-flex justify-content-center align-items-center">
                         <img class="card-img-top" v-bind:src="base_url+item.imagePath" 
@@ -152,9 +159,9 @@
                     </p>
                 </div>
             </div>
-            </div>
         </div>
       </div>
+      <br>
 
     <!-- 페이징 -->
     <nav>
@@ -209,19 +216,9 @@
 		                    </svg>
                         </div>
                     </div>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                 </div>
                 <div class="modal-footer">
-                	<ul class="d-flex flex-row ps-0 mt-3 justify-content-end" style="list-style:none;">	
-						<!-- <v-if="${dto.writer eq id }"> -->
-							<li>
-								<a class="link-dark text-decoration-none mx-1" href="updateform.do?num=${dto.num }">수정</a>
-							</li>
-							<li>
-								<a class="link-dark text-decoration-none mx-1" href="delete.do?num=${dto.num }">삭제</a>
-							</li>
-						<!--<v:if> -->
-					</ul>	
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>

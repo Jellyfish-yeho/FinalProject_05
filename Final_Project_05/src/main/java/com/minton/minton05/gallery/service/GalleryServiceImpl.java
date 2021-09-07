@@ -14,7 +14,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.minton.minton05.gallery.dao.GalleryDao;
 import com.minton.minton05.gallery.dto.GalleryDto;
-import com.minton.minton05.notice.dto.NoticeDto;
 
 @Service
 public class GalleryServiceImpl implements GalleryService {
@@ -96,13 +95,20 @@ public class GalleryServiceImpl implements GalleryService {
 		}
 		//dto 에 업로드된 파일의 정보를 담는다.
 		//-> parameer 로 넘어온 dto 에는 caption, image 가 들어 있었다.
-		//-> 추가할 것 : writer(id), imagePath 만 추가로 담아주면 된다.
+		//-> 추가할 것 : writer(id), imagePath, 만 추가로 담아주면 된다.
 		//-> num, regdate : db 에 추가하면서 자동으로 들어감
 		String id = (String)request.getSession().getAttribute("id");
 		dto.setWriter(id);
 		//gallery 는 사진 다운 기능이 없다. -> orgFileName, saveFileName, fileSize 저장할 필요X
 		//imagePath 만 저장해주면 됨
 		dto.setImagePath("/upload/" + saveFileName);
+		
+		String title=request.getParameter("title");
+		dto.setTitle(title);
+		
+		String content=request.getParameter("content");
+		dto.setContent(content);
+		
 		//GalleryDao 를 이용해서 DB 에 저장하기
 		dao.insert(dto);
 	}
@@ -146,6 +152,12 @@ public class GalleryServiceImpl implements GalleryService {
 		//dto : caption, imagePath 가지고 있다.
 		//dto 에 writer(id) 추가
 		dto.setWriter((String)request.getSession().getAttribute("id"));
+		
+		String title=request.getParameter("title");
+		dto.setTitle(title);
+		String content=request.getParameter("content");
+		dto.setContent(content);
+		
 		//GalleryDao 를 이용해서 DB 에 저장하기
 		dao.insert(dto);
 	}

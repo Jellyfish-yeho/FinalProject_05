@@ -17,7 +17,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.minton.minton05.gallery.dao.GalleryDao;
 import com.minton.minton05.gallery.dto.GalleryDto;
 import com.minton.minton05.gallery.service.GalleryService;
-import com.minton.minton05.notice.dto.NoticeDto;
 
 @Controller
 public class GalleryController {
