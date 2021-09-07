@@ -11,6 +11,10 @@
       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
  
+ <resources location="/ckeditor/" mapping="/ckeditor/**"></resources>
+
+ 
+ 
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	
 	<beans:bean id="dataSource" 
