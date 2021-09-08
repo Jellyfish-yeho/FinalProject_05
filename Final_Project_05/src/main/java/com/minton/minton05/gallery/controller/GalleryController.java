@@ -33,6 +33,13 @@ public class GalleryController {
 		return service.ajaxGetListIndex(request);
 	}
 	
+	//갤러리 아이템 자세히보기를 가져오는 메소드 (이전페이지/다음페이지)
+	@RequestMapping("/ajax/gallery/getDetail")
+	@ResponseBody 
+	public GalleryDto ajaxGetDetail(HttpServletRequest request) {		
+		return service.ajaxGetDetail(request);
+	}
+	
 	//ajax 요청에 대해 Gallery 하단 페이징 처리에 필요한 데이터 리턴하는 메소드
 	@RequestMapping("/api/gallery/paging")
 	@ResponseBody
