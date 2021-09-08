@@ -185,19 +185,21 @@
     </nav>  
     
    <!-- 갤러리 자세히보기 Modal -->
-   <div class="modal fade" ref="detailModal">
-        <div class="modal-dialog modal-dialog-centered-scrollable modal-xl">
+   <div class="modal fade" ref="detailModal" v-if="isDetailModalShow">
+        <div class="modal-dialog modal-dialog-centered-scrollable modal-xl text-center">
             <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title">{{detailItem.title}}</h5>
+                  <h5 class="modal-title">{{detailItem.num}}</h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body"></div>
                     <div class="card mb-3">
                         <div class="img-wrapper">
+                        	<br>
                             <img class="card-img-top" v-bind:src="base_url+detailItem.imagePath"/>
                         </div>
                         <div class="card-body">
+                        	<br>
                             <p class="card-text fs-3 fw-bold">{{detailItem.title }}</p>
                             <p class="card-text">{{detailItem.content }}</p>
                             <p class="card-text">by <strong>{{detailItem.writer}}</strong></p>
@@ -215,8 +217,34 @@
 		                        <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
 		                    </svg>
                         </div>
+                        <!-- 이전글 목록 다음글 -->
+                        <ul class="mb-5 d-flex flex-row ps-0 justify-content-center" style="list-style:none;">
+				         <c:if test="${dto.prevNum ne 0 }">
+					         <li>
+								<a class="link-success text-decoration-none" @click.prevent="showPrevNumDetail(index)">
+								&lt이전글
+								</a>
+							</li>
+				         </c:if>
+				       	<li class="mx-3">
+							<a class="fw-bold link-success text-decoration-none" data-bs-dismiss="modal">목록보기</a>
+						</li>
+				       	<c:choose>
+				       		<c:when test="${dto.nextNum ne 0 }">
+					       		<li>			   
+									<a class="link-success text-decoration-none" href="detail.do?num=${dto.nextNum }">
+									다음글&gt	     	
+							      </a>
+								</li>
+				       		</c:when>
+				       		<c:otherwise>
+				       			<li class="page-item disabled">
+				               		<a class="page-link" href="javascript:">Next</a>
+				            	</li>
+				       		</c:otherwise>
+				       	</c:choose> 
+						</ul>
                     </div>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                 </div>
                 <div class="modal-footer">
                 </div>
@@ -225,6 +253,7 @@
     </div>       
 </div>
 
+<jsp:include page="../../include/footer.jsp"></jsp:include>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/gura_util.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
@@ -243,13 +272,12 @@
             totalPageCount:0,
             detailItem:{},
             isMakeForm:false,  //업로드 폼을 만들지 여부
-            previewImagePath:""
+            previewImagePath:"",
+            isDetailModalShow: true
         },
         computed:{
             /*
-                최초 호출된 이후 
-                startPageNum 혹은 endPageNum 에 변경이 있을때만
-                다시 호출되는 함수 
+                        최초 호출된 이후 startPageNum 혹은 endPageNum 에 변경이 있을때만 다시 호출되는 함수 
             */
             pageNums(){
                 console.log("pageNums()");
@@ -290,6 +318,7 @@
                 });
             },
             showDetail(index){
+            	const self=this;
                 //선택된 인덱스에 해당하는 object 를 detailItem 에 대입한다.
                 this.detailItem=this.galleryList[index];
                 //detail 모달의 참조값 얻어오기 
@@ -298,6 +327,17 @@
                 let modal=new bootstrap.Modal(modalElement);
                 modal.show();
             },
+            showPrevNumDetail(index){
+            	//현제 페이지 모달을 닫는다
+            	this.isDetailModalShow=false;
+            	//이전페이지의 object를 detailItem에 대입한다
+            	this.detailItem=this.galleryList[index-1];
+                //detail 모달의 참조값 얻어오기 
+                let modalElement=this.$refs.detailModal;
+                //bootstrap 모달 띄우기 
+                let modal=new bootstrap.Modal(modalElement);
+                modal.show();            	
+            },            
             showInsert(){
                 //insert모달의 참조값 얻어오기 
                 let modalElement=this.$refs.insertModal;
