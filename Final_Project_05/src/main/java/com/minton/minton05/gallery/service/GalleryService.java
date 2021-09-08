@@ -35,4 +35,6 @@ public interface GalleryService {
 	//ajax 요청용 - 갤러리 목록을 가져오는 메소드 
 	public List<GalleryDto> ajaxGetListIndex(HttpServletRequest request);
 
+	//ajax - 갤러리 글 하나의 정보를 리턴하는 메소드
+	public GalleryDto ajaxGetDetail(HttpServletRequest request);
 }
