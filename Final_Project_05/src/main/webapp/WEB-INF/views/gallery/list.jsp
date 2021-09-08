@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>gallery</title>
-<link rel="icon" href="${pageContext.request.contextPath}/images/shuttlecock_main.png" type="image/x-icon" />
+<link rel="icon" href="${pageContext.request.contextPath}/resources/images/shuttlecock_main.png" type="image/x-icon" />
 <jsp:include page="../../include/resource.jsp"></jsp:include>
 <style>
    .page-ui a{
@@ -75,6 +75,9 @@
 		height: 200px;
 		resize: none;
 	}
+	a{
+   		cursor:pointer !important;
+   }
 </style>
 </head>
 <body>
@@ -141,7 +144,7 @@
       <div class="row row-cols-1 row-cols-md-3 g-4">
         <div v-for="(item, index) in galleryList" v-bind:key="item.num">
             <div class="card text-center mb-3 h-100 col align-middle">
-                <a @click.prevent="showDetail(index)" href="">
+                <a @click.prevent="showDetail(item.num)" href="">
                     <div class="img-wrapper d-flex justify-content-center align-items-center">
                         <img class="card-img-top" v-bind:src="base_url+item.imagePath" 
                         onerror="this.src='${pageContext.request.contextPath}/resources/images/frown-face.png'"/>
@@ -219,30 +222,19 @@
                         </div>
                         <!-- 이전글 목록 다음글 -->
                         <ul class="mb-5 d-flex flex-row ps-0 justify-content-center" style="list-style:none;">
-				         <c:if test="${dto.prevNum ne 0 }">
-					         <li>
-								<a class="link-success text-decoration-none" @click.prevent="showPrevNumDetail(index)">
+					         <li v-if="detailItem.prevNum != 0">
+								<a class="link-success text-decoration-none" @click.prevent="showPrevNumDetail">
 								&lt이전글
 								</a>
+							</li>		
+					       	<li class="mx-3">
+								<a class="fw-bold link-success text-decoration-none" data-bs-dismiss="modal">목록보기</a>
 							</li>
-				         </c:if>
-				       	<li class="mx-3">
-							<a class="fw-bold link-success text-decoration-none" data-bs-dismiss="modal">목록보기</a>
-						</li>
-				       	<c:choose>
-				       		<c:when test="${dto.nextNum ne 0 }">
-					       		<li>			   
-									<a class="link-success text-decoration-none" href="detail.do?num=${dto.nextNum }">
-									다음글&gt	     	
-							      </a>
-								</li>
-				       		</c:when>
-				       		<c:otherwise>
-				       			<li class="page-item disabled">
-				               		<a class="page-link" href="javascript:">Next</a>
-				            	</li>
-				       		</c:otherwise>
-				       	</c:choose> 
+				       		<li v-if="detailItem.nextNum != 0">			   
+								<a class="link-success text-decoration-none" @click.prevent="showNextNumDetail">
+								다음글&gt	     	
+						      </a>
+						    </li>
 						</ul>
                     </div>
                 </div>
@@ -317,27 +309,48 @@
                     self.$refs.imagePath.value = data.imagePath;
                 });
             },
-            showDetail(index){
+            showDetail(num){
             	const self=this;
                 //선택된 인덱스에 해당하는 object 를 detailItem 에 대입한다.
-                this.detailItem=this.galleryList[index];
+                ajaxPromise(base_url+"/ajax/gallery/getDetail.do", "GET", "num="+num)
+                .then(function(response){
+                    return response.json();
+                })
+                .then(function(data){
+                    //data 는 이전글의 정보 {num:xx, writer:xx...}
+                    console.log(data);
+                    self.detailItem=data;
+                });    
                 //detail 모달의 참조값 얻어오기 
                 let modalElement=this.$refs.detailModal;
                 //bootstrap 모달 띄우기 
                 let modal=new bootstrap.Modal(modalElement);
                 modal.show();
             },
-            showPrevNumDetail(index){
-            	//현제 페이지 모달을 닫는다
-            	this.isDetailModalShow=false;
-            	//이전페이지의 object를 detailItem에 대입한다
-            	this.detailItem=this.galleryList[index-1];
-                //detail 모달의 참조값 얻어오기 
-                let modalElement=this.$refs.detailModal;
-                //bootstrap 모달 띄우기 
-                let modal=new bootstrap.Modal(modalElement);
-                modal.show();            	
-            },            
+            showPrevNumDetail(){
+            	const self=this;
+                ajaxPromise(base_url+"/ajax/gallery/getDetail.do", "GET", "num="+self.detailItem.prevNum)
+                .then(function(response){
+                    return response.json();
+                })
+                .then(function(data){
+                    //data 는 이전글의 정보 {num:xx, writer:xx...}
+                    console.log(data);
+                    self.detailItem=data;
+                });        	
+            },  
+            showNextNumDetail(){
+            	const self=this;
+                ajaxPromise(base_url+"/ajax/gallery/getDetail.do", "GET", "num="+self.detailItem.nextNum)
+                .then(function(response){
+                    return response.json();
+                })
+                .then(function(data){
+                    //data 는 다음글의 정보 {num:xx, writer:xx...}
+                    console.log(data);
+                    self.detailItem=data;
+                });        	
+            },   
             showInsert(){
                 //insert모달의 참조값 얻어오기 
                 let modalElement=this.$refs.insertModal;
@@ -379,7 +392,7 @@
         },
         created(){
             //화면 업데이트
-            this.updateUI();
+            this.updateUI();   
         }
     });
 </script>    
