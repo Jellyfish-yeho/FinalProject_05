@@ -49,7 +49,7 @@
 		<div v-if="id != '' && userInfo.profile!=null" class="container2 d-flex justify-content-end align-items-center">
 			<img class="profileImage" :src="base_url+userInfo.profile" />				
 			<span class="navbar-text align-middle me-2" style="color:#ffffff;">
-				<a class="text-decoration-none" href="${pageContext.request.contextPath}/users/info.do" >
+				<a class="fw-bold" href="${pageContext.request.contextPath}/users/info.do" >
 					{{id}}
 				</a>님 로그인 중 
 			</span>
@@ -66,7 +66,7 @@
 					{{id}}
 				</a>님 로그인 중 
 			</span>
-			<a class="btn btn-danger btn-sm m-2" href="${pageContext.request.contextPath}/users/logout.do">
+			<a class="fw-bold" class="btn btn-danger btn-sm m-2" href="${pageContext.request.contextPath}/users/logout.do">
 				로그아웃
 			</a>
 		</div>			
