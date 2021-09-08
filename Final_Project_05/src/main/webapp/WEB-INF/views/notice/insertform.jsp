@@ -29,7 +29,7 @@
 </style>
 </head>
 <body>
-<%-- navbar include : cafe - thisPage --%>
+<%-- navbar include : notice - thisPage --%>
 <jsp:include page="../../include/navbar.jsp">
 	<jsp:param value="notice" name="thisPage"/>
 </jsp:include>
