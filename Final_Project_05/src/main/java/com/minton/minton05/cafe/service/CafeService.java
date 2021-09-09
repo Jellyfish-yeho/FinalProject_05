@@ -52,5 +52,7 @@ public interface CafeService {
 	   //ajax 요청용 - cafe 글하단 페이징 처리에 필요한 데이터를 리턴하는 메소드
 	   public Map<String, Object> ajaxGetCommentPaging(HttpServletRequest request);
 	   
+	   //ajax - 댓글 추가
+	   public Map<String, Object> ajaxInsertComment(HttpServletRequest request);
 	   
 }
