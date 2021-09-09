@@ -25,6 +25,11 @@
       top:50%;
       left:50%;
    }
+   #insertForm{
+		width: 900px;
+		margin: 0 auto;
+		float:center;
+	}
    
 </style>
 </head>
@@ -34,18 +39,23 @@
    <jsp:param value="cafe" name="thisPage"/>
 </jsp:include>
 <div class="body-wrapper ">
-   <div class="body-content container my-4 text-center">
-      <h1 class="fw-bold my-4">새 글 작성하기</h1>
-      <form action="insert.do" method="post" id="insertForm">
+   <div class="body-content container my-5 text-center">
+      <h1 class="fw-bold my-4">
+      	<img src="${pageContext.request.contextPath}/resources/images/write.png" width="50" height="50" />
+      	새 글 작성하기
+     </h1>
+      <form action="insert.do" method="post" id="insertForm" >
+      	 <hr>
          <div class="row mb-3 align-items-center">
-            <label class="col-form-label col-form-label-sm col-sm-1" for="category">분류</label>   
+            <label class="col-form-label col-form-label-sm col-sm-1" for="category" id="title">분류</label>   
             <div class="col">
                <select class="form-control form-select form-select-sm" name="category" id="category">
                   <option value="잡담">잡담</option>
                   <option value="후기">후기</option>
                </select>
             </div>
-         </div>    
+         </div>
+         <hr>    
          <div class="row my-2">   
             <label class="col-form-label col-form-label-sm col-sm-1" for="title">제목</label>
             <div class="col">
@@ -53,13 +63,15 @@
                <small class="text-muted" style="font-size:0.875rem;">제목은 5글자 이상이어야 합니다.</small>
             </div>         
          </div>
+         <hr>
          <div class="row my-2">
             <label class="col-form-label col-form-label-sm col-sm-1" for="content">내용</label>
             <div class="col align-self-start">
                <textarea class="form-control" name="content" id="content"></textarea>
             </div>
          </div>
-         <button class="btn btn-sm btn-outline-success" type="submit">작성</button>
+         <button class="btn btn-lg btn-outline-success m-3" type="submit">작성</button>
+         <hr>
       </form>      
    </div>
 <%-- footer --%>
