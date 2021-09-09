@@ -6,12 +6,13 @@
 <head>
 <meta charset="UTF-8">
 <title>회원정보</title>
-<link rel="icon" href="${request.getContextPath()}../../resources/images/shuttlecock_main.png" type="image/x-icon" />
-<link href="${pageContext.request.contextPath}../../resources/formCss/form.css" rel="stylesheet">
+<link rel="icon" href="${request.getContextPath()}resources/images/shuttlecock_main.png" type="image/x-icon" />
+<link href="${pageContext.request.contextPath}resources/formCss/form.css" rel="stylesheet">
 <jsp:include page="../../include/resource.jsp"></jsp:include>
 <jsp:include page="../../include/icon.jsp"></jsp:include>
 <jsp:include page="../../include/font.jsp"></jsp:include>
 <style>
+
 	.bd-placeholder-img{
 		font-size : 1.125rem;
 		text-anchor : middle;
@@ -37,6 +38,7 @@
 <div class="container form-signin my-4">
 	<div class="d-flex d-inline-flex flex-column justify-content-center">
 	<form action="${pageContext.request.contextPath}/users/login.do" method="post">
+	<div style="margin-bottom:100px;"></div>
 	<img class="mb-4" src="${pageContext.request.contextPath}/resources/images/shuttlecock_main.png" width="100" height="100"/>
 		<c:choose>
 			<c:when test="${ empty param.url }">

@@ -69,10 +69,4 @@
       0 순위로 찾아서 없으면 
       views 폴더 안에서 jsp 페이지를 찾게 된다.    
    -->
-   <beans:bean class="org.springframework.web.servlet.view.BeanNameViewResolver">
-      <beans:property name="order" value="0"/>
-   </beans:bean>
-	
-	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
-	
 </beans:beans>

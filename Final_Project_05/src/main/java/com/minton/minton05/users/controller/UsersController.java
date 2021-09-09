@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.minton.minton05.mail.service.Common;
 import com.minton.minton05.users.dto.UsersDto;
 
 
@@ -27,6 +28,7 @@ public class UsersController {
    
    @Autowired
    private com.minton.minton05.users.service.UsersService service;
+   @Autowired private Common mail;
    
    //ajax - 회원 정보 가져오기
    @RequestMapping("/ajax/users/getUser")
@@ -137,6 +139,28 @@ public class UsersController {
       mView.setViewName("users/signup");
       return mView;
    }
+   /*
+    //회원이메일 처리 요청
+ 	//RequestMapping에 한글이 깨지지않게 utf-8 설정
+ 	@ResponseBody @RequestMapping(value= "users/singup", method = RequestMethod.POST)
+ 	public ModelAndView join(UsersDto dto, HttpServletRequest request, HttpSession session, ModelAndView mView) {
+ 		
+ 		  service.addUser(dto);
+ 	      mView.addObject("id", dto.getId());
+ 	      mView.setViewName("users/signup");
+ 	
+ 		String msg = "<script type='text/javascript'>";
+ 		//화면에서 입력한 정보를 DB에 저장한 후 홈 화면으로 연결
+ 		if(service.addUser2(dto)) {
+ 			//메일 전송
+ 			mail.sendEmail(dto.getEmail(), dto.getId());
+ 		} else {
+ 			msg += "alert('회원가입에 실패했습니다!'); history.go(-1)";
+ 		}
+ 		msg += "</script>";
+ 		return mView;
+ 	}
+ 	*/
    
    //로그인 폼 요청 처리
    @RequestMapping("/users/loginform")
