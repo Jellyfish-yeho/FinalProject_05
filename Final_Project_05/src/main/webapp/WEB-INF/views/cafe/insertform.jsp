@@ -9,7 +9,8 @@
 <link rel="icon" href="${pageContext.request.contextPath}/resources/images/shuttlecock_main.png" type="image/x-icon" />
 <jsp:include page="../../include/resource.jsp"></jsp:include>
 <jsp:include page="../../include/icon.jsp"></jsp:include>
-<link href="${pageContext.request.contextPath}/resources/formCss/form.css" rel="stylesheet">
+<link rel="stylesheet" href="../../resources/CSS/main.css?after" type="text/css" 
+      media="screen" title="no title" charset="utf-8"/>
 <style> 
    html,body{
       margin: 0;

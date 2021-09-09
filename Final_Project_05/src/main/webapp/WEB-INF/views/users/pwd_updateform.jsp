@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>회원정보</title>
-<link href="${request.getContextPath()}../../resources/formCss/form.css" rel="stylesheet">
+<link href="${request.getContextPath()}resources/formCss/form.css" rel="stylesheet">
 <jsp:include page="../../include/resource.jsp"></jsp:include>
 <jsp:include page="../../include/icon.jsp"></jsp:include>
 <jsp:include page="../../include/font.jsp"></jsp:include>
@@ -33,7 +33,8 @@
 <div class="container form-signin my-4">
 <div class="d-flex d-inline-flex flex-column justify-content-center">
 	<form action="${pageContext.request.contextPath}/users/pwd_update.do" method="post" id="myForm">
-	<img class="mb-4" src="${pageContext.request.contextPath}/resources/images/shuttlecock_main.png" width="100" height="100"/>
+	<div style="margin-bottom:100px;"></div>
+	<img class="mb-4" src="${pageContext.request.contextPath}/resources/images/shuttlecock_main.png" width="100" height="100"/>	
 		<h2 class="fw-bold my-4">비밀번호 수정</h2>		
 		<div class="form-floating" style="padding: 5px 1px 2px 3px;">
 			<input class="form-control" type="password" name="pwd" id="pwd"/>

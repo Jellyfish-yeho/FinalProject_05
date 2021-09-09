@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <title>회원정보</title>
 <link rel="icon" href="${pageContext.request.contextPath}/images/shuttlecock_main.png" type="image/x-icon" />
-<link href="${pageContext.request.contextPath}../../resources/formCss/form.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}resources/formCss/form.css" rel="stylesheet">
 <jsp:include page="../../include/resource.jsp"></jsp:include>
 <jsp:include page="../../include/icon.jsp"></jsp:include>
 <jsp:include page="../../include/font.jsp"></jsp:include>
@@ -34,6 +34,7 @@
 <%-- navbar include --%>
 <jsp:include page="../../include/navbar.jsp"></jsp:include>
 	<div class="container form-signin my-4">
+		<div style="margin-bottom:100px;"></div>
 		<h1 class="fw-bold my-4">회원 정보 수정</h1>
 		<div class="profile my-3">
 			<a id="profileLink" href="javascript:">

@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>회원정보</title>
-<link href="${pageContext.request.contextPath}../../resources/formCss/form.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}resources/formCss/form.css" rel="stylesheet">
 <jsp:include page="../../include/resource.jsp"></jsp:include>
 <jsp:include page="../../include/icon.jsp"></jsp:include>
 <jsp:include page="../../include/font.jsp"></jsp:include>
@@ -33,6 +33,7 @@
 <div class="container form-signin my-4">
 <div class="d-flex d-inline-flex flex-column justify-content-center">
 	<form action="${pageContext.request.contextPath}/users/signup.do" method="post" id="myForm">
+		<div style="margin-bottom:100px;"></div>
 		<img class="mb-4" src="${pageContext.request.contextPath}/resources/images/shuttlecock_main.png" width="100" height="100"/>
 		<h1 class="fw-bold my-4">회원가입</h1>	
 			<div class="form-floating">
