@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.minton.minton05.gallery.dto.GalleryDto;
+import com.minton.minton05.like.dto.LikeDto;
 import com.minton.minton05.notice.dto.NoticeDto;
 
 public interface GalleryService {
@@ -31,10 +32,16 @@ public interface GalleryService {
 	//갤러리 목록을 리턴하는 메소드 
 	public List<GalleryDto> getList2(HttpServletRequest request);
 
-	
 	//ajax 요청용 - 갤러리 목록을 가져오는 메소드 
 	public List<GalleryDto> ajaxGetListIndex(HttpServletRequest request);
 
 	//ajax - 갤러리 글 하나의 정보를 리턴하는 메소드
 	public GalleryDto ajaxGetDetail(HttpServletRequest request);
+	
+	//로그인한 유저가 게시물을 추천했는지 확인
+	public Map<String, Object> ajaxCheckLike(LikeDto dto);
+	   
+	//로그인 확인하기
+	public Map<String, Object> ajaxCheckLogin(HttpServletRequest request);
+	   
 }

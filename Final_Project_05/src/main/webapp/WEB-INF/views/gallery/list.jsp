@@ -154,11 +154,21 @@
                     <p class="card-text fs-3 fw-bold">{{item.title}}</p>
                     <p class="card-text">by <strong>{{item.writer}}</strong></p>
                     <p><small class="text-muted" style="font-size:0.875rem;">{{item.regdate}}</small></p>
+                    <!-- 좋아요 -->
                     <p>
-                        <svg style="color:#dc3545;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="me-2 bi bi-heart-fill" viewBox="0 0 16 16">
-                           <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
-                        </svg>
-                        <span class="text-muted">{{item.likeCount}}</span>
+						<a v-if="isLiked === true" @click.prevent="offLike" class="text-decoration-none link-danger">
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
+								<path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+							</svg>
+						</a>
+						<a v-else @click.prevent="onLike" class="text-decoration-none link-danger">
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+								<path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+							</svg>
+						</a>
+						<span v-bind="detailItem" class="text-muted mx-1">
+							{{item.likeCount}}
+						</span>
                     </p>
                 </div>
             </div>
@@ -216,9 +226,18 @@
                                     </svg>
                                 </a>
                             <!-- 좋아요 -->
-		                    <svg style="color:#dc3545;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="me-2 bi bi-heart-fill" viewBox="0 0 16 16">
-		                        <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
-		                    </svg>
+							<a v-if="isLiked === true" @click.prevent="offLike" class="text-decoration-none link-danger">
+								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
+									<path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+								</svg>
+							</a>
+							<a v-else @click.prevent="onLike" class="text-decoration-none link-danger">
+								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+									<path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+								</svg>
+							</a>
+							<span v-bind="detailItem" class="text-muted mx-1">
+								{{detailItem.likeCount}}
                         </div>
                         <!-- 이전글 목록 다음글 -->
                         <ul class="mb-5 d-flex flex-row ps-0 justify-content-center" style="list-style:none;">
@@ -265,7 +284,9 @@
             detailItem:{},
             isMakeForm:false,  //업로드 폼을 만들지 여부
             previewImagePath:"",
-            isDetailModalShow: true
+            isDetailModalShow: true,
+            id:"",
+			isLiked:"",
         },
         computed:{
             /*
@@ -281,6 +302,47 @@
             }
         },
         methods:{
+ 			offLike(){
+				const self=this;
+				//likeCount -1, liketo table에서 좋아요 정보 삭제하는 요청
+				ajaxPromise(base_url+"/ajax/gallery/offLike.do", "POST", 
+						"liked_user="+self.id+"&gallery_num="+self.detailItem.num)
+				.then(function(response){
+					return response.json();
+				})
+				.then(function(data){
+					//data는 {isSuccess:true}
+					if(data.isSuccess){
+						//결과를 모델에 반영하기 - 빈하트 표시, counter-1
+						self.isLiked=false;
+						self.detailItem.likeCount --;
+					}
+				})
+			},
+			onLike(){
+				const self=this;
+				//로그인을 해야 좋아요를 누를 수 있도록 함
+				let isExist=false;
+				if(self.id === ""){
+					alert("로그인을 해야 좋아요를 누를 수 있습니다.");
+				}else{
+					//likeCount +1, liketo table에서 좋아요 정보 추가하는 요청
+					ajaxPromise(base_url+"/ajax/gallery/onLike.do", "POST", 
+							"liked_user="+self.id+"&gallery_num="+self.detailItem.num)
+					.then(function(response){
+						return response.json();
+					})
+					.then(function(data){
+						//data는 {isSuccess:true / false}
+						//console.log(data);
+						if(data.isSuccess){ //isSuccess가 true일 경우에 하트 추가
+							//결과를 모델에 반영하기 - 찬하트 표시, counter+1
+							self.isLiked=true;
+							self.detailItem.likeCount ++;
+						}
+					})
+				}
+			}, 
             urlClipCopy(){
                 var currentUrl = document.getElementById("urlInput");
                 currentUrl.value = window.document.location.href;  // 현재 URL 을 세팅해 줍니다.
@@ -312,6 +374,23 @@
             showDetail(num){
             	const self=this;
                 //선택된 인덱스에 해당하는 object 를 detailItem 에 대입한다.
+                //로그인한 유저가 좋아요를 눌렀는지 확인
+				ajaxPromise(base_url+"/ajax/gallery/isLiked.do",
+						"get","liked_user="+'${id}'+"&gallery_num="+num)
+				.then(function(response){
+					return response.json();
+				})
+				.then(function(data){
+					//data는 {isLiked:true/false}
+					//console.log(data);
+					if(data.isLiked == true){
+						//data가 true이면 꽉찬하트 표시
+						self.isLiked=true;
+					}else{
+						//data가 false이면 빈하트 표시
+						self.isLiked=false;
+					}				
+				});
                 ajaxPromise(base_url+"/ajax/gallery/getDetail.do", "GET", "num="+num)
                 .then(function(response){
                     return response.json();
@@ -391,8 +470,21 @@
             }
         },
         created(){
-            //화면 업데이트
-            this.updateUI();   
+        	//화면 업데이트
+            this.updateUI();  
+        	
+           	const self=this; 
+          //로그인 정보를 얻어와서
+			ajaxPromise(base_url+"/ajax/cafe/isLogin.do", "GET")
+			.then(function(response){
+				return response.json();
+			})
+			.then(function(data){
+				//data는 {id:xxx 또는 빈문자열}
+				//얻어온 정보를 model에 넣기
+				self.id=data.id;
+			})	
+
         }
     });
 </script>    
