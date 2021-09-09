@@ -133,7 +133,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="mb-4 btn btn-sm btn-outline-success" @click="submitClicked">등록</button>
+                  <button type="button" @click="submitClicked" class="mb-4 btn btn-sm btn-outline-success" data-bs-dismiss="modal">등록</button>
                   <button type="button" class="mb-4 btn btn-sm btn-outline-success" data-bs-dismiss="modal">닫기</button>
               </div>
             </div>
@@ -260,9 +260,12 @@
 </div>
 
 <jsp:include page="../../include/footer.jsp"></jsp:include>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/gura_util.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
 
     //const base_url="http://localhost:8888/minton05";
@@ -369,8 +372,31 @@
                 alert("URL이 클립보드에 복사되었습니다."); 
 	        },
             submitClicked(){
+	        	const self=this;
                 //ref="insertForm" 인 폼을 강제 전송한다(submit 시킨다).
-                this.$refs.insertForm.submit();
+                //this.$refs.insertForm.submit();
+                //폼 제출 수행
+                let form=this.$refs.insertForm;
+                ajaxFormPromise(form)
+                .then(function(response){
+                	return response.json();
+                })
+                .then(function(data){
+                	//data는 {isSuccess:true}
+                	//버튼을 누르면 모달이 자동 닫힘, 알림창 띄워주기
+                	Swal.fire({
+						title:'작성 성공',
+						text: '새 글 작성에 성공하였습니다.',
+						icon: 'success',
+						confirmButtonColor: '#198754',
+						confirmButtonText: '확인'
+					}).then((result) => {
+						if (result.value) {
+							location.href="${pageContext.request.contextPath}/gallery/list.do";
+					  }
+					})
+
+                });
             },
             uploadImage(){
                 let self=this;
