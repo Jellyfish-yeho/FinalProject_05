@@ -95,6 +95,7 @@
 </a>
    
 <script src="${pageContext.request.contextPath}/resources/js/gura_util.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script>
 	const base_url="http://localhost:8888/minton05";
@@ -111,20 +112,18 @@
 			if('${id}'!=null){
 				self.id = '${id}';
 			}			
-			//회원 정보 가져오기
-			ajaxPromise(base_url+"/ajax/users/getUser.do","get")
-			.then(function(response){
-				if(response != null){
-					return response.json();
-				}				
+			$.ajax({ //회원정보 가져오기
+				type: "POST",
+				url: base_url+"/ajax/users/getUser.do",
+		        dataType: 'json',
+		        success: function(data){
+		            if(data != null){ //data가 null이 아닐 경우에만
+		            	//가져온 data를 model에 넣어주기
+						self.userInfo = data;		            
+					}
+				}
 			})
-			.then(function(data){
-				//data는 {id:xxx, pwd:xxx, profile:xxx...}
-				//console.log(data);
-				//가져온 data를 model에 넣어주기
-				self.userInfo = data;
-				console.log(data.profile);
-			})
+			
 		}
 	});
 
