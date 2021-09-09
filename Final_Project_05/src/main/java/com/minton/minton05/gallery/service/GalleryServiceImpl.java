@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.minton.minton05.gallery.dao.GalleryDao;
 import com.minton.minton05.gallery.dto.GalleryDto;
+import com.minton.minton05.like.dto.LikeDto;
 
 @Service
 public class GalleryServiceImpl implements GalleryService {
@@ -245,5 +246,34 @@ public class GalleryServiceImpl implements GalleryService {
 		//dao 로 해당 게시글 num 에 해당하는 데이터(dto)를 가져온다.
 		GalleryDto dto = dao.getData(num);
 		return dto;
+	}
+	//로그인한 유저가 게시물을 추천했는지 확인
+	@Override
+	public Map<String, Object> ajaxCheckLike(LikeDto dto) {
+		//System.out.println(dto.getLiked_user());
+		//System.out.println(dto.getCafe_num());
+		LikeDto likeDto = dao.isLiked(dto);
+		Map<String, Object>	map=new HashMap<>();
+		if(likeDto != null) {			
+			map.put("isLiked", true);
+			return map;
+		}else {
+			map.put("isLiked", false);
+			return map;
+		}
+	}
+	
+	//로그인 확인하기
+	@Override
+	public Map<String, Object> ajaxCheckLogin(HttpServletRequest request) {
+		String id=(String)request.getSession().getAttribute("id");
+		Map<String, Object>	map=new HashMap<>();
+		if(id!=null) {
+			map.put("id", id); 
+			return map;
+		}else {
+			map.put("id", "");
+			return map;
+		}
 	}
 }

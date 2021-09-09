@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.minton.minton05.gallery.dto.GalleryDto;
+import com.minton.minton05.like.dto.LikeDto;
 
 @Repository
 public class GalleryDaoImpl implements GalleryDao{
@@ -68,9 +69,33 @@ public class GalleryDaoImpl implements GalleryDao{
 	public void delete(int num) {
 		session.delete("gallery.delete", num);
 	}
-	//좋아요 수 증가시키기
-	//@Override
-	//public void addLikeCount(int num) {
-	//	session.update("gallery.addLikeCount", num);
-	//}
+	//로그인한 유저가 게시물을 추천했는지 확인
+	@Override
+	public LikeDto isLiked(LikeDto dto) {
+		return session.selectOne("gallery.isLiked", dto);
+	}
+
+	//추천하기
+	@Override
+	public void like_insert(LikeDto dto) {
+		session.insert("gallery.likeInsert", dto);		
+	}
+
+	//추천 없애기
+	@Override
+	public void like_delete(LikeDto dto) {
+		session.delete("gallery.likeDelete", dto);
+	}
+
+	//좋아요수 내리기
+	@Override
+	public void minusLikeCount(int num) {
+		session.update("gallery.minusLikeCount", num);
+	}
+
+	//좋아요수 올리기
+	@Override
+	public void addLikeCount(int num) {
+		session.update("gallery.addLikeCount", num);
+	}
 }

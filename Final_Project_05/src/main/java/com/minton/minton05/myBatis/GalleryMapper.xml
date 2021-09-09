@@ -46,10 +46,33 @@
 		WHERE num=#{num}
 	</delete>
 	
-	<update id="addLikeCount" parameterType="int">
-		UPDATE board_gallery.
-	    SET likeCount=likeCount+1
-	    WHERE num=#{num}
+	<insert id="likeInsert" parameterType="likeDto">
+		INSERT INTO liketo2
+		(gallery_num, liked_user)
+		VALUES(#{gallery_num}, #{liked_user})
+	</insert>
+	
+	<delete id="likeDelete" parameterType="likeDto">
+		DELETE FROM liketo2
+		WHERE gallery_num=#{gallery_num} AND liked_user=#{liked_user}
+	</delete>
+	
+	<update id="minusLikeCount" parameterType="int">
+		UPDATE board_gallery
+		SET likeCount=likeCount-1
+		 WHERE num=#{num}
 	</update>
+	
+	<update id="addLikeCount" parameterType="int">
+      UPDATE board_gallery
+      SET likeCount=likeCount+1
+      WHERE num=#{num}
+	</update>
+   
+	<select id="isLiked" parameterType="likeDto" resultType="likeDto">
+		SELECT *
+		FROM liketo2
+		WHERE gallery_num=#{gallery_num} AND liked_user=#{liked_user}
+	</select>
 	
 </mapper>

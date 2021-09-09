@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.minton.minton05.gallery.dao.GalleryDao;
 import com.minton.minton05.gallery.dto.GalleryDto;
 import com.minton.minton05.gallery.service.GalleryService;
+import com.minton.minton05.like.dto.LikeDto;
 
 @Controller
 public class GalleryController {
@@ -166,4 +167,45 @@ public class GalleryController {
 		service.deleteContent(num);
 		return "gallery/delete";
 	}
+	
+	//꽉 찬 하트일 때 
+		@RequestMapping(value="/ajax/gallery/offLike", method = RequestMethod.POST)
+		@ResponseBody
+		public Map<String, Object> ajaxOffLike(LikeDto likeDto){
+			Map<String, Object>	map=new HashMap<>();
+			dao.like_delete(likeDto);
+			dao.minusLikeCount(likeDto.getGallery_num());
+			map.put("isSuccess", true);
+			return map;
+		}
+		
+		//빈 하트일 때 
+		@RequestMapping(value="/ajax/gallery/onLike", method = RequestMethod.POST)
+		@ResponseBody
+		public Map<String, Object> ajaxOnLike(LikeDto likeDto){
+			Map<String, Object>	map=new HashMap<>();
+			//중복 좋아요를 방지하기 위해 확인 후 insert
+			if(service.ajaxCheckLike(likeDto)!=null) {
+				dao.like_insert(likeDto);
+				dao.addLikeCount(likeDto.getGallery_num());
+				map.put("isSuccess", true);
+			}else {
+				map.put("isSuccess", false);
+			}		
+			return map;
+		}
+		
+		//로그인 유저 확인하기
+		@RequestMapping("/ajax/gallery/isLogin")
+		@ResponseBody
+		public Map<String, Object> ajaxIsLogin(HttpServletRequest request){
+			return service.ajaxCheckLogin(request);
+		}
+		
+		//로그인 유저가 특정 게시물을 추천했는지 확인
+		@RequestMapping(value="/ajax/gallery/isLiked", method = RequestMethod.GET)
+		@ResponseBody
+		public Map<String, Object> ajaxIsLiked(LikeDto likeDto){
+			return service.ajaxCheckLike(likeDto);
+		}	
 }
