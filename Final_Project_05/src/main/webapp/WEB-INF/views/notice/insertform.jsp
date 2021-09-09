@@ -25,6 +25,11 @@
       top:50%;
       left:50%;
    }
+   #insertForm{
+		width: 900px;
+		margin: 0 auto;
+		float:center;
+	}
    
 </style>
 </head>
@@ -34,9 +39,13 @@
    <jsp:param value="notice" name="thisPage"/>
 </jsp:include>
 <div class="body-wrapper ">
-   <div class="body-content container my-4 text-center">
-      <h1 class="fw-bold my-4">새 공지 작성</h1>
+   <div class="body-content container my-5 text-center">
+      <h1 class="fw-bold my-4">
+      	<img src="${pageContext.request.contextPath}/resources/images/write.png" width="50" height="50" />
+      	새 공지 작성
+      </h1>
       <form action="insert.do" method="post" id="insertForm">
+      	 <hr>
          <div class="row mb-3 align-items-center">             
             <label class="col-form-label col-form-label-sm col-sm-1" for="title">제목</label>
             <div class="col">  
@@ -45,13 +54,15 @@
             </div>
          </div>
          <input type="hidden" name="writer" value="${id}" />
+         <hr>
          <div class="row my-2">
             <label class="col-form-label col-form-label-sm col-sm-1" for="content">내용</label>
                <div class="col align-self-start ">
                   <textarea class="form-control" name="content" id="content"></textarea>
                </div>
          </div>
-         <button class="btn btn-sm btn-outline-success" type="submit">저장</button>
+         <button class="btn btn-lg btn-outline-success m-3" type="submit">저장</button>
+         <hr>
       </form>
    </div>
 <%-- footer --%>
