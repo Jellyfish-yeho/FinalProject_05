@@ -36,6 +36,13 @@ public class CafeController {
 	@Autowired private CafeService service;
 	@Autowired private CafeDao cafeDao;
 	
+	//ajax - 댓글 추가
+	@RequestMapping("/ajax/cafe/commentInsert")
+	@ResponseBody
+	public Map<String, Object> ajaxCommentInsert(HttpServletRequest request){
+		return service.ajaxInsertComment(request);
+	}
+	
 	//image upload 
 	@RequestMapping(value="/cafe/fileupload", method=RequestMethod.POST)
 	@ResponseBody

@@ -73,7 +73,7 @@
 			<a class="link-dark text-decoration-none mx-1" :href="'updateform.do?num='+detail.num">수정</a>
 		</li>
 		<li v-if="detail.writer === id">
-			<a class="link-dark text-decoration-none mx-1" href="'delete.do?num='+detail.num">삭제</a>
+			<a class="link-dark text-decoration-none mx-1" :href="'delete.do?num='+detail.num">삭제</a>
 		</li>
 	</ul>
 	

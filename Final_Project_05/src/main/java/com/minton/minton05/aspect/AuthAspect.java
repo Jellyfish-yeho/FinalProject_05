@@ -65,15 +65,14 @@ public class AuthAspect {
             String id=(String)request.getSession().getAttribute("id");
             if(id == null) {//만일 로그인을 하지 않았으면
                //예외를 발생 시켜서 정상적인 응답을 받을수 없도록 한다.
-               throw new RuntimeException("로그인이 필요 합니다.");
+               throw new RuntimeException("로그인이 필요합니다.");
 
             }
          }
       }
       
       //로그인을 했으면 아래의 코드가 수행되고 ModelAndView 객체가 Object type 으로 리턴된다. 
-      Object obj=joinPoint.proceed();
-      
+      Object obj=joinPoint.proceed();      
       return obj;
    }
 

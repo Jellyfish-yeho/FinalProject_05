@@ -190,16 +190,15 @@
 	<!-- 댓글 -->
 	<hr class="mb-3" style="border: solid 1px gray;">
 	<p v-bind:value="totalRow" class="fs-5 mb-3"><strong>{{totalRow}}</strong> 개의 댓글</p>
-	
-		<form class="comment-form insert-form" action="comment_insert.do" method="post">
+		<!-- 원글에 다는 댓글 제출 폼 -->
+		<form @submit.prevent="insertComment" class="comment-form insert-form" 
+		action="${pageContext.request.contextPath}/ajax/cafe/commentInsert.do" method="post">
 			<!-- 원글의 글번호가 댓글의 ref_group 번호가 된다. -->
 			<input type="hidden" name="ref_group" v-bind:value="detail.num"/>
 			<!-- 원글의 작성자가 댓글의 대상자가 된다. -->
-			<input type="hidden" name="target_id" v-bind:value="detail.writer"/>
-	      
+			<input type="hidden" name="target_id" v-bind:value="detail.writer"/>	      
 			<textarea v-if="id!=''" name="content" placeholder="새 댓글 작성하기"></textarea>
-			<textarea v-else name="content" style="text-align:center;">댓글 작성을 위해 로그인이 필요합니다.</textarea>
-			
+			<textarea v-else name="content" style="text-align:center;">댓글 작성을 위해 로그인이 필요합니다.</textarea>			
 			<div align="right">
 				<button class="btn btn-sm btn-outline-success" type="submit">등록</button>
 			</div>		
@@ -207,7 +206,9 @@
 
 		<div class="comments">
 	   		<ul v-for="comment in commentList" :key="comment.num">
+	   			<!-- 삭제된 댓글 표시 -->
 	   			<li v-if="comment.deleted === 'yes'">삭제된 댓글입니다.</li> 
+	   			<!-- 원글에 단 댓글 표시 -->
 	   			<li v-else-if="comment.num === comment.comment_group" id="reli+comment.num">
 					<dl>
 						<dt>
@@ -224,26 +225,39 @@
 								<i>@{{comment.target_id}}</i>
 							</span>
 							<pre id="pre+comment.num">{{comment.content}}</pre>
+							<!-- 댓글에 댓글 다는 링크 : reInsertForm 과 연결-->
 							<a data-num="comment.num" href="javascript:" class="reply-link text-decoration-none"
+								id="'reComment'+comment.num" ref="'reComment'+comment.num"
+								:key="'reComment'+comment.num"
+								@click="activeReForm(comment.num)"
 								style="padding-left:9.5px; color:#198754;">댓글</a>
-							<a v-if="id !=null && comment.writer===id" data-num="comment.num" 
+							<!-- 원글에 단 댓글 수정하는 링크 : updateForm 연결 연결-->
+							<a v-if="id !=null && comment.writer===id" data-num="comment.num" v-bind:key="'commentModify'+comment.num"
 								class="update-link text-decoration-none link-dark px-2" href="javascript:">수정</a>
-							<a v-if="id !=null && comment.writer===id" data-num="comment.num" 
+							<!-- 원글에 단 댓글 삭제하는 링크 -->
+							<a v-if="id !=null && comment.writer===id" data-num="comment.num" v-bind:key="'commentDelete'+comment.num"
 								class="delete-link text-decoration-none link-dark" href="javascript:">삭제</a>									
 						</dd>	
 						<dd>
-							<form id="reForm+comment.num" class="animate__animated comment-form re-insert-form" 
-								action="comment_insert.do" method="post">
-								<input type="hidden" name="ref_group" value="detail.num"/>
-								<input type="hidden" name="target_id" value="comment.writer"/>
-			 					<input type="hidden" name="comment_group" value="comment.comment_group"/>
-								<textarea name="content"></textarea>
-								<div align="right">
-									<button class="btn btn-sm btn-outline-success" type="submit">등록</button>
-								</div>
-							</form>  
+							<!-- 댓글에 댓글 다는 제출 폼 -->
+							<transition enter-active-class="animate__animated animate__fadeIn"
+                  						leave-active-class="animate__animated animate__fadeOut">
+								<form @submit.prevent="insertComment" id="reInsertForm+comment.num" 
+									class="comment-form re-insert-form" 
+									:key="'reInsertForm'+comment.num"
+									action="${pageContext.request.contextPath}/ajax/cafe/commentInsert.do" method="post">
+									<input type="hidden" name="ref_group" value="detail.num"/>
+									<input type="hidden" name="target_id" value="comment.writer"/>
+				 					<input type="hidden" name="comment_group" value="comment.comment_group"/>
+									<textarea name="content"></textarea>
+									<div align="right">
+										<button class="btn btn-sm btn-outline-success" type="submit">등록</button>
+									</div>
+								</form>  
+							</transition>
 						</dd>	
 						<dd>
+							<!-- 원글에 단 댓글 수정 제출 폼 -->
 							<form id="updateForm+comment.num" class="comment-form update-form" 
 								action="comment_update.do" method="post">
 								<input type="hidden" name="num" value="detail.num" />
@@ -255,6 +269,7 @@
 						</dd>							
 					</dl>	
 	   			</li> 
+	   			<!--  댓글에 단 댓글 표시 -->
 	   			<li v-else="comment.num != comment.comment_group" id="reli+comment.num" style="padding-left:50px;">
 	   				<svg class="reply-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-return-right" viewBox="0 0 16 16">
 						<path fill-rule="evenodd" d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5z"/>
@@ -274,14 +289,18 @@
 								<i>@{{comment.target_id}}</i>
 							</span>
 							<pre id="pre+comment.num">{{comment.content}}</pre>
+							<!-- 댓글에 댓글 다는 링크 : reInsertForm 과 연결-->
 							<a data-num="comment.num" href="javascript:" class="reply-link text-decoration-none"
 								style="padding-left:9.5px; color:#198754;">댓글</a>
+							<!-- 댓글에 단 댓글 수정하는 링크 -->
 							<a v-if="id !=null && comment.writer===id" data-num="comment.num" 
 								class="update-link text-decoration-none link-dark px-2" href="javascript:">수정</a>
+							<!-- 댓글에 단 댓글 삭제하는 링크 -->	
 							<a v-if="id !=null && comment.writer===id" data-num="comment.num" 
 								class="delete-link text-decoration-none link-dark" href="javascript:">삭제</a>									
 						</dd>	
 						<dd>
+							<!-- 댓글에 댓글 다는 제출 폼 -->
 							<form id="reForm+comment.num" class="animate__animated comment-form re-insert-form" 
 								action="comment_insert.do" method="post">
 								<input type="hidden" name="ref_group" value="detail.num"/>
@@ -294,6 +313,7 @@
 							</form>  
 						</dd>	
 						<dd>
+							<!-- 댓글에 단 댓글 수정 제출 폼 -->
 							<form id="updateForm+comment.num" class="comment-form update-form" 
 								action="comment_update.do" method="post">
 								<input type="hidden" name="num" value="detail.num" />
@@ -349,8 +369,53 @@
 			
 		},
 		methods:{
+			insertComment(e){
+				const self=this;
+				//제출할 폼의 참조값
+				const form = e.target;
+				console.log(form);
+				ajaxFormPromise(form)
+				.then(function(response){
+					return response.json();
+				})
+				.then(function(data){
+					//data는 {isSuccess:true}
+					console.log(data);
+					//댓글을 다시 불러온다. 
+					//댓글 정보 읽어오기
+					ajaxPromise(base_url+"/ajax/cafe/commentList.do","GET",
+							"pageNum="+self.pageNum+"&num="+self.detail.num)	
+					.then(function(response){
+						return response.json();
+					})
+					.then(function(data){
+						//data는 {num:xx, writer:xx, content: xx . . . . }
+						//얻어온 정보를 model에 넣기
+						self.commentList=data;
+						//만약 댓글 총 페이지가 1개 이하이면 더보기 버튼 숨기기
+					})
+					//댓글 더보기 처리를 위해 totalPageCount가져오기
+					ajaxPromise(base_url+"/ajax/cafe/commentPaging.do","GET",
+							"pageNum="+self.pageNum+"&num="+self.detail.num)	
+					.then(function(response){
+						return response.json();
+					})
+					.then(function(data){
+						//data는 {totalPageCount:x, totalRow:x}
+						//얻어온 정보를 model에 넣기
+						self.totalRow=data.totalRow;
+						self.totalPageCount=data.totalPageCount;
+						//만약 댓글 총 페이지가 2 이상이면 더보기버튼 보이기
+						if(data.totalPageCount>=2){
+							self.isMoreButtonShow=true;
+						}
+					})
+				});
+			},
 			movePageNext(){ //다음 페이지
-				const self=this;				
+				const self=this;	
+				//댓글 페이지를 1로 리셋한다
+				this.pageNum = 1;
 				//글 정보 읽어오기
 				ajaxPromise(base_url+"/ajax/cafe/detail.do","GET",
 						"num="+self.detail.nextNum+"&keyword="+self.encodedK+"&condition="+self.condition)	
@@ -364,7 +429,7 @@
 				})
 				//댓글 정보 읽어오기
 				ajaxPromise(base_url+"/ajax/cafe/commentList.do","GET",
-						"pageNum="+this.pageNum+"&num="+self.detail.nextNum)	
+						"pageNum="+self.pageNum+"&num="+self.detail.nextNum)	
 				.then(function(response){
 					return response.json();
 				})
@@ -374,23 +439,10 @@
 					self.commentList=data;
 					//만약 댓글 총 페이지가 1개 이하이면 더보기 버튼 숨기기
 				})
-				
-				//댓글 정보 읽어오기
-				ajaxPromise(base_url+"/ajax/cafe/commentList.do","GET",
-						"pageNum="+this.pageNum+"&num="+self.detail.nextNum)	
-				.then(function(response){
-					return response.json();
-				})
-				.then(function(data){
-					//data는 {num:xx, writer:xx, content: xx . . . . }
-					//얻어온 정보를 model에 넣기
-					self.commentList=data;
-					//만약 댓글 총 페이지가 1개 이하이면 더보기 버튼 숨기기
-				})
-				
+								
 				//로그인한 유저가 좋아요를 눌렀는지 확인
 				ajaxPromise(base_url+"/ajax/cafe/isLiked.do",
-						"get","liked_user="+'${id}'+"&cafe_num="+self.detail.nextNum)
+						"get","liked_user="+self.id+"&cafe_num="+self.detail.nextNum)
 				.then(function(response){
 					return response.json();
 				})
@@ -419,7 +471,7 @@
 				
 				//댓글 더보기 처리를 위해 totalPageCount가져오기
 				ajaxPromise(base_url+"/ajax/cafe/commentPaging.do","GET",
-						"pageNum="+this.pageNum+"&num="+self.detail.nextNum)	
+						"pageNum="+self.pageNum+"&num="+self.detail.nextNum)	
 				.then(function(response){
 					return response.json();
 				})
@@ -431,11 +483,15 @@
 					//만약 댓글 총 페이지가 2 이상이면 더보기버튼 보이기
 					if(data.totalPageCount>=2){
 						self.isMoreButtonShow=true;
+					}else{
+						self.isMoreButtonShow=false;
 					}
 				})			
 			},			
 			movePagePrev(){ //이전 페이지
-				const self=this;				
+				const self=this;	
+				//댓글 페이지를 1로 리셋한다
+				this.pageNum = 1;
 				//글 정보 읽어오기
 				ajaxPromise(base_url+"/ajax/cafe/detail.do","GET",
 						"num="+self.detail.prevNum+"&keyword="+self.encodedK+"&condition="+self.condition)	
@@ -449,20 +505,7 @@
 				})
 				//댓글 정보 읽어오기
 				ajaxPromise(base_url+"/ajax/cafe/commentList.do","GET",
-						"pageNum="+this.pageNum+"&num="+self.detail.prevNum)	
-				.then(function(response){
-					return response.json();
-				})
-				.then(function(data){
-					//data는 {num:xx, writer:xx, content: xx . . . . }
-					//얻어온 정보를 model에 넣기
-					self.commentList=data;
-					//만약 댓글 총 페이지가 1개 이하이면 더보기 버튼 숨기기
-				})
-				
-				//댓글 정보 읽어오기
-				ajaxPromise(base_url+"/ajax/cafe/commentList.do","GET",
-						"pageNum="+this.pageNum+"&num="+self.detail.prevNum)	
+						"pageNum="+self.pageNum+"&num="+self.detail.prevNum)	
 				.then(function(response){
 					return response.json();
 				})
@@ -475,7 +518,7 @@
 				
 				//로그인한 유저가 좋아요를 눌렀는지 확인
 				ajaxPromise(base_url+"/ajax/cafe/isLiked.do",
-						"get","liked_user="+'${id}'+"&cafe_num="+self.detail.prevNum)
+						"get","liked_user="+self.id+"&cafe_num="+self.detail.prevNum)
 				.then(function(response){
 					return response.json();
 				})
@@ -504,7 +547,7 @@
 				
 				//댓글 더보기 처리를 위해 totalPageCount가져오기
 				ajaxPromise(base_url+"/ajax/cafe/commentPaging.do","GET",
-						"pageNum="+this.pageNum+"&num="+self.detail.prevNum)	
+						"pageNum="+self.pageNum+"&num="+self.detail.prevNum)	
 				.then(function(response){
 					return response.json();
 				})
@@ -516,6 +559,8 @@
 					//만약 댓글 총 페이지가 2 이상이면 더보기버튼 보이기
 					if(data.totalPageCount>=2){
 						self.isMoreButtonShow=true;
+					}else{
+						self.isMoreButtonShow=false;
 					}
 				})				
 			},
@@ -557,7 +602,13 @@
 								self.isMoreButtonShow=true;
 							}else{
 								self.isMoreButtonShow=false;
-							}							
+							}	
+				            //새로 추가된 댓글 li 요소 안에 있는 a 요소를 찾아서 이벤트 리스너 등록 하기 
+				            addUpdateListener(".page-"+currentPage+" .update-link");
+				            addDeleteListener(".page-"+currentPage+" .delete-link");
+				            addReplyListener(".page-"+currentPage+" .reply-link");
+				            //새로 추가된 댓글 li 요소 안에 있는 댓글 수정폼에 이벤트 리스너 등록하기
+				            addUpdateFormListener(".page-"+currentPage+" .update-form");
 						});
 						//로딩바 끄기
 						self.isLoading=false;
@@ -723,7 +774,7 @@
    /*
       detail.jsp 페이지 로딩 시점에 만들어진 1 페이지에 해당하는 
       댓글에 이벤트 리스너 등록 하기 
-   */
+ */
    addUpdateFormListener(".update-form");
    addUpdateListener(".update-link");
    addDeleteListener(".delete-link");
@@ -841,6 +892,7 @@
       }
 
    }
+
 	</script>
 </body>
 </html>
