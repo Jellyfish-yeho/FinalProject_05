@@ -165,12 +165,26 @@
 	<!-- 북마크 -->
 	<input type="text" id="urlInput" class="form-control form-control-sm"
 	style="display:block; position:absolute; left:-100000px"/>		
-	<a id="bookmark" class="text-decoration-none link-success mx-2"
+	<a id="liveToastBtn" class="text-decoration-none link-success mx-2"
 	@click.prevent="urlClipCopy">
 		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-fill" viewBox="0 0 16 16">
 			<path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/>
 		</svg>
 	</a>
+	<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+		<div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+			<div class="toast-header">
+				<img src="${pageContext.request.contextPath}/resources/images/logo2.png" class="rounded me-2" width="16" height="16" >
+				<strong class="me-auto">High-clear!</strong>
+	 			<small v-bind:data="today">{{today}}</small>
+				<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+			</div>
+  			<div class="toast-body">
+ 			URL이 클립보드에 복사되었습니다.
+			</div>
+		</div>
+	</div>
+	
 	<!-- 좋아요 -->
 	<a v-if="isLiked === true" @click.prevent="offLike" class="text-decoration-none link-danger">
 		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
@@ -351,6 +365,7 @@
 	let app = new Vue({
 		el:'#app',	
 		data:{
+			today:'',
 			isLoading:false,
 			keyword:'',
 			encodedK:'',
@@ -369,6 +384,7 @@
 			
 		},
 		methods:{
+
 			insertComment(e){
 				const self=this;
 				//제출할 폼의 참조값
@@ -570,8 +586,10 @@
 				currentUrl.value = window.document.location.href;  // 현재 URL				
 				currentUrl.select();  // url 값을 select()로 선택
 				document.execCommand("copy"); // 클립보드에 복사
-				currentUrl.blur();
-				alert("URL이 클립보드에 복사되었습니다."); 				
+				currentUrl.blur();	
+				let toastLiveExample = document.getElementById("liveToast");
+				let toast=new bootstrap.Toast(toastLiveExample)
+				toast.show();
 			},
 			moreComment(){ //댓글 더 가져오기
 				const self=this;
@@ -602,13 +620,15 @@
 								self.isMoreButtonShow=true;
 							}else{
 								self.isMoreButtonShow=false;
-							}	
+							}
+							/*
 				            //새로 추가된 댓글 li 요소 안에 있는 a 요소를 찾아서 이벤트 리스너 등록 하기 
 				            addUpdateListener(".page-"+currentPage+" .update-link");
 				            addDeleteListener(".page-"+currentPage+" .delete-link");
 				            addReplyListener(".page-"+currentPage+" .reply-link");
 				            //새로 추가된 댓글 li 요소 안에 있는 댓글 수정폼에 이벤트 리스너 등록하기
 				            addUpdateFormListener(".page-"+currentPage+" .update-form");
+				            */
 						});
 						//로딩바 끄기
 						self.isLoading=false;
@@ -659,7 +679,20 @@
 			},
 		},
 		created(){			
-			const self=this;
+			const self=this;			
+			
+			let today=new Date();
+			let date=today.toLocaleString();
+			self.today=date.toLocaleString('ko-KR');	
+			
+			let toastTrigger = document.getElementById("liveToastBtn");
+			let toastLiveExample = document.getElementById("liveToast");
+			if(toastTrigger){
+				toastTrigger.addEventListener('click',function(){
+					let toast=new bootstrap.Toast(toastLiveExample)
+					toast.show();
+				})
+			}
 			
 			let condition='${param.condition}';
 			let keyword='${param.keyword}';
