@@ -35,19 +35,25 @@ public class UsersServiceImpl implements UsersService {
             return map;
          }
 
-    //비밀번호 암호화 
-     @Override
-     public void addUser(UsersDto dto) {
-     //사용자가 입력한 비밀 번호를 읽어와서 
-     String pwd=dto.getPwd();
-      //암호화 한 후에 
-     BCryptPasswordEncoder encoder=new BCryptPasswordEncoder();
-     String encodedPwd=encoder.encode(pwd);
-     //dto 에 다시 넣어준다.
-     dto.setPwd(encodedPwd);
-      
-     dao.insert(dto);
-    }
+	//비밀번호 암호화 
+	@Override
+	public boolean addUser(UsersDto dto) {
+		//사용자가 입력한 비밀 번호를 읽어와서 
+		String pwd=dto.getPwd();
+		//암호화 한 후에 
+		BCryptPasswordEncoder encoder=new BCryptPasswordEncoder();
+		String encodedPwd=encoder.encode(pwd);
+		//dto 에 다시 넣어준다.
+		dto.setPwd(encodedPwd);     
+		//회원가입 처리
+		dao.insert(dto);
+		//해당 회원이 있으면 true, 없으면 false 리턴		
+		if(dao.getData(dto.getId())!=null) {
+			return true;
+		}else {
+			return false;
+		}		
+	}
 
     //로그인 처리 
    @Override
