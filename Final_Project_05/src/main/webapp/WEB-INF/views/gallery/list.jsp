@@ -125,10 +125,14 @@
                                 <input @change="uploadImage" class="my-2 form-control form-control-sm" type="file" name="image" id="image" 
                                    accept=".jpg, .jpeg, .png, .JPG, .JPEG"/>
                              </div>
-                             <%--<div class="drag-area"></div> --%>
+                             <div class="drag-area"></div>
                          </form>
-                        <div class="img-wrapper">
-                            <img v-bind:src="base_url+previewImagePath"/>
+                         <p>이미지 미리보기 </p>
+                        <div v-if="previewImagePath = null">
+                        	<p></p>
+                        </div>
+                        <div v-else class="img-wrapper">
+                        	<img v-bind:src="base_url+previewImagePath"/>  
                         </div> 
                     </div>
                 </div>
@@ -165,6 +169,7 @@
 							{{item.likeCount}}
 						</span>
                     </p>
+                    
                 </div>
             </div>
         </div>
@@ -249,6 +254,15 @@
 								다음글&gt	     	
 						      </a>
 						    </li>
+						</ul>
+						<!-- 수정 삭제 -->
+						<ul class="d-flex flex-row ps-0 justify-content-center" style="list-style:none;">	
+							<li v-if="detailItem.writer === id">
+								<a class="link-success text-decoration-none mx-1" v-bind:href="'updateform.do?num='+detailItem.num">수정</a>
+							</li>
+							<li v-if="detailItem.writer === id">
+								<a class="link-success text-decoration-none mx-1" v-bind:href="'delete.do?num='+detailItem.num">삭제</a>
+							</li>
 						</ul>
                     </div>
                 </div>
@@ -479,6 +493,40 @@
                 //bootstrap 모달 띄우기 
                 let modal=new bootstrap.Modal(modalElement);
                 modal.show();
+               // dragenter 이벤트가 일어 났을때 실행할 함수 등록 
+               document.querySelector(".drag-area")
+                  .addEventListener("dragenter", function(e){
+                     // drop 이벤트까지 진행될수 있도록 기본 동작을 막는다.
+                     e.preventDefault();
+                  });
+               
+               // dragover 이벤트가 일어 났을때 실행할 함수 등록 
+               document.querySelector(".drag-area")
+               .addEventListener("dragover", function(e){
+                  // drop 이벤트까지 진행될수 있도록 기본 동작을 막는다.
+                  e.preventDefault();
+                  e.stopPropagation();
+               });
+            	// dragover 이벤트가 일어 났을때 실행할 함수 등록 
+            	document.querySelector(".drag-area").addEventListener("drop", function(e){	      
+            		e.preventDefault();
+            		e.stopPropagation();
+            		//drop 된 파일의 여러가지 정보를 담고 있는 object 
+            		const data = e.dataTransfer;
+            		//drop 된 파일객체를 저장하고 있는 배열
+            		const files = data.files;
+            	      // input 요소에 drop 된 파일정보를 넣어준다. 
+            	      document.querySelector("#image").files = files;
+            	      // 한개만 drop 했다는 가정하에서 drop 된 파일이 이미지 파일인지 여부 알아내기
+            	      const reg=/image.*/;
+            	      const file = files[0];
+            	      //drop 된 파일의 mime type 확인
+            	      if(file.type.match(reg)){
+            	         ajaxImage();
+            	      }else{
+            	         alert("이미지 파일만 업로드 가능합니다.");
+            	      }
+            	   });	   
             },
             updateUI(){
                 //겔러리 목록을 요청해서 받아온다.
@@ -517,7 +565,7 @@
             this.updateUI();  
         	
            	const self=this; 
-          //로그인 정보를 얻어와서
+            //로그인 정보를 얻어와서
 			ajaxPromise(base_url+"/ajax/cafe/isLogin.do", "GET")
 			.then(function(response){
 				return response.json();
