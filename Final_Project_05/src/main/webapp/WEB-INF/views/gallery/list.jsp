@@ -41,10 +41,10 @@
       transition: transform 0.3s ease-out;
    }
    /* .img-wrapper 에 마우스가 hover 되었을때 적용할 css */
-   .img-wrapper:hover{
+    .img-wrapper:hover{
       /* 원본 크기의 1.1 배로 확대 시키기*/
       transform: scale(1.05);
-   }
+   } 
    
    .card .card-text{
       /* 한줄만 text 가 나오고  한줄 넘는 길이에 대해서는...처리 하는 css */
@@ -127,9 +127,8 @@
                              </div>
                              <div class="drag-area"></div>
                          </form>
-                         <p>이미지 미리보기 </p>
-                        <div v-if="previewImagePath = null">
-                        	<p></p>
+                         <!-- 이미지미리보기 -->
+                        <div v-if="previewImagePath === ''">
                         </div>
                         <div v-else class="img-wrapper">
                         	<img v-bind:src="base_url+previewImagePath"/>  
@@ -142,7 +141,7 @@
               </div>
             </div>
         </div>
-    </div>     
+    </div>
 
     <!-- 갤러리 목록 -->
       <div class="row row-cols-1 row-cols-md-3 g-4">
@@ -527,6 +526,24 @@
             	         alert("이미지 파일만 업로드 가능합니다.");
             	      }
             	   });	   
+            	function ajaxImage(){
+            	       //id가 ajaxForm인 form을 ajax전송시킨다. 
+            	 		const form=document.querySelector("#ajaxForm");
+            	 		//util 함수를 이용해서 ajax 전송
+            	 		ajaxFormPromise(form)
+            	 		.then(function(response){
+            	 			return response.json();
+            	 		})
+            	 		.then(function(data){//data는 {imagePath:"업로드된 이미지 경로"}
+            	 			//이미지 경로에 context path 추가하기
+            	 			const path="${pageContext.request.contextPath}"+data.imagePath;
+            	 			//img 요소에 src 속성의 값 넣어주어서 이미지 출력하기
+            	 			 document.querySelector(".img-wrapper img")
+            	             .setAttribute("src", path);
+            	 			//input type="hidden"인 요소에 value를 넣어준다.
+            	 			 document.querySelector("#imagePath").value = data.imagePath;
+            	 		});	         
+            	      };
             },
             updateUI(){
                 //겔러리 목록을 요청해서 받아온다.
