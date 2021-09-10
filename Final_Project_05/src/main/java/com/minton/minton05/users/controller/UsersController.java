@@ -132,9 +132,18 @@ public class UsersController {
    
    //회원 가입 요청 처리 ( post 방식 요청은 요청 method 를 명시하는것이 좋다.
    @RequestMapping(value = "/users/signup", method = RequestMethod.POST)
-   public ModelAndView signup(ModelAndView mView, UsersDto dto) {
+   public ModelAndView signup(ModelAndView mView, UsersDto dto) { 
+      //이메일 보내기
+      String msg = "<script type='text/javascript'>";
+      //화면에서 입력한 정보를 DB에 저장한 후 홈 화면으로 연결
+      if(service.addUser(dto)) {
+    	  //메일 전송
+    	  mail.sendEmail(dto.getEmail(), dto.getId());
+      } else {
+    	  msg += "alert('회원가입에 실패했습니다!'); history.go(-1)";
+      }
+      msg += "</script>";
       
-      service.addUser(dto);
       mView.addObject("id", dto.getId());
       mView.setViewName("users/signup");
       return mView;
