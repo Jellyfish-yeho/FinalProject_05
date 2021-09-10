@@ -25,14 +25,132 @@
 		background-color:rgb(255,255,255, 0.9); 
 		border-radius: 30px
 	}
+	li{
+		list-style:none;
+	}
+	#textarea{
+		height:150px;
+		width:100%;
+		overflow-y:scroll;
+		font-size:0.7rem;
+	}
+	#phone{
+		height:90% important!;
+	}
+	.form-control{
+		height:100%;
+	}
+
 </style>
 </head>
 <body>
 <jsp:include page="../../include/navbar.jsp">
 	<jsp:param value="faq" name="thisPage"/>
 </jsp:include>
-	<div class="container my-4" id="ccontainer">
+	<div class="container my-4" id="app">
 		<h1 class="fw-bold my-4 text-center">자주 하는 질문</h1>
+		<!-- 문의하기 링크 -->
+		<div class="my-3 d-flex justify-content-end">
+			<button class="btn btn-outline-success btn-sm" type="button" 
+			data-bs-toggle="offcanvas" data-bs-target="#offcanvas" aria-controls="offcanvas">문의하기</button>
+		</div>
+		<!-- offcanvas -->
+		<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvas" aria-labelledby="offcanvasLabel">
+			<div class="offcanvas-header ">
+		    <h4 id="offcanvasLabel" class="mt-2">
+				<img src="${pageContext.request.contextPath}/resources/images/logo2.png" width="35" height="35" />
+				관리자에게 문의하기
+		    </h4>
+		    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+		</div>
+		<div class="offcanvas-body">
+			<h5 class="fw-bold my-3">문의 남기기</h5>
+			<div class="row my-2">
+				<label class="col-form-label col-form-label-sm col-sm-1">🏸</label>			
+				<div class="col" style="font-size:0.9rem;">
+					High-clear 동호회에 대한 제휴 문의, <br />
+					게시판에 남기기 어려운 문의,<br />
+					웹사이트 이용 중 생기는 문의 등 <br /> 
+					관리자와 별도 연락이 필요하신 경우  <br /> 이용해 주세요. 
+				</div>
+			</div>
+			<div class="row my-2 mb-4">
+				<label class="col-form-label col-form-label-sm col-sm-1">🏸</label>			
+				<div class="col" style="font-size:0.9rem;">
+					웹사이트 아이디와 개인 연락처를 입력 해주셔야 <br />
+					관리자가 별도 연락을 드릴 수 있습니다.
+				</div>
+			</div>			
+			<form @submit.prevent="insertInquiry" action="${pageContext.request.contextPath}/ajax/inquiry/insert.do" 
+				method="post" id="inquireForm">   
+				<div class="row my-2">   
+		            <label class="col-form-label col-form-label-sm col-sm-1" for="title">제목</label>
+		            <div class="col">
+		               <input class="form-control form-control-sm" type="text" name="title" id="title"/> 
+					</div>         
+				</div>
+				<hr>
+				<div class="row my-2">   
+		            <label class="col-form-label col-form-label-sm col-sm-1" for="id">아이디</label>
+		            <div class="col">
+		               <input class="form-control form-control-sm" type="text" name="id" id="id"/> 
+					</div>         
+				</div>
+				<hr>
+				<div class="row my-2">
+		            <label class="col-form-label col-form-label-sm col-sm-1" for="content">내용</label>
+		            <div class="col align-self-start">
+						<textarea class="form-control" name="content" id="content"></textarea>
+					</div>
+				</div>
+				<hr>
+				<div class="row my-2 mb-4">   
+		            <label class="col-form-label col-form-label-sm col-sm-1" for="phone">연락처</label>
+		            <div class="col">
+		               <input class="form-control form-control-sm" type="text" name="phone" id="phone"/>   
+		               <small class="text-muted" style="font-size:0.875rem;">휴대폰 번호는 -을 포함하여 입력해 주세요.</small>
+		            </div>         
+		         </div>
+		         <div class="row my-2 mt-4">
+		         	<div class="col">
+		         		<input class="form-check-input mt-2" type="checkbox" id="isChecked"> 
+		         		<span class="align-middle">
+		         			개인정보 제공 동의		         			
+		         			<svg type="button" @click="toggleText" class="text-muted" 
+		         			xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question-circle" viewBox="0 0 16 16">
+								<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+								<path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"/>
+							</svg>														
+		         		</span>
+					</div>
+		         </div>
+		         <div class="row my-2">                  									
+					<textarea class="form-control text-muted" readonly="readonly" id="textarea">
+하이클리어는 개인정보보호법 제30조에 따라 서비스 이용을 위한 아래 개인정보 수집.이용 동의를 받습니다.
+
+1. 개인정보의 처리목적
+하이클리어는 다음의 목적을 위하여 개인정보를 처리하고 있으며, 다음의 목적 이외로는 이용하지 않습니다.
+① 이용자 식별 및 본인여부 확인
+② 목적 계약 이행을 위한 연락민원 등 고객 고충 처리
+③ 만14세 미만 아동인지 확인
+
+2. 개인정보 수집항목
+아이디, 휴대폰 번호
+
+3. 개인정보의 처리 및 보유기간
+문의 처리 완료 시 즉시 삭제
+					</textarea>
+		         </div>
+		         <div class="row my-4">
+		         	<div class="col">
+		         		<button class="btn btn-sm btn-outline-success" type="submit">문의 보내기</button>
+		         	</div>		         	
+		         </div>
+			</form>
+		</div>
+		</div>		
+		
+		<!-- faq content -->
 		<div class="accordion" id="accordion">
 			<div class="accordion-item">
 				<h2 class="accordion-header" id="headingOne">
@@ -178,6 +296,65 @@
 	</div>
 	</div> <%-- end of container --%>
 <jsp:include page="../../include/footer.jsp"></jsp:include>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/gura_util.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+	let app=new Vue({
+		el:"#app",
+		data:{
+		},
+		methods:{
+			insertInquiry(){
+				//휴대폰번호 검증
+				const phone=document.querySelector("#phone").value;
+				const phoneRule= /01[016789]-[^0][0-9]{2,3}-[0-9]{3,4}/;
+				//개인정보 체크 검증
+				const isChecked=document.querySelector("#isChecked").checked;
+				console.log(isChecked);
+				if(!phoneRule.test(phone)){
+					alert("올바른 휴대폰 번호를 입력하세요.");
+					return;
+				}
+				if(!isChecked){
+					alert("개인정보 제공에 동의해 주세요.");
+					return;
+				}
+				const self=this;
+				//제출할 폼의 참조값
+				const form=document.querySelector("#inquireForm");
+				ajaxFormPromise(form)
+				.then(function(response){
+					return response.json();
+				})
+				.then(function(data){
+					//data는 {isSuccess:true}
+					Swal.fire({
+						title:'문의 등록',
+						text: '새 문의를 등록하였습니다. 관리자가 확인 후 별도 연락 드릴 예정입니다.',
+						icon: 'success',
+						confirmButtonColor: '#198754',
+						confirmButtonText: '확인'
+					}).then((result) => {
+						if (result.value) {							
+							//offcanvas 닫기
+							//const offcanvas=document.querySelector("#offcanvas");
+							//const bsOffcanvas = new bootstap.Offcanvas(offcanvas);
+							//bsOffcanvas.hide();
+							location.href="${pageContext.request.contextPath}/faq/faq.do";
+						}
+					})
+				});				
+			},
+		}
+	});
+
+
+	//폼에 submit 이벤트가 일어났을때 실행할 함수 등록
+	
+</script>
 </body>
 </html>
 

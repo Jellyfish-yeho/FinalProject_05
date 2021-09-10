@@ -57,9 +57,9 @@
 	  	height: 100%;
 	}
 
-	#ccontainer{
+	#app{
 		margin:0 auto; 
-		padding:5px; 
+		padding:20px; 
 		background-color:rgb(255,255,255, 0.9); 
 		border-radius: 30px
 	}
