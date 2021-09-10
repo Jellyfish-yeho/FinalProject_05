@@ -588,7 +588,7 @@
 				document.execCommand("copy"); // 클립보드에 복사
 				currentUrl.blur();	
 				let toastLiveExample = document.getElementById("liveToast");
-				let toast=new bootstrap.Toast(toastLiveExample)
+				let toast=new bootstrap.Toast(toastLiveExample);
 				toast.show();
 			},
 			moreComment(){ //댓글 더 가져오기

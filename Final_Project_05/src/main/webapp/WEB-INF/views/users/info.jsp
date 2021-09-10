@@ -40,7 +40,7 @@
 <body class="text-center">
 <%-- navbar include --%>
 <jsp:include page="../../include/navbar.jsp"></jsp:include>
-	<div class="container form-signin my-4">
+	<div class="container form-signin my-4" id="app">
 		<div style="margin-bottom:100px;"></div>
 		<h1 class="fw-bold my-4">회원 정보</h1>
 		<div class="d-flex d-inline-flex flex-column justify-content-center" style="margin-bottom:100px;">
@@ -64,7 +64,9 @@
 		<div class="date">
 			<p class="text-muted">${dto.getRegdate()}</p>
 		</div>
-		
+		<div v-if="id === 'admin'">
+			<a class="btn me-2 mb-2 w-50 btn-outline-warning btn-sm" href="${pageContext.request.contextPath}/users/inquiryList.do">문의 목록</a>
+		</div>
 		<div>
 			<a class="btn me-2 btn-outline-success btn-sm" href="${pageContext.request.contextPath}/users/updateform.do">회원 정보 수정</a>
 			<a class="btn btn-outline-danger btn-sm" href="javascript:swalSuccess()">회원 탈퇴</a>
@@ -76,8 +78,35 @@
 		</div>
 <%-- footer --%>
 <jsp:include page="../../include/footer.jsp"></jsp:include>
-	<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-	<script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/gura_util.js"></script>
+
+<script>
+	let app=new Vue({
+		el:"#app",
+		data:{
+			id:"",
+		},
+		created(){
+           	const self=this; 
+            //로그인 정보를 얻어와서
+  			ajaxPromise(base_url+"/ajax/cafe/isLogin.do", "GET")
+  			.then(function(response){
+  				return response.json();
+  			})
+  			.then(function(data){
+  				//data는 {id:xxx 또는 빈문자열}
+  				//얻어온 정보를 model에 넣기
+  				self.id=data.id;
+  			})	
+		},
+		methods:{
+			
+		}
+	});
+
+
 	function swalSuccess(seq){
 		Swal.fire({
 			title: '회원 탈퇴',

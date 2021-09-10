@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="inquiry">
+	<insert id="insert" parameterType="inquiryDto">
+		INSERT INTO board_inquiry
+		(num, id, title, content, phone, regdate, solved)
+		VALUES(board_inquiry_seq.NEXTVAL, #{id}, #{title}, #{content},
+		#{phone}, SYSDATE, 'no')		
+	</insert>
+	
+	<select id="getList" parameterType="inquiryDto" resultType="inquiryDto">
+		SELECT * 
+		FROM 
+			(SELECT result1.*, ROWNUM AS rnum
+			FROM
+				(SELECT num,id,title,content,phone,
+				to_char(regdate,'yyyy-mm-dd HH24:MI') as regdate,solved
+				FROM board_inquiry
+				ORDER BY num DESC) result1)
+		<![CDATA[ 
+     	 WHERE rnum >= #{startRowNum} AND rnum <= #{endRowNum}
+     	 ]]>	
+	</select>
+	
+	<select id="getData" parameterType="int" resultType="inquiryDto">
+		SELECT * FROM board_inquiry
+		WHERE num=#{num}
+	</select>
+	
+	<update id="update" parameterType="int">
+		UPDATE board_inquiry
+		SET solved = 'yes'
+		WHERE num=#{num}
+	</update>
+	
+	<select id="getCount" resultType="int">
+		SELECT NVL(MAX(ROWNUM), 0)
+		FROM board_inquiry
+	</select> 
+</mapper>

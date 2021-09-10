@@ -1,3 +1,3 @@
 <link rel="icon" 
-href="${pageContext.request.contextPath}/images/shuttlecock_main.png" 
+href="${pageContext.request.contextPath}/resources/images/shuttlecock_main.png" 
 type="image/x-icon" />
