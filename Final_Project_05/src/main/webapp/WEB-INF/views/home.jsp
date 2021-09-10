@@ -246,11 +246,11 @@
 		<p style="text-align: center;">
 			<span style="font-size: 14pt;">
 				<b>
-					<span style="color: green; font-size: 24pt;">*JOIN US~~*</span>
+					<span style="color: green; font-size: 24pt;">Join us now!</span>
 				</b>
 			</span>
 		</p>
-		<a href="http://www.badmintonmart.com/shop/main/index.php"> 
+		<a href="${pageContext.request.contextPath}/users/signup_form.do"> 
 			<img src="${pageContext.request.contextPath}/resources/images/notice.jpg" class="card-img-top" height=300px width=240px; />
 		</a>
 		<div style="cursor:pointer;background-color:black; color:white; text-align: center;padding-bottom: 10px;padding-top: 10px;" onClick="close_pop();">
