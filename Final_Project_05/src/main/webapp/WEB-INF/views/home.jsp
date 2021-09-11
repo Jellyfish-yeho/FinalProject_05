@@ -6,10 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>High-clear</title>
-<%-- resource include --%>
-<jsp:include page="../include/resource.jsp"></jsp:include>
-
-<link rel="icon" href="${pageContext.request.contextPath}/resources/images/shuttlecock_main.png" type="image/x-icon" />
+<link rel="icon" href="${pageContext.request.contextPath}/resources/images/logo2.png" type="image/x-icon" />
 <style>
    .modal {
    	  margin-top: -200px !important;

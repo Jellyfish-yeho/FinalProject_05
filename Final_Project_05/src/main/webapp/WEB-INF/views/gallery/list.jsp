@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>gallery</title>
-<link rel="icon" href="${pageContext.request.contextPath}/resources/images/shuttlecock_main.png" type="image/x-icon" />
+<jsp:include page="../../include/icon.jsp"></jsp:include>
 <jsp:include page="../../include/resource.jsp"></jsp:include>
 <style>
    .page-ui a{
@@ -54,8 +54,8 @@
       overflow: hidden;
     }
     .img-wrapper img{
-         width: 100%;
-         height: 100%;
+         width: 90%;
+         height: 90%;
          /* fill | contain | cover | scale-down | none(default) */
          /*   
             cover - 부모의 크기에 맞게 키운 후, 자른다. 비율은 일정하게 증가한다. 

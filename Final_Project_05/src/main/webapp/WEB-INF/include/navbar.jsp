@@ -3,6 +3,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <title>/navbar.do</title>
 <jsp:include page="font.jsp"></jsp:include>
+<jsp:include page="icon.jsp"></jsp:include>
 <jsp:include page="resource.jsp"></jsp:include>
 <style>
 	.profileImage{
