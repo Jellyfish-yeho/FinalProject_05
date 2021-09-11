@@ -103,29 +103,42 @@
         <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">새 사진 올리기</h5>
+                    <h3 class="modal-title text-center-bold"><img src="${pageContext.request.contextPath}/resources/images/write.png" width="50" height="50" /> 새 사진 올리기</h5>
                 </div>
-                <div class="modal-body">
+               <!--  <div class="modal-body"> -->
                     <div class="card mb-3">
                         <form action="http://localhost:8888/minton05/gallery/ajax_insert.do" method="post" ref="insertForm">
                             <input type="hidden" name="imagePath" ref="imagePath"/>
-                            <div class="d-flex d-inline-flex flex-column mb-3">
-                                <label class="form-label" for="title">제목</label>
-                                <input class="form-control form-control-sm" type="text" name="title" id="title"/>
+                            <div class="row m-2">
+                                <label class="col-form-label col-form-label-sm col-sm-1" for="title">제목</label>
+	                            <div class="col">
+	                                <input class="form-control form-control-sm" type="text" name="title" id="title"/>
+	                            </div>
                             </div>
-                            <div class=" mb-3">
-                                <label class="form-label" for="content">내용</label>
-                                <textarea class="form-control form-control-sm" name="content" id="content"></textarea>
+                            <hr> 
+                            <div class="row m-2">
+                                <label class="col-form-label col-form-label-sm col-sm-1" for="content">내용</label>
+                                <div class="col align-self-start">
+                                	<textarea class="form-control" name="content" id="content"></textarea>
+                                </div>
                             </div>
                          </form>
+                         <hr> 
                          <form action="http://localhost:8888/minton05/gallery/ajax_upload2.do" method="post" ref="ajaxForm" enctype="multipart/form-data">
-                            <div class="d-flex d-inline-flex flex-column mb-3">
-                                <label class="form-label" for="image">이미지</label>
-                                <small class="text-muted">이미지를 선택하거나 폴더에서 끌어다 놓으세요.</small>
-                                <input @change="uploadImage" class="my-2 form-control form-control-sm" type="file" name="image" id="image" 
-                                   accept=".jpg, .jpeg, .png, .JPG, .JPEG"/>
+
+                            <div class="row m-2">
+                                <label class="col-form-label col-form-label-sm col-sm-1"for="image">이미지</label>
+                                <div class="col">
+	                                <small class="text-muted" style="font-size:0.875rem;">이미지를 선택하거나 폴더에서 끌어다 놓으세요.</small>
+	                                <input @change="uploadImage" class="my-2 form-control form-control-sm" type="file" name="image" id="image" 
+	                                   accept=".jpg, .jpeg, .png, .JPG, .JPEG"/>
+                                </div>
                              </div>
-                             <div class="drag-area"></div>
+                             <div class="row m-4">
+                             	<div class="col-sm-1"></div>
+                             	<div class="drag-area col"></div>
+
+                             </div>
                          </form>
                          <!-- 이미지미리보기 -->
                         <div v-if="previewImagePath === ''">
@@ -133,7 +146,7 @@
                         <div v-else class="img-wrapper">
                         	<img v-bind:src="base_url+previewImagePath"/>  
                         </div> 
-                    </div>
+                    <!-- </div> -->
                 </div>
                 <div class="modal-footer">
                   <button type="button" @click="submitClicked" class="mb-4 btn btn-sm btn-outline-success" data-bs-dismiss="modal">등록</button>
