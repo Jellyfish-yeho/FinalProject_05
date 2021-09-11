@@ -658,7 +658,17 @@
 				//로그인을 해야 좋아요를 누를 수 있도록 함
 				let isExist=false;
 				if(self.id === ""){
-					alert("로그인을 해야 좋아요를 누를 수 있습니다.");
+					Swal.fire({
+						title:'',
+						text: '로그인을 해야 좋아요를 누를 수 있습니다.',
+						icon: 'info',
+						confirmButtonColor: '#198754',
+						confirmButtonText: '확인'
+					}).then((result) => {
+						if (result.value) {
+							//location.href="${pageContext.request.contextPath}/cafe/list.do";
+					  }
+					})
 				}else{
 					//likeCount +1, liketo table에서 좋아요 정보 추가하는 요청
 					ajaxPromise(base_url+"/ajax/cafe/onLike.do", "POST", 

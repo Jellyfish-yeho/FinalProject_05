@@ -98,12 +98,25 @@
 	<!-- 북마크 -->
 	<input type="text" id="urlInput" class="form-control form-control-sm"
 	style="display:block; position:absolute; left:-100000px"/>		
-	<a id="bookmark" class="text-decoration-none link-dark mx-2"
-	@click="urlClipCopy">
+	<a id="liveToastBtn" class="text-decoration-none link-success mx-2"
+	@click.prevent="urlClipCopy">
 		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-fill" viewBox="0 0 16 16">
 			<path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/>
 		</svg>
 	</a>
+	<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+		<div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+			<div class="toast-header">
+				<img src="${pageContext.request.contextPath}/resources/images/logo2.png" class="rounded me-2" width="16" height="16" >
+				<strong class="me-auto">High-clear!</strong>
+	 			<small v-bind:data="today">{{today}}</small>
+				<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+			</div>
+  			<div class="toast-body">
+ 			URL이 클립보드에 복사되었습니다.
+			</div>
+		</div>
+	</div>
 	
 </div>
 <jsp:include page="../../include/footer.jsp"></jsp:include>
@@ -116,6 +129,7 @@
 	let app = new Vue({
 		el:'#app',
 		data:{
+			today:'',
 			keyword:'',
 			encodedK:'',
 			condition:'',
@@ -125,15 +139,15 @@
 		},
 		methods:{			
 			urlClipCopy(){
-			//url 클립보드에 복사하기
-			var currentUrl = document.getElementById("urlInput");
-			currentUrl.value = window.document.location.href;  // 현재 URL
-			function urlClipCopy(){
+				//url 클립보드에 복사하기
+				var currentUrl = document.getElementById("urlInput");
+				currentUrl.value = window.document.location.href;  // 현재 URL				
 				currentUrl.select();  // url 값을 select()로 선택
 				document.execCommand("copy"); // 클립보드에 복사
-				currentUrl.blur();
-				alert("URL이 클립보드에 복사되었습니다."); 
-				}
+				currentUrl.blur();	
+				let toastLiveExample = document.getElementById("liveToast");
+				let toast=new bootstrap.Toast(toastLiveExample);
+				toast.show();
 			},
 			movePageNext(){ //다음페이지
 				const self=this;				
@@ -167,6 +181,19 @@
 		created(){
 			const self=this;
 			
+			let today=new Date();
+			let date=today.toLocaleString();
+			self.today=date.toLocaleString('ko-KR');	
+			
+			let toastTrigger = document.getElementById("liveToastBtn");
+			let toastLiveExample = document.getElementById("liveToast");
+			if(toastTrigger){
+				toastTrigger.addEventListener('click',function(){
+					let toast=new bootstrap.Toast(toastLiveExample)
+					toast.show();
+				})
+			}
+			
 			let condition='${param.condition}';
 			let keyword='${param.keyword}';
 			let encodedK=encodeURI('${param.keyword}');			
@@ -199,9 +226,7 @@
 				//data는 {id:xxx 또는 빈문자열}
 				//얻어온 정보를 model에 넣기
 				self.id=data.id;
-			})	
-			
-			
+			})				
 		}	
 	});
 </script>
