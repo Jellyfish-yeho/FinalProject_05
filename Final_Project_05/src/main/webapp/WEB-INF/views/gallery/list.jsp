@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>gallery</title>
-<link rel="icon" href="${pageContext.request.contextPath}/resources/images/shuttlecock_main.png" type="image/x-icon" />
+<jsp:include page="../../include/icon.jsp"></jsp:include>
 <jsp:include page="../../include/resource.jsp"></jsp:include>
 <style>
    .page-ui a{
@@ -54,8 +54,8 @@
       overflow: hidden;
     }
     .img-wrapper img{
-         width: 100%;
-         height: 100%;
+         width: 90%;
+         height: 90%;
          /* fill | contain | cover | scale-down | none(default) */
          /*   
             cover - 부모의 크기에 맞게 키운 후, 자른다. 비율은 일정하게 증가한다. 
@@ -125,6 +125,7 @@
                          </form>
                          <hr> 
                          <form action="http://localhost:8888/minton05/gallery/ajax_upload2.do" method="post" ref="ajaxForm" enctype="multipart/form-data">
+
                             <div class="row m-2">
                                 <label class="col-form-label col-form-label-sm col-sm-1"for="image">이미지</label>
                                 <div class="col">
@@ -136,6 +137,7 @@
                              <div class="row m-4">
                              	<div class="col-sm-1"></div>
                              	<div class="drag-area col"></div>
+
                              </div>
                          </form>
                          <!-- 이미지미리보기 -->
@@ -227,14 +229,30 @@
                             <p class="card-text">{{detailItem.content }}</p>
                             <p class="card-text">by <strong>{{detailItem.writer}}</strong></p>
                             <p><small class="text-muted" style="font-size:0.875rem;">{{detailItem.regdate}}</small></p>
-                            <!-- 북마크 -->  
-                            <input type="text" id="urlInput" class="form-control form-control-sm"
-                                style="display:block; position:absolute; left:-100000px"/>
-                                <a ref="bookmark" class="text-decoration-none link-dark mx-2" @click="urlClipCopy">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-fill" viewBox="0 0 16 16">
-                                        <path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/>
-                                    </svg>
-                                </a>
+							
+							<!-- 북마크 -->
+							<input type="text" id="urlInput" class="form-control form-control-sm"
+							style="display:block; position:absolute; left:-100000px"/>		
+							<a id="liveToastBtn" class="text-decoration-none link-success mx-2"
+							@click.prevent="urlClipCopy">
+								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-fill" viewBox="0 0 16 16">
+									<path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/>
+								</svg>
+							</a>
+							<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+								<div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+									<div class="toast-header">
+										<img src="${pageContext.request.contextPath}/resources/images/logo2.png" class="rounded me-2" width="16" height="16" >
+										<strong class="me-auto">High-clear!</strong>
+							 			<small v-bind:data="today">{{today}}</small>
+										<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+									</div>
+						  			<div class="toast-body">
+						 			URL이 클립보드에 복사되었습니다.
+									</div>
+								</div>
+							</div>
+							
                             <!-- 좋아요 -->
 							<a v-if="isLiked === true" @click.prevent="offLike" class="text-decoration-none link-danger">
 								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
@@ -297,6 +315,7 @@
     let app=new Vue({
         el:"#app",
         data:{
+			today:'',
             galleryList:[],
             base_url,
             pageNum:1,
@@ -315,7 +334,7 @@
                         최초 호출된 이후 startPageNum 혹은 endPageNum 에 변경이 있을때만 다시 호출되는 함수 
             */
             pageNums(){
-                console.log("pageNums()");
+                //console.log("pageNums()");
                 const nums=[];
                 for(i=this.startPageNum; i<=this.endPageNum; i++){
                     nums.push(i);
@@ -346,7 +365,7 @@
 		                })
 		                .then(function(data){
 		                    //data 는 gallery 목록이 들어있는 array 이다.
-		                    console.log(data);
+		                    //console.log(data);
 		                    self.galleryList=data;
 		                });
 					}
@@ -357,7 +376,17 @@
 				//로그인을 해야 좋아요를 누를 수 있도록 함
 				let isExist=false;
 				if(self.id === ""){
-					alert("로그인을 해야 좋아요를 누를 수 있습니다.");
+					Swal.fire({
+						title:'',
+						text: '로그인을 해야 좋아요를 누를 수 있습니다.',
+						icon: 'info',
+						confirmButtonColor: '#198754',
+						confirmButtonText: '확인'
+					}).then((result) => {
+						if (result.value) {
+							//location.href="${pageContext.request.contextPath}/cafe/list.do";
+					  }
+					})
 				}else{
 					//likeCount +1, liketo table에서 좋아요 정보 추가하는 요청
 					ajaxPromise(base_url+"/ajax/gallery/onLike.do", "POST", 
@@ -380,21 +409,24 @@
 			                })
 			                .then(function(data){
 			                    //data 는 gallery 목록이 들어있는 array 이다.
-			                    console.log(data);
+			                    //console.log(data);
 			                    self.galleryList=data;
 			                });
 						}
 					})
 				}
 			}, 
-            urlClipCopy(){
-                var currentUrl = document.getElementById("urlInput");
-                currentUrl.value = window.document.location.href;  // 현재 URL 을 세팅해 줍니다.
-                currentUrl.select();  // 해당 값이 선택되도록 select() 합니다
-                document.execCommand("copy"); // 클립보드에 복사합니다.
-                currentUrl.blur();
-                alert("URL이 클립보드에 복사되었습니다."); 
-	        },
+			urlClipCopy(){
+				//url 클립보드에 복사하기
+				var currentUrl = document.getElementById("urlInput");
+				currentUrl.value = window.document.location.href;  // 현재 URL				
+				currentUrl.select();  // url 값을 select()로 선택
+				document.execCommand("copy"); // 클립보드에 복사
+				currentUrl.blur();	
+				let toastLiveExample = document.getElementById("liveToast");
+				let toast=new bootstrap.Toast(toastLiveExample);
+				toast.show();
+			},
             submitClicked(){
 	        	const self=this;
                 //ref="insertForm" 인 폼을 강제 전송한다(submit 시킨다).
@@ -431,7 +463,7 @@
                     return response.json();
                 })
                 .then(function(data){
-                    console.log(data);
+                    //console.log(data);
                     //미리보기 사진이 보일수 있도록 한다.
                     self.previewImagePath = data.imagePath;
                     //이미지 경로가 전송될수 있도록 form 안에 input 요소의 value 에 넣어준다. 
@@ -464,7 +496,7 @@
                 })
                 .then(function(data){
                     //data 는 이전글의 정보 {num:xx, writer:xx...}
-                    console.log(data);
+                    //console.log(data);
                     self.detailItem=data;
                 });    
                 //detail 모달의 참조값 얻어오기 
@@ -481,7 +513,7 @@
                 })
                 .then(function(data){
                     //data 는 이전글의 정보 {num:xx, writer:xx...}
-                    console.log(data);
+                    //console.log(data);
                     self.detailItem=data;
                 });        	
             },  
@@ -493,68 +525,54 @@
                 })
                 .then(function(data){
                     //data 는 다음글의 정보 {num:xx, writer:xx...}
-                    console.log(data);
+                    //console.log(data);
                     self.detailItem=data;
                 });        	
             },   
             showInsert(){
+            	const self=this;
                 //insert모달의 참조값 얻어오기 
                 let modalElement=this.$refs.insertModal;
                 //bootstrap 모달 띄우기 
                 let modal=new bootstrap.Modal(modalElement);
                 modal.show();
-               // dragenter 이벤트가 일어 났을때 실행할 함수 등록 
-               document.querySelector(".drag-area")
-                  .addEventListener("dragenter", function(e){
-                     // drop 이벤트까지 진행될수 있도록 기본 동작을 막는다.
-                     e.preventDefault();
-                  });
                
-               // dragover 이벤트가 일어 났을때 실행할 함수 등록 
-               document.querySelector(".drag-area")
-               .addEventListener("dragover", function(e){
-                  // drop 이벤트까지 진행될수 있도록 기본 동작을 막는다.
-                  e.preventDefault();
-                  e.stopPropagation();
-               });
-            	// dragover 이벤트가 일어 났을때 실행할 함수 등록 
-            	document.querySelector(".drag-area").addEventListener("drop", function(e){	      
-            		e.preventDefault();
-            		e.stopPropagation();
-            		//drop 된 파일의 여러가지 정보를 담고 있는 object 
-            		const data = e.dataTransfer;
-            		//drop 된 파일객체를 저장하고 있는 배열
-            		const files = data.files;
-            	      // input 요소에 drop 된 파일정보를 넣어준다. 
-            	      document.querySelector("#image").files = files;
-            	      // 한개만 drop 했다는 가정하에서 drop 된 파일이 이미지 파일인지 여부 알아내기
-            	      const reg=/image.*/;
-            	      const file = files[0];
-            	      //drop 된 파일의 mime type 확인
-            	      if(file.type.match(reg)){
-            	         ajaxImage();
-            	      }else{
-            	         alert("이미지 파일만 업로드 가능합니다.");
-            	      }
-            	   });	   
-            	function ajaxImage(){
-            	       //id가 ajaxForm인 form을 ajax전송시킨다. 
-            	 		const form=document.querySelector("#ajaxForm");
-            	 		//util 함수를 이용해서 ajax 전송
-            	 		ajaxFormPromise(form)
-            	 		.then(function(response){
-            	 			return response.json();
-            	 		})
-            	 		.then(function(data){//data는 {imagePath:"업로드된 이미지 경로"}
-            	 			//이미지 경로에 context path 추가하기
-            	 			const path="${pageContext.request.contextPath}"+data.imagePath;
-            	 			//img 요소에 src 속성의 값 넣어주어서 이미지 출력하기
-            	 			 document.querySelector(".img-wrapper img")
-            	             .setAttribute("src", path);
-            	 			//input type="hidden"인 요소에 value를 넣어준다.
-            	 			 document.querySelector("#imagePath").value = data.imagePath;
-            	 		});	         
-            	      };
+   			 // dragenter 이벤트가 일어 났을때 실행할 함수 등록 
+     		   document.querySelector(".drag-area")
+     		      .addEventListener("dragenter", function(e){
+     		         // drop 이벤트까지 진행될수 있도록 기본 동작을 막는다.
+     		         e.preventDefault();
+     		      });
+     		   
+     		   // dragover 이벤트가 일어 났을때 실행할 함수 등록 
+     		   document.querySelector(".drag-area")
+     		   .addEventListener("dragover", function(e){
+     		      // drop 이벤트까지 진행될수 있도록 기본 동작을 막는다.
+     		      e.preventDefault();
+     		      e.stopPropagation();
+     		   });
+     			// dragover 이벤트가 일어 났을때 실행할 함수 등록 
+     			document.querySelector(".drag-area").addEventListener("drop", function(e){	      
+     				e.preventDefault();
+     				e.stopPropagation();
+     				//drop 된 파일의 여러가지 정보를 담고 있는 object 
+     				const data = e.dataTransfer;
+     				//drop 된 파일객체를 저장하고 있는 배열
+     				const files = data.files;
+     			      
+     			      // input 요소에 drop 된 파일정보를 넣어준다. 
+     			      document.querySelector("#image").files = files;
+     			      // 한개만 drop 했다는 가정하에서 drop 된 파일이 이미지 파일인지 여부 알아내기
+     			      const reg=/image.*/;
+     			      const file = files[0];
+     			      //drop 된 파일의 mime type 확인
+     			      if(file.type.match(reg)){
+     			         self.uploadImage();
+     			      }else{
+     			         alert("이미지 파일만 업로드 가능합니다.");
+     			      }
+     			   });	 
+
             },
             updateUI(){
                 //겔러리 목록을 요청해서 받아온다.
@@ -566,7 +584,7 @@
                 })
                 .then(function(data){
                     //data 는 gallery 목록이 들어있는 array 이다.
-                    console.log(data);
+                    //console.log(data);
                     self.galleryList=data;
                 });
                 //페이징 처리에 관련된 값도 요청해서 받아온다. 
@@ -603,6 +621,19 @@
 				//얻어온 정보를 model에 넣기
 				self.id=data.id;
 			})	
+			
+			let today=new Date();
+			let date=today.toLocaleString();
+			self.today=date.toLocaleString('ko-KR');	
+			
+			let toastTrigger = document.getElementById("liveToastBtn");
+			let toastLiveExample = document.getElementById("liveToast");
+			if(toastTrigger){
+				toastTrigger.addEventListener('click',function(){
+					let toast=new bootstrap.Toast(toastLiveExample)
+					toast.show();
+				})
+			}
 
         }
     });

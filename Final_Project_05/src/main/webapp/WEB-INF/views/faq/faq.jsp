@@ -5,7 +5,8 @@
 <head>
 <meta charset="UTF-8">
 <title>FAQ</title>
-<link rel="icon" href="${pageContext.request.contextPath}/resources/images/shuttlecock_main.png" type="image/x-icon" />
+<jsp:include page="../../include/icon.jsp"></jsp:include>
+<jsp:include page="../../include/resource.jsp"></jsp:include>
 
 <style>
    	h1 {

@@ -6,8 +6,6 @@
 <head>
 <meta charset="UTF-8">
 <title>공지사항</title>
-<link rel="icon" href="${pageContext.request.contextPath}/resources/images/shuttlecock_main.png" type="image/x-icon" />
-<%-- icon, resource include --%>
 <jsp:include page="../../include/icon.jsp"></jsp:include>
 <jsp:include page="../../include/resource.jsp"></jsp:include>
 <style>
