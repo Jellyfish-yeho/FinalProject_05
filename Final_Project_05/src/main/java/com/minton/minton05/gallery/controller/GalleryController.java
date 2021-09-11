@@ -180,7 +180,7 @@ public class GalleryController {
 		}
 		
 		//빈 하트일 때 
-		@RequestMapping(value="/ajax/gallery/onLike", method = RequestMethod.POST)
+		@RequestMapping(value="/ajax/gallery/onLike", method = {RequestMethod.GET, RequestMethod.POST})
 		@ResponseBody
 		public Map<String, Object> ajaxOnLike(LikeDto likeDto){
 			Map<String, Object>	map=new HashMap<>();
