@@ -12,11 +12,10 @@
       border: 1px solid gray;
       border-radius: 10px;
    }
-   	#content{
+   #content{
 		height: 200px;
-		width: 650px;
 		resize: none;
-	}
+	} 
 </style>
 <link rel="icon" href="${pageContext.request.contextPath}/images/shuttlecock_main.png" type="image/x-icon" />
 <jsp:include page="../../include/resource.jsp"></jsp:include>
@@ -24,43 +23,52 @@
 <link href="${pageContext.request.contextPath}/users/form.css" rel="stylesheet">
 </head>
 <body>
-	<div class="container">
-		<h1 class="fw-bold my-4">글 수정</h1>
-		
+	<div class="container my-5 text-center">
+		<h1 class="fw-bold text-center-bold">
+			<img src="${pageContext.request.contextPath}/resources/images/write.png" width="50" height="50" />
+			글 수정
+		</h1>	
+		<hr>	
 		<form action="update.do" method="post" id="updateForm">
 			<input type="hidden" name="num" value="${dto.num }" />
 			<input type="hidden" name="imagePath" id="imagePath" value="${dto.imagePath }"/>
-			<div class="d-flex d-inline-flex flex-column mb-3">
-				<div>
-					<label class="form-label" for="title">제목</label>
-					<input class="form-control form-control-sm" type="text" name="title" id="title" value="${dto.title }"/>
+				<div class="row m-2">
+					<label class="col-form-label col-form-label-sm col-sm-1" for="title">제목</label>
+					<div class="col">
+						<input class="form-control form-control-sm" type="text" name="title" id="title" value="${dto.title }"/>
+					</div>
 				</div>
-			</div>	
-				<div class="mb-3">
-					<label class="form-label" for="content">내용</label>
-					<textarea class="form-control form-control-sm" name="content" id="content">${dto.content }</textarea>
+				<hr>
+				<div class="row m-2">
+					<label class="col-form-label col-form-label-sm col-sm-1" for="content">내용</label>
+					<div class="col align-self-start">
+						<textarea class="form-control" name="content" id="content">${dto.content }</textarea>
+					</div>
 				</div>
+				<hr>
 			<button type="reset" id="resetBtn1" style="display:none;"></button>						
 		</form>
 		
 		<form action="ajax_upload.do" method="post" id="ajaxForm" enctype="multipart/form-data">
-			<div class="d-flex d-inline-flex flex-column mb-3">
-				<div>
-					<div>
-						<label class="form-label" for="image">이미지</label>
-					</div>
-					<small class="text-muted">이미지를 선택하거나 폴더에서 끌어다 놓으세요.</small>
-					<div>
-						<input class="my-2 form-control form-control-sm" type="file" name="image" id="image" 
+			<div class="row m-2">
+				<label class="col-form-label col-form-label-sm col-sm-1" for="image">이미지</label>
+				<div class="col text-left">
+					<small class="text-muted" style="font-size:0.875rem;">이미지를 선택하거나 폴더에서 끌어다 놓으세요.</small>
+					<input class="my-2 form-control form-control-sm" type="file" name="image" id="image" 
 						accept=".jpg, .jpeg, .png, .JPG, .JPEG" />
-					</div>
-					<div class="drag-area"></div>
 				</div>
 			</div>
+				<div class="row m-4">
+	                <div class="col-sm-1"></div>
+	                <div class="drag-area col"></div>
+	            </div>
 		</form>
-		<div class="img-wrapper">
-			<p>이미지 미리보기 </p>
-			<p><img id="myImage" src="${pageContext.request.contextPath}${dto.imagePath }"/></p>
+		<hr>
+		<div class="img-wrapper row m-2">
+			<p class="col-form-label col-form-label-sm col-sm-1">이미지<br>미리보기 </p>
+			<div class="col text-left">
+				<p><img id="myImage" src="${pageContext.request.contextPath}${dto.imagePath }"/></p>
+			</div>
 		</div>
 
 		<div class="mb-3" style="display:block;">
