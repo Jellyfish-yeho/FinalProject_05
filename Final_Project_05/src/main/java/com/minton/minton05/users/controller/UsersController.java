@@ -30,6 +30,12 @@ public class UsersController {
    private com.minton.minton05.users.service.UsersService service;
    @Autowired private Common mail;
    
+   //회원 글 자세히보기 페이지
+   @RequestMapping("/users/myList")
+   public String userCafeList() {
+	   return "users/myList";
+   }
+   
    //ajax - 회원 정보 가져오기
    @RequestMapping("/ajax/users/getUser")
    @ResponseBody
