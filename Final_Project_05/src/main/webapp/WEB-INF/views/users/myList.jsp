@@ -182,21 +182,22 @@
 			
 			updateUI(){
 				//cafe 글 목록 요청해서 받아오기
+				console.log('${id}');
 				let self=this;
 				//ajax 요청으로 cafe 글 목록을 json으로 받아온다.
-				ajaxPromise(base_url+"/ajax/cafe/list.do","get", "pageNum="+this.pageNum
+				ajaxPromise(base_url+"/ajax/cafe/list.do","get", "pageNum="+self.pageNum
 						+"&keyword="+'${id}'+"&condition="+'writer')
 				.then(function(response){
 					return response.json();
 				})
 				.then(function(data){
 					//data는 cafe글 목록이 들어 있는 array
-					//console.log(data);
+					console.log(data);
 					//받아온 데이터를 data의 모델에 넣어준다
 					self.cafeList=data;
 				});
 				//하단 페이징 처리 데이터 받아오기
-				ajaxPromise(base_url+"/ajax/cafe/paging.do","get","pageNum="+this.pageNum
+				ajaxPromise(base_url+"/ajax/cafe/paging.do","get","pageNum="+self.pageNum
 						+"&keyword="+'${id}'+"&condition="+'writer')
 				.then(function(response){
 					return response.json();

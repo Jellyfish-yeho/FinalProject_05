@@ -389,7 +389,7 @@
 					})
 				}else{
 					//likeCount +1, liketo table에서 좋아요 정보 추가하는 요청
-					ajaxPromise(base_url+"/ajax/gallery/onLike.do", "POST", 
+					ajaxPromise(base_url+"/ajax/gallery/onLike.do", "post", 
 							"liked_user="+self.id+"&gallery_num="+self.detailItem.num)
 					.then(function(response){
 						return response.json();
