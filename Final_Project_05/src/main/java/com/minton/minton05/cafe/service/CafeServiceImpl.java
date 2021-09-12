@@ -666,6 +666,7 @@ public class CafeServiceImpl implements CafeService{
 		
 		//댓글 작성자는 session 영역에서 얻어내기
 		String writer=(String)request.getSession().getAttribute("id");
+		
 		//댓글의 시퀀스 번호 미리 얻어내기
 		int seq=cafeCommentDao.getSequence();
 		//저장할 댓글의 정보를 dto 에 담기

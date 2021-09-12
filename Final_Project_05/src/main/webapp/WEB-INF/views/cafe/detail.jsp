@@ -47,10 +47,10 @@
       resize: none;
    }
 
-   /* 댓글에 댓글을 다는 폼과 수정폼은 일단 숨긴다. */
+   /* 댓글에 댓글을 다는 폼과 수정폼은 일단 숨긴다.*/
    .comments .comment-form{
       display: none;
-   }
+   } 
    /* .reply_icon 을 li 요소를 기준으로 배치 하기 */
    .comments li{
       position: relative;
@@ -221,9 +221,9 @@
 		<div class="comments">
 	   		<ul v-for="comment in commentList" :key="comment.num">
 	   			<!-- 삭제된 댓글 표시 -->
-	   			<li v-if="comment.deleted === 'yes'">삭제된 댓글입니다.</li> 
+	   			<li :id="'deleted'+comment.num" class="my-3" v-if="comment.deleted === 'yes'">삭제된 댓글입니다.</li> 
 	   			<!-- 원글에 단 댓글 표시 -->
-	   			<li v-else-if="comment.num === comment.comment_group" id="reli+comment.num">
+	   			<li v-if="comment.num === comment.comment_group && comment.deleted !='yes'" :id="'reli'+comment.num">
 					<dl>
 						<dt>
 							<svg v-if="comment.profile === null" class="profile-image me-2" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
@@ -238,32 +238,32 @@
 							<span v-if="comment.num != comment.comment_group" class="p-1 m-1 text-muted" style="font-size:.875rem;">
 								<i>@{{comment.target_id}}</i>
 							</span>
-							<pre id="pre+comment.num">{{comment.content}}</pre>
+							<pre :id="'pre'+comment.num">{{comment.content}}</pre>
 							<!-- 댓글에 댓글 다는 링크 : reInsertForm 과 연결-->
-							<a data-num="comment.num" href="javascript:" class="reply-link text-decoration-none"
-								id="'reComment'+comment.num" ref="'reComment'+comment.num"
-								:key="'reComment'+comment.num"
-								@click="activeReForm(comment.num)"
+							<a href="javascript:" class="reply-link text-decoration-none"
+								:id="'reCommentLink'+comment.num" @click="activeReForm(comment.num)"
 								style="padding-left:9.5px; color:#198754;">댓글</a>
 							<!-- 원글에 단 댓글 수정하는 링크 : updateForm 연결 연결-->
-							<a v-if="id !=null && comment.writer===id" data-num="comment.num" v-bind:key="'commentModify'+comment.num"
+							<a v-if="id !=null && comment.writer===id" :id="'modifyCommentLink'+comment.num" 	
+								@click="activeModifyForm(comment.num)"							
 								class="update-link text-decoration-none link-dark px-2" href="javascript:">수정</a>
 							<!-- 원글에 단 댓글 삭제하는 링크 -->
-							<a v-if="id !=null && comment.writer===id" data-num="comment.num" v-bind:key="'commentDelete'+comment.num"
+							<a v-if="id !=null && comment.writer===id" :id="'deleteCommentLink'+comment.num" 
+								@click="deleteComment(comment.num)"
 								class="delete-link text-decoration-none link-dark" href="javascript:">삭제</a>									
 						</dd>	
 						<dd>
 							<!-- 댓글에 댓글 다는 제출 폼 -->
 							<transition enter-active-class="animate__animated animate__fadeIn"
                   						leave-active-class="animate__animated animate__fadeOut">
-								<form @submit.prevent="insertComment" id="reInsertForm+comment.num" 
+								<form @submit.prevent="reInsertComment(comment.num)" v-bind:id="'reInsertForm'+comment.num" 
 									class="comment-form re-insert-form" 
-									:key="'reInsertForm'+comment.num"
 									action="${pageContext.request.contextPath}/ajax/cafe/commentInsert.do" method="post">
-									<input type="hidden" name="ref_group" value="detail.num"/>
-									<input type="hidden" name="target_id" value="comment.writer"/>
-				 					<input type="hidden" name="comment_group" value="comment.comment_group"/>
-									<textarea name="content"></textarea>
+									<input type="hidden" name="ref_group" :value="detail.num"/>
+									<input type="hidden" name="target_id" :value="comment.writer"/>
+				 					<input type="hidden" name="comment_group" :value="comment.comment_group"/>
+									<textarea v-if="id!=''" name="content" placeholder="새 댓글 작성하기"></textarea>
+									<textarea v-else name="content" style="text-align:center;">댓글 작성을 위해 로그인이 필요합니다.</textarea>		
 									<div align="right">
 										<button class="btn btn-sm btn-outline-success" type="submit">등록</button>
 									</div>
@@ -272,19 +272,23 @@
 						</dd>	
 						<dd>
 							<!-- 원글에 단 댓글 수정 제출 폼 -->
-							<form id="updateForm+comment.num" class="comment-form update-form" 
-								action="comment_update.do" method="post">
-								<input type="hidden" name="num" value="detail.num" />
-				 				<textarea name="content">{{comment.content}}</textarea>
-								<div align="right">
-									<button class="btn btn-sm btn-outline-success" type="submit">수정</button>
-								</div>
-							</form>					
+							<transition enter-active-class="animate__animated animate__fadeIn"
+										leave-active-class="animate__animated animate__fadeOut">
+								<form :id="'updateForm'+comment.num" class="comment-form update-form" 
+									@submit.prevent="modifyComment(comment.num)" 
+									action="${pageContext.request.contextPath}/ajax/cafe/commentUpdate.do" method="post">
+									<input type="hidden" name="num" :value="comment.num" />
+					 				<textarea name="content" v-model="comment.content"></textarea>
+									<div align="right">
+										<button class="btn btn-sm btn-outline-success" type="submit">수정</button>
+									</div>
+								</form>		
+							</transition>			
 						</dd>							
 					</dl>	
 	   			</li> 
 	   			<!--  댓글에 단 댓글 표시 -->
-	   			<li v-else="comment.num != comment.comment_group" id="reli+comment.num" style="padding-left:50px;">
+	   			<li v-if="comment.num != comment.comment_group && comment.deleted !='yes'" :id="'reli'+comment.num"z style="padding-left:50px;">
 	   				<svg class="reply-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-return-right" viewBox="0 0 16 16">
 						<path fill-rule="evenodd" d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5z"/>
 					</svg>				
@@ -302,46 +306,58 @@
 							<span v-if="comment.num != comment.comment_group" class="p-1 m-1 text-muted" style="font-size:.875rem;">
 								<i>@{{comment.target_id}}</i>
 							</span>
-							<pre id="pre+comment.num">{{comment.content}}</pre>
+							<pre :id="'pre'+comment.num">{{comment.content}}</pre>
 							<!-- 댓글에 댓글 다는 링크 : reInsertForm 과 연결-->
-							<a data-num="comment.num" href="javascript:" class="reply-link text-decoration-none"
+							<a href="javascript:" class="reply-link text-decoration-none"
+								:id="'reCommentLink'+comment.num" @click="activeReForm(comment.num)"
 								style="padding-left:9.5px; color:#198754;">댓글</a>
-							<!-- 댓글에 단 댓글 수정하는 링크 -->
-							<a v-if="id !=null && comment.writer===id" data-num="comment.num" 
+							<!-- 원글에 단 댓글 수정하는 링크 : updateForm 연결 연결-->
+							<a v-if="id !=null && comment.writer===id" :id="'modifyCommentLink'+comment.num" 	
+								@click="activeModifyForm(comment.num)"							
 								class="update-link text-decoration-none link-dark px-2" href="javascript:">수정</a>
-							<!-- 댓글에 단 댓글 삭제하는 링크 -->	
-							<a v-if="id !=null && comment.writer===id" data-num="comment.num" 
-								class="delete-link text-decoration-none link-dark" href="javascript:">삭제</a>									
+							<!-- 원글에 단 댓글 삭제하는 링크 -->
+							<a v-if="id !=null && comment.writer===id" :id="'deleteCommentLink'+comment.num" 
+								@click="deleteComment(comment.num)"
+								class="delete-link text-decoration-none link-dark" href="javascript:">삭제</a>								
 						</dd>	
 						<dd>
 							<!-- 댓글에 댓글 다는 제출 폼 -->
-							<form id="reForm+comment.num" class="animate__animated comment-form re-insert-form" 
-								action="comment_insert.do" method="post">
-								<input type="hidden" name="ref_group" value="detail.num"/>
-								<input type="hidden" name="target_id" value="comment.writer"/>
-			 					<input type="hidden" name="comment_group" value="comment.comment_group"/>
-								<textarea name="content"></textarea>
-								<div align="right">
-									<button class="btn btn-sm btn-outline-success" type="submit">등록</button>
-								</div>
-							</form>  
+					   		<transition enter-active-class="animate__animated animate__fadeIn"
+										leave-active-class="animate__animated animate__fadeOut">
+								<form @submit.prevent="reInsertComment(comment.num)" v-bind:id="'reInsertForm'+comment.num" 
+									class="comment-form re-insert-form" 
+									action="${pageContext.request.contextPath}/ajax/cafe/commentInsert.do" method="post">
+									<input type="hidden" name="ref_group" :value="detail.num"/>
+									<input type="hidden" name="target_id" :value="comment.writer"/>
+				 					<input type="hidden" name="comment_group" :value="comment.comment_group"/>
+									<textarea v-if="id!=''" name="content" placeholder="새 댓글 작성하기"></textarea>
+									<textarea v-else name="content" style="text-align:center;">댓글 작성을 위해 로그인이 필요합니다.</textarea>		
+									<div align="right">
+										<button class="btn btn-sm btn-outline-success" type="submit">등록</button>
+									</div>
+								</form>  
+							</transition>
 						</dd>	
 						<dd>
-							<!-- 댓글에 단 댓글 수정 제출 폼 -->
-							<form id="updateForm+comment.num" class="comment-form update-form" 
-								action="comment_update.do" method="post">
-								<input type="hidden" name="num" value="detail.num" />
-				 				<textarea name="content">{{comment.content}}</textarea>
-								<div align="right">
-									<button class="btn btn-sm btn-outline-success" type="submit">수정</button>
-								</div>
-							</form>					
+							<!-- 원글에 단 댓글 수정 제출 폼 -->
+							<transition enter-active-class="animate__animated animate__fadeIn"
+										leave-active-class="animate__animated animate__fadeOut">
+								<form :id="'updateForm'+comment.num" class="comment-form update-form" 
+									@submit.prevent="modifyComment(comment.num)" 
+									action="${pageContext.request.contextPath}/ajax/cafe/commentUpdate.do" method="post">
+									<input type="hidden" name="num" :value="comment.num" />
+					 				<textarea name="content" v-model="comment.content"></textarea>
+									<div align="right">
+										<button class="btn btn-sm btn-outline-success" type="submit">수정</button>
+									</div>
+								</form>	
+							</transition>			
 						</dd>							
 					</dl>				
 	   			</li>  			
 	   		</ul>
 	   		<transition enter-active-class="animate__animated animate__fadeIn"
-				leave-active-class="animate__animated animate__fadeOut">
+						leave-active-class="animate__animated animate__fadeOut">
 				<div v-if="isLoading" class="d-flex justify-content-center my-3">
 					<div class="spinner-border text-success" role="status"></div>
 				</div>
@@ -386,7 +402,150 @@
 			
 		},
 		methods:{
+			deleteComment(num){
+				const self=this;
+				
+				Swal.fire({
+					title:'',
+					text:'댓글을 삭제하시겠습니까?',
+					icon:'warning',
+					confirmButtonColor: '#198754',
+					confirmButtonText:"예",
+					showCancelButton:true,
+					cancelButtonText:"아니오",
+				}).then((result)=>{
+					if(result.isConfirmed){
+						ajaxPromise(base_url+"/ajax/cafe/commentDelete.do","GET",
+								"&num="+num)	
+						.then(function(response){
+							return response.json();
+						})
+						.then(function(data){
+							//data는 {isSuccess:true}
+							//댓글을 다시 불러온다. 
+							//댓글 정보 읽어오기
+							ajaxPromise(base_url+"/ajax/cafe/commentList.do","GET",
+									"pageNum="+self.pageNum+"&num="+self.detail.num)	
+							.then(function(response){
+								return response.json();
+							})
+							.then(function(data){
+								//data는 {num:xx, writer:xx, content: xx . . . . }
+								//얻어온 정보를 model에 넣기
+								self.commentList=data;
+								//만약 댓글 총 페이지가 1개 이하이면 더보기 버튼 숨기기
+							})
+							//댓글 더보기 처리를 위해 totalPageCount가져오기
+							ajaxPromise(base_url+"/ajax/cafe/commentPaging.do","GET",
+									"pageNum="+self.pageNum+"&num="+self.detail.num)	
+							.then(function(response){
+								return response.json();
+							})
+							.then(function(data){
+								//data는 {totalPageCount:x, totalRow:x}
+								//얻어온 정보를 model에 넣기
+								self.totalRow=data.totalRow;
+								self.totalPageCount=data.totalPageCount;
+								//만약 댓글 총 페이지가 2 이상이면 더보기버튼 보이기
+								if(data.totalPageCount>=2){
+									self.isMoreButtonShow=true;
+								}
+							})
+						})
+					}				
+				})
 
+			},
+			modifyComment(num){
+				const self=this;
+				//제출할 폼의 참조값
+				const form = document.querySelector("#updateForm"+num);
+				//console.log(form);
+				ajaxFormPromise(form)
+				.then(function(response){
+					return response.json();
+				})
+				.then(function(data){
+					//data는 {isSuccess:true}
+					console.log(data);
+					
+					form.style.display="none";
+					$("#modifyCommentLink"+num).text('댓글');
+				});
+			},
+			activeModifyForm(num){
+				let form=document.querySelector("#updateForm"+num);
+				let link=$("#modifyCommentLink"+num);
+				let inText = $("#modifyCommentLink"+num).text();
+				if(inText == '수정'){
+					//updateForm 을 보이게 하기
+					form.style.display="block";
+					link.text('취소');
+				}else if(inText=='취소'){
+					form.style.display="none";
+					link.text('수정');
+				}	
+			},
+			reInsertComment(num){
+				const self=this;
+				//제출할 폼의 참조값
+				const form = document.querySelector("#reInsertForm"+num);
+				//console.log(form);
+				ajaxFormPromise(form)
+				.then(function(response){
+					return response.json();
+				})
+				.then(function(data){
+					//data는 {isSuccess:true}
+					//console.log(data);
+					//댓글을 다시 불러온다. 
+					//댓글 정보 읽어오기
+					ajaxPromise(base_url+"/ajax/cafe/commentList.do","GET",
+							"pageNum="+self.pageNum+"&num="+self.detail.num)	
+					.then(function(response){
+						return response.json();
+					})
+					.then(function(data){
+						//data는 {num:xx, writer:xx, content: xx . . . . }
+						//얻어온 정보를 model에 넣기
+						self.commentList=data;
+						//만약 댓글 총 페이지가 1개 이하이면 더보기 버튼 숨기기
+					})
+					//댓글 더보기 처리를 위해 totalPageCount가져오기
+					ajaxPromise(base_url+"/ajax/cafe/commentPaging.do","GET",
+							"pageNum="+self.pageNum+"&num="+self.detail.num)	
+					.then(function(response){
+						return response.json();
+					})
+					.then(function(data){
+						//data는 {totalPageCount:x, totalRow:x}
+						//얻어온 정보를 model에 넣기
+						self.totalRow=data.totalRow;
+						self.totalPageCount=data.totalPageCount;
+						//만약 댓글 총 페이지가 2 이상이면 더보기버튼 보이기
+						if(data.totalPageCount>=2){
+							self.isMoreButtonShow=true;
+						}
+					})
+					
+					form.style.display="none";
+					$("#reComment"+num).text('댓글');
+				});
+			},
+			activeReForm(num){
+				const self=this;
+				let form=document.querySelector("#reInsertForm"+num);
+				let link=$("#reCommentLink"+num);
+				let inText = $("#reCommentLink"+num).text();
+				if(inText == '댓글'){
+					//reInsertForm 을 보이게 하기
+					form.style.display="block";
+					link.text('취소');
+				}else if(inText=='취소'){
+					form.style.display="none";
+					link.text('댓글');
+				}				
+			},
 			insertComment(e){
 				const self=this;
 				//제출할 폼의 참조값
@@ -623,14 +782,6 @@
 							}else{
 								self.isMoreButtonShow=false;
 							}
-							/*
-				            //새로 추가된 댓글 li 요소 안에 있는 a 요소를 찾아서 이벤트 리스너 등록 하기 
-				            addUpdateListener(".page-"+currentPage+" .update-link");
-				            addDeleteListener(".page-"+currentPage+" .delete-link");
-				            addReplyListener(".page-"+currentPage+" .reply-link");
-				            //새로 추가된 댓글 li 요소 안에 있는 댓글 수정폼에 이벤트 리스너 등록하기
-				            addUpdateFormListener(".page-"+currentPage+" .update-form");
-				            */
 						});
 						//로딩바 끄기
 						self.isLoading=false;
@@ -692,6 +843,7 @@
 		},
 		created(){			
 			const self=this;			
+			
 			
 			let today=new Date();
 			let date=today.toLocaleString();
@@ -804,139 +956,6 @@
 		}
 	});
 
-   document.querySelector(".insert-form")
-      .addEventListener("submit", function(e){
-         //만일 로그인 하지 않았으면 
-         if(!${isLogin}){
-            //폼 전송을 막고 
-            e.preventDefault();
-            //로그인 폼으로 이동 시킨다.
-            location.href="${pageContext.request.contextPath}/users/loginform.do?url=${pageContext.request.contextPath}/cafe/detail.do?num=${dto.num}";
-         }
-      });
-    
-   
-   /*
-      detail.jsp 페이지 로딩 시점에 만들어진 1 페이지에 해당하는 
-      댓글에 이벤트 리스너 등록 하기 
- */
-   addUpdateFormListener(".update-form");
-   addUpdateListener(".update-link");
-   addDeleteListener(".delete-link");
-   addReplyListener(".reply-link");
-   
-   
-   //인자로 전달되는 선택자를 이용해서 이벤트 리스너를 등록하는 함수 
-   function addUpdateListener(sel){
-      //댓글 수정 링크의 참조값을 배열에 담아오기 
-      // sel 은  ".page-xxx  .update-link" 형식의 내용이다 
-      let updateLinks=document.querySelectorAll(sel);
-      for(let i=0; i<updateLinks.length; i++){
-         updateLinks[i].addEventListener("click", function(){
-            //click 이벤트가 일어난 바로 그 요소의 data-num 속성의 value 값을 읽어온다. 
-            const num=this.getAttribute("data-num"); //댓글의 글번호
-            document.querySelector("#updateForm"+num).style.display="block";
-            
-         });
-      }
-   }
-   function addDeleteListener(sel){
-      //댓글 삭제 링크의 참조값을 배열에 담아오기 
-      let deleteLinks=document.querySelectorAll(sel);
-      for(let i=0; i<deleteLinks.length; i++){
-         deleteLinks[i].addEventListener("click", function(){
-            //click 이벤트가 일어난 바로 그 요소의 data-num 속성의 value 값을 읽어온다. 
-            const num=this.getAttribute("data-num"); //댓글의 글번호
-            const isDelete=confirm("댓글을 삭제하시겠습니까?");
-            if(isDelete){
-               // gura_util.js 에 있는 함수들 이용해서 ajax 요청
-               ajaxPromise("comment_delete.do", "post", "num="+num)
-               .then(function(response){
-                  return response.json();
-               })
-               .then(function(data){
-                  //만일 삭제 성공이면 
-                  if(data.isSuccess){
-                     //댓글이 있는 곳에 삭제된 댓글입니다를 출력해 준다. 
-                     document.querySelector("#reli"+num).innerText="삭제된 댓글입니다.";
-                  }
-               });
-            }
-         });
-      }
-   }
-   function addReplyListener(sel){
-      //댓글 링크의 참조값을 배열에 담아오기 
-      let replyLinks=document.querySelectorAll(sel);
-      //반복문 돌면서 모든 링크에 이벤트 리스너 함수 등록하기
-      for(let i=0; i<replyLinks.length; i++){
-         replyLinks[i].addEventListener("click", function(){
-            
-            if(!${isLogin}){
-               const isMove=confirm("로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?");
-               if(isMove){
-                  location.href=
-                     "${pageContext.request.contextPath}/users/loginform.do?url=${pageContext.request.contextPath}/cafe/detail.do?num=${dto.num}";
-               }
-               return;
-            }
-            
-            //click 이벤트가 일어난 바로 그 요소의 data-num 속성의 value 값을 읽어온다. 
-            const num=this.getAttribute("data-num"); //댓글의 글번호
-            
-            const form=document.querySelector("#reForm"+num);
-            
-            //현재 문자열을 읽어온다 ( "댓글" or "취소" )
-            let current = this.innerText;
-            
-            if(current == "댓글"){
-               //번호를 이용해서 댓글의 댓글폼을 선택해서 보이게 한다. 
-               form.style.display="block";
-               form.classList.add("animate__fadeIn");
-               this.innerText="취소";   
-               form.addEventListener("animationend", function(){
-                  form.classList.remove("animate__fadeIn");
-               }, {once:true});
-            }else if(current == "취소"){
-               form.classList.add("animate__fadeOut");
-               this.innerText="댓글";
-               form.addEventListener("animationend", function(){
-                  form.classList.remove("animate__fadeOut");
-                  form.style.display="none";
-               },{once:true});
-            }
-         });
-      }
-   }
-   
-   function addUpdateFormListener(sel){
-      //댓글 수정 폼의 참조값을 배열에 담아오기
-      let updateForms=document.querySelectorAll(sel);
-      for(let i=0; i<updateForms.length; i++){
-         //폼에 submit 이벤트가 일어 났을때 호출되는 함수 등록 
-         updateForms[i].addEventListener("submit", function(e){
-            //submit 이벤트가 일어난 form 의 참조값을 form 이라는 변수에 담기 
-            const form=this;
-            //폼 제출을 막은 다음 
-            e.preventDefault();
-            //이벤트가 일어난 폼을 ajax 전송하도록 한다.
-            ajaxFormPromise(form)
-            .then(function(response){
-               return response.json();
-            })
-            .then(function(data){
-               if(data.isSuccess){
-                  const num=form.querySelector("input[name=num]").value;
-                  const content=form.querySelector("textarea[name=content]").value;
-                  //수정폼에 입력한 value 값을 pre 요소에도 출력하기 
-                  document.querySelector("#pre"+num).innerText=content;
-                  form.style.display="none";
-               }
-            });
-         });
-      }
-
-   }
 
 	</script>
 </body>

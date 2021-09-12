@@ -36,10 +36,11 @@ public class CafeController {
 	@Autowired private CafeService service;
 	@Autowired private CafeDao cafeDao;
 	
+	
 	//ajax - 댓글 추가
 	@RequestMapping("/ajax/cafe/commentInsert")
 	@ResponseBody
-	public Map<String, Object> ajaxCommentInsert(HttpServletRequest request){
+	public Map<String, Object> authajaxCommentInsert(HttpServletRequest request){
 		return service.ajaxInsertComment(request);
 	}
 	
@@ -249,9 +250,9 @@ public class CafeController {
 		return "cafe/ajax_comment_list";
 	}
     //댓글 삭제 요청 처리
-    @RequestMapping("/cafe/comment_delete")
+    @RequestMapping("/ajax/cafe/commentDelete")
     @ResponseBody
-    public Map<String, Object> authCommentDelete(HttpServletRequest request) {
+    public Map<String, Object> authajaxCommentDelete(HttpServletRequest request) {
 	      service.deleteComment(request);
 	      Map<String, Object> map=new HashMap<String, Object>();
 	      map.put("isSuccess", true);
@@ -259,9 +260,9 @@ public class CafeController {
 	      return map;
     }
 	//댓글 수정 요청처리 (JSON 을 응답하도록 한다)
-	@RequestMapping("/cafe/comment_update")
+	@RequestMapping("/ajax/cafe/commentUpdate")
 	@ResponseBody
-	public Map<String, Object> authCommentUpdate(CafeCommentDto dto){
+	public Map<String, Object> authajaxCommentUpdate(CafeCommentDto dto){
 	      service.updateComment(dto);
 	      Map<String, Object> map=new HashMap<String, Object>();
 	      map.put("isSuccess", true);
