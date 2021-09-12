@@ -526,7 +526,7 @@ public class CafeServiceImpl implements CafeService{
 		String keyword = (String)request.getParameter("keyword");
 		String condition = (String)request.getParameter("condition");
 		//조회수 올리기
-		cafeDao.addViewCount(num);
+		//cafeDao.addViewCount(num);
 		//만일 키워드가 넘어오지 않는다면 
 		if(keyword==null){
 			//키워드와 검색 조건에 빈 문자열을 넣어준다. 
