@@ -332,7 +332,7 @@
 				//data는 {isPopup:false} 또는 없음
 				//true이면 popup을 열도록 한다
 				if(data.isPopup != false){
-					window.open(base_url+"/popup/popup.do","창의제목","width=470,height=470,top=100,left=100");
+					window.open(base_url+"/popup/popup.do","창의제목","width=450,height=500,top=100,left=100");
 				}
 			});
 		}
