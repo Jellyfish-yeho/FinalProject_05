@@ -60,7 +60,7 @@
 		<h2>가입하기</h2>
 			<p>
 				하이클리어는 여러분을 환영합니다!
-				<a href="${pageContext.request.contextPath}/users/signupform.do" style="color: red;">가입하기</a>
+				<a href="${pageContext.request.contextPath}/users/signup_form.do" style="color: red;">가입하기</a>
 			</p>
 		<h2>정기모임</h2>
 			<p>
