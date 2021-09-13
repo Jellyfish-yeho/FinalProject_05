@@ -23,10 +23,9 @@
 </head>
 <body>
 <div class="container text-center">
-	<h1 class="mt-1 mb-2 animate__animated animate__shakeX">cool autumn event</h1>
-	<p>다양한 회원 전용 이벤트</p>	
+	<h1 class="mt-1 mb-2 animate__animated animate__shakeX">Hot Summer Event</h1>	
 	<div class="mb-1">
-		<img src="${pageContext.request.contextPath}/resources/images/pop.jpg" width=400px />		
+		<img src="${pageContext.request.contextPath}/resources/images/shuttlecocks.jpg" width=400px />		
 	</div>	
 	<div class="item d-flex justify-content-cente">
 		<ul class="list-group list-group-horizontal">
